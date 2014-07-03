@@ -1,11 +1,14 @@
-workingdir: /home/kapil/workspace/cephdeploy-cluster 
+workingdir: /home/jenkins/cephdeploy-cluster 
 allnodes:
-- test1
-- test2
-- test3
+- teuthida-0
+- teuthida-1
+- teuthida-2
+- teuthida-3
 initmons:
-- test2
+- teuthida-1
+- teuthida-2
+- teuthida-3
 osds:
-- test1:vdb2
-- test2:vdb2
-- test3:/osd3
+- teuthida-1:vdb2
+- teuthida-2:vdb2
+- teuthida-3:vdb2
