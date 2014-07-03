@@ -37,7 +37,7 @@ class Basetest():
           'warning': logging.WARNING,
           'error': logging.ERROR,
           'critical': logging.CRITICAL}
-        level_name = self.ctx['loglevel']
+        level_name = self.config.get('env','loglevel') 
         level = LEVELS.get(level_name, logging.NOTSET)
         logging.basicConfig(level=level,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',

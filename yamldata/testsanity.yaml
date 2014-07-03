@@ -1,14 +1,14 @@
 workingdir: /home/jenkins/cephdeploy-cluster 
 allnodes:
-- teuthida-0
-- teuthida-1
-- teuthida-2
-- teuthida-3
+- teuthida-4-0
+- teuthida-4-1
+- teuthida-4-2
+- teuthida-4-3
 initmons:
-- teuthida-1
-- teuthida-2
-- teuthida-3
+- teuthida-4-1
+- teuthida-4-2
+- teuthida-4-3
 osds:
-- teuthida-1:vdb2
-- teuthida-2:vdb2
-- teuthida-3:vdb2
+- teuthida-4-1:vdb2
+- teuthida-4-2:vdb2
+- teuthida-4-3:vdb2
