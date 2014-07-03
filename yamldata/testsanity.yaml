@@ -1,0 +1,11 @@
+workingdir: /home/kapil/workspace/cephdeploy-cluster 
+allnodes:
+- test1
+- test2
+- test3
+initmons:
+- test2
+osds:
+- test1:vdb2
+- test2:vdb2
+- test3:/osd3
