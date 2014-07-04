@@ -16,9 +16,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
         
-    def test01_del(self):
-        pass
-    """     
+        
     def test00_createDirs(self):
         log.info('starting test0_createDirs')
         if not self.ctx.has_key('workingdir'):
@@ -89,7 +87,7 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.warning('cluster health is OK and PGs are active+clean') 
         log.info('completed test8_ValidateCephStatus')
-    
+    """
     def test09_ValidateCephDeployVersion(self):
         log.info('starting test9_ValidateCephVersion')
         expVersion = cephdeploy.getExpectedVersion(self.config.get('env','repo_baseurl'))
@@ -105,12 +103,10 @@ class TestSanity(basetest.Basetest):
         if actVersion not in expVersion:
             raise Exception, "expected '%s' and actual '%s' versions did not match" % (expVersion,actVersion)
         log.info('completed test10_ValidateCephVersion')
+    """   
         
-        
-    """
     @classmethod
     def teardown_class(self):
         log.info('starting teardown_class')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], self.config.get('env','repo_name'), self.ctx['workingdir'])
         log.info('Completed teardown_class')
-     
