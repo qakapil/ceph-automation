@@ -14,10 +14,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchIniData(cls)
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
-    def test0_dummy(self):
-        print ('dummy test')
-        
-    """ 
+            
     def test0_createDirs(self):
         print('starting test0_createDirs')
         if not self.ctx.has_key('workingdir'):
@@ -58,7 +55,7 @@ class TestSanity(basetest.Basetest):
         log.info('starting test6_PrepareActivateOSDs')
         cephdeploy.PrepareActivateOSDs(self.ctx['osds'], self.ctx['workingdir'])
         log.info('Completed test6_PrepareActivateOSDs')
-    """
+    
     @classmethod
     def teardown_class(self):
         log.info('starting teardown_class')

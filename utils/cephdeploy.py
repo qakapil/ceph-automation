@@ -1,6 +1,7 @@
 from launch import launch
-import logging
 import zypperutils
+import logging
+
 
 log = logging.getLogger(__name__)
 
@@ -76,7 +77,6 @@ def addAdminNodes(listNodes, strWorkingdir):
       
 
 def cleanupNodes(listNodes, reponame, strWorkingdir):
-    """
     if len(listNodes) < 1:
         log.error("install nodes list not provided in the yaml file")
         raise Exception, "install nodes list not provided in the yaml file"
@@ -93,7 +93,7 @@ def cleanupNodes(listNodes, reponame, strWorkingdir):
     rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    """
+    
     for node in listNodes:
         cmd = "ssh %s sudo zypper removerepo %s" % (node, reponame)
         rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
@@ -103,8 +103,8 @@ def cleanupNodes(listNodes, reponame, strWorkingdir):
         rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    #zypperutils.removePkg('ceph-deploy')
-    #zypperutils.removeRepo('ceph')
+    zypperutils.removePkg('ceph-deploy')
+    zypperutils.removeRepo('ceph')
     
     
     

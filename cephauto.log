@@ -1,19 +1,14 @@
-07-01 17:34 utils.general INFO     directory /home/kapil/workspace/cephdeploy-cluster is already present, not creating 
-07-01 17:34 utils.general INFO     directory /var/lib/ceph/osd is already present, not creating 
-07-01 17:34 utils.general INFO     directory /var/lib/ceph/osd is already present, not creating 
-07-01 17:34 utils.general INFO     directory /var/lib/ceph/osd is already present, not creating 
-07-01 17:34 utils.general INFO     directory /var/lib/ceph/bootstrap-osd is already present, not creating 
-07-01 17:34 utils.general INFO     directory /var/lib/ceph/bootstrap-osd is already present, not creating 
-07-01 17:34 utils.general INFO     directory /var/lib/ceph/bootstrap-osd is already present, not creating 
-07-01 17:34 testsanity   INFO     Completed the test test0_createDirs
-07-01 17:34 testsanity   INFO     starting test1_AddRepo
-07-01 17:34 utils.zypperutils INFO     repo 'ceph' is present
-07-01 17:34 utils.zypperutils WARNING  repo ceph with url http://download.suse.de/ibs/Devel:/Storage:/0.5:/Staging/SLE_12/ is already present
-07-01 17:34 testsanity   INFO     Completed the test test1_AddRepo
-07-01 17:34 testsanity   INFO     starting the test test2_InstallCephDeploy
-07-01 17:34 testsanity   INFO     Completed test2_InstallCephDeploy
-07-01 17:34 testsanity   INFO     starting test3_DeclareInitialMons
-07-01 17:34 testsanity   INFO     Completed test3_DeclareInitialMons
-07-01 17:34 testsanity   INFO     starting test4_installCeph
-07-01 17:34 testsanity   INFO     starting test5_createInitialMons
-07-01 17:34 testsanity   INFO     starting test6_PrepareActivateOSDs
+07-04 10:24 utils.general ERROR    error while creating the directory /home/jenkins/cephdeploy-cluster 
+07-04 10:24 testsanity   INFO     starting test1_AddRepo
+07-04 10:24 utils.zypperutils INFO     repo 'ceph' is present
+07-04 10:24 utils.zypperutils WARNING  repo 'ceph' is present but with incorrect url, removing the repo
+07-04 10:24 utils.zypperutils INFO     removing the repo 'ceph'
+07-04 10:24 utils.zypperutils INFO     repo 'ceph' was removed
+07-04 10:24 testsanity   INFO     Completed test1_AddRepo
+07-04 10:24 testsanity   INFO     starting the test test2_InstallCephDeploy
+07-04 10:24 testsanity   INFO     Completed test2_InstallCephDeploy
+07-04 10:24 testsanity   INFO     starting test3_DeclareInitialMons
+07-04 10:24 testsanity   INFO     starting test4_installCeph
+07-04 10:24 testsanity   INFO     starting test5_createInitialMons
+07-04 10:24 testsanity   INFO     starting test6_PrepareActivateOSDs
+07-04 10:24 testsanity   INFO     starting teardown_class
