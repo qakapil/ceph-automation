@@ -14,10 +14,11 @@ def getCephHealth():
     log.info('Ceph health is - '+stdout)
     return stdout
 
-def getFSID():
+def getFSID(workingdir):
     log.info('fetching fsid from ceph.conf in cephdeploy working dir')
     configParser = ConfigParser.RawConfigParser()
-    configFilePath = r'ceph.conf'
+    configFilePath = workingdir+r'/ceph.conf'
+    #configFilePath = r'ceph.conf'
     configParser.read(configFilePath)
     s = configParser.sections()
     print str(s)

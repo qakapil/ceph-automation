@@ -15,7 +15,10 @@ class TestSanity(basetest.Basetest):
         cls.fetchIniData(cls)
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
-          
+        
+    def test01_del(self):
+        pass
+    """     
     def test00_createDirs(self):
         log.info('starting test0_createDirs')
         if not self.ctx.has_key('workingdir'):
@@ -64,7 +67,7 @@ class TestSanity(basetest.Basetest):
     
     def test08_ValidateCephStatus(self):
         log.info('starting test8_ValidateCephStatus')
-        fsid = monitoring.getFSID()
+        fsid = monitoring.getFSID(self.ctx['workingdir'])
         status = monitoring.getCephStatus()
         if fsid not in status:
             raise Exception, "fsid %s was not found in ceph status %s" % (fsid,status)
@@ -110,4 +113,4 @@ class TestSanity(basetest.Basetest):
         log.info('starting teardown_class')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], self.config.get('env','repo_name'), self.ctx['workingdir'])
         log.info('Completed teardown_class')
-    """    
+     
