@@ -19,6 +19,8 @@ def getFSID():
     configParser = ConfigParser.RawConfigParser()
     configFilePath = r'ceph.conf'
     configParser.read(configFilePath)
+    s = configParser.sections()
+    print str(s)
     fsid = configParser.get('global','fsid')
     return fsid.strip()
 

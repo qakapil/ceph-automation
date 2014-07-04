@@ -104,9 +104,10 @@ class TestSanity(basetest.Basetest):
         log.info('completed test10_ValidateCephVersion')
         
         
-    
+    """
     @classmethod
     def teardown_class(self):
         log.info('starting teardown_class')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], self.config.get('env','repo_name'), self.ctx['workingdir'])
         log.info('Completed teardown_class')
+    """    
