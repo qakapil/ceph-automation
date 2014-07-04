@@ -1,0 +1,7 @@
+*.pyc
+/testsuites/*.pyc
+/utils/*.pyc
+/.pydevproject
+/.project
+.pydevproject
+.project
