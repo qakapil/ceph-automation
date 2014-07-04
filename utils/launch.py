@@ -23,6 +23,7 @@ def launch(**kwargs):
     if workdir != None:
         origWD = os.getcwd()
         os.chdir(workdir)
+    log.debug("executing the command "+ executionString)
     process = subprocess.Popen([executionString], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE,env=env)
     
     if origWD != None:

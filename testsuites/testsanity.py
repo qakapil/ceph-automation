@@ -16,7 +16,7 @@ class TestSanity(basetest.Basetest):
         cls.setLogger(cls)
             
     def test0_createDirs(self):
-        print('starting test0_createDirs')
+        log.info('starting test0_createDirs')
         if not self.ctx.has_key('workingdir'):
             self.ctx['workingdir'] = '~/cephdeploy-cluster'
         general.createDir(self.ctx['workingdir'])
@@ -55,13 +55,13 @@ class TestSanity(basetest.Basetest):
         log.info('starting test6_PrepareActivateOSDs')
         cephdeploy.PrepareActivateOSDs(self.ctx['osds'], self.ctx['workingdir'])
         log.info('Completed test6_PrepareActivateOSDs')
-    
+    """
     @classmethod
     def teardown_class(self):
         log.info('starting teardown_class')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], self.config.get('env','repo_name'), self.ctx['workingdir'])
         log.info('Completed teardown_class')
-        
+    """    
     
     
 if __name__ == "__main__":
