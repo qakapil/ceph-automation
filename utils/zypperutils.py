@@ -42,6 +42,7 @@ def isRepoPresent(reponame):
 
 def removeRepo(reponame):
     cmd = "sudo zypper removerepo %s" % (reponame)
+    log.info("removing the repo '%s'"  % (reponame))
     rc,stdout,stderr = launch(cmd=cmd)
     if rc == 0 and stderr.strip() == "":
         log.info("repo '%s' was removed" % (reponame))
