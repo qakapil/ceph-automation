@@ -11,7 +11,7 @@ def getCephHealth():
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    log.info('Ceph health is %s - ')%(stdout)
+    log.info('Ceph health is - '+stdout)
     return stdout
 
 def getFSID():
@@ -29,7 +29,7 @@ def getCephStatus():
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    log.info('Ceph status is %s - ')%(stdout)
+    log.info('ceph status is - '+stdout)
     return stdout.strip()
 
 
@@ -41,7 +41,7 @@ def getExpectedVersion(url):
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     ceph_version = stdout.strip()
-    log.info('Ceph expected version is %s - ')%(ceph_version)
+    log.info('Ceph expected version is - '+ceph_version)
     return ceph_version
 
 
@@ -51,6 +51,6 @@ def getActuaVersion():
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     ceph_version = stdout.strip()
-    log.info('Ceph expected version is %s - ')%(ceph_version)
+    log.info('Ceph expected version is - '+ceph_version)
     return ceph_version
     

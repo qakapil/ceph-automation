@@ -114,7 +114,7 @@ def getExpectedVersion(url):
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     cephdeploy_version = stdout.strip()
-    log.info('CephDeploy expected version is %s - ')%(cephdeploy_version)
+    log.info('CephDeploy expected version is - '+cephdeploy_version)
     return cephdeploy_version
 
 
@@ -124,7 +124,7 @@ def getActuaVersion():
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     cephdeploy_version = stdout.strip()
-    log.info('CephDeploy actual version is %s - ')%(cephdeploy_version)
+    log.info('CephDeploy actual version is - '+cephdeploy_version)
     return cephdeploy_version
     
     

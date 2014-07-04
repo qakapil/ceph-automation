@@ -16,7 +16,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
     """        
-    def test0_createDirs(self):
+    def test00_createDirs(self):
         log.info('starting test0_createDirs')
         if not self.ctx.has_key('workingdir'):
             self.ctx['workingdir'] = '~/cephdeploy-cluster'
@@ -26,43 +26,43 @@ class TestSanity(basetest.Basetest):
             general.createDir('/var/lib/ceph/bootstrap-osd',node)
         log.info('Completed test0_createDirs')
       
-    def test1_AddRepo(self):
+    def test01_AddRepo(self):
         log.info('starting test1_AddRepo')
         url = self.config.get('env','repo_baseurl')
         zypperutils.addRepo('ceph', url)
         log.info('Completed test1_AddRepo')
     
-    def test2_InstallCephDeploy(self):
+    def test02_InstallCephDeploy(self):
         log.info('starting the test test2_InstallCephDeploy')
         zypperutils.installPkg('ceph-deploy')
         log.info('Completed test2_InstallCephDeploy')
     
-    def test3_DeclareInitialMons(self):
+    def test03_DeclareInitialMons(self):
         log.info('starting test3_DeclareInitialMons')
         cephdeploy.decalreInitialMons(self.ctx['initmons'], self.ctx['workingdir'])
         log.info('Completed test3_DeclareInitialMons')
     
-    def test4_InstallCeph(self):
+    def test04_InstallCeph(self):
         log.info('starting test4_installCeph')
         cephdeploy.installNodes(self.ctx['allnodes'], self.ctx['workingdir'])
         log.info('Completed test4_installCeph')
         
-    def test5_CreateInitialMons(self):
+    def test05_CreateInitialMons(self):
         log.info('starting test5_createInitialMons')
         cephdeploy.createInitialMons(self.ctx['initmons'], self.ctx['workingdir'])
         log.info('Completed test5_createInitialMons')
     
-    def test6_PrepareActivateOSDs(self):
+    def test06_PrepareActivateOSDs(self):
         log.info('starting test6_PrepareActivateOSDs')
         cephdeploy.PrepareActivateOSDs(self.ctx['osds'], self.ctx['workingdir'])
         log.info('Completed test6_PrepareActivateOSDs')
     """
-    def test7_AdminNodes(self):
+    def test07_AdminNodes(self):
         log.info('starting test7_AdminNodes')
         cephdeploy.addAdminNodes(self.ctx['allnodes'], self.ctx['workingdir'])
         log.info('completed test7_AdminNodes')
     
-    def test8_ValidateCephStatus(self):
+    def test08_ValidateCephStatus(self):
         log.info('starting test8_ValidateCephStatus')
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
@@ -87,7 +87,7 @@ class TestSanity(basetest.Basetest):
             log.warning('cluster health is OK and PGs are active+clean') 
         log.info('completed test8_ValidateCephStatus')
     
-    def test9_ValidateCephDeployVersion(self):
+    def test09_ValidateCephDeployVersion(self):
         log.info('starting test9_ValidateCephVersion')
         expVersion = cephdeploy.getExpectedVersion(self.config.get('env','repo_baseurl'))
         actVersion = cephdeploy.getActuaVersion()
