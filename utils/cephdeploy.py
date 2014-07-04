@@ -107,5 +107,26 @@ def cleanupNodes(listNodes, reponame, strWorkingdir):
     zypperutils.removeRepo('ceph')
     
     
+def getExpectedVersion(url):
+    url = url+'/src'
+    cmd = 'wget -q -O- %s | grep ceph-deploy | sed -e "s|.*ceph-deploy-\(.*\).src.rpm.*|\1|"' % (url)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    cephdeploy_version = stdout.strip()
+    log.info('CephDeploy expected version is %s - ')%(cephdeploy_version)
+    return cephdeploy_version
+
+
+def getActuaVersion():
+    cmd = 'ceph-deploy --version'
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    cephdeploy_version = stdout.strip()
+    log.info('CephDeploy actual version is %s - ')%(cephdeploy_version)
+    return cephdeploy_version
+    
+    
     
         
