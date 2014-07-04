@@ -80,12 +80,12 @@ def cleanupNodes(listNodes, reponame, strWorkingdir):
     if len(listNodes) < 1:
         log.error("install nodes list not provided in the yaml file")
         raise Exception, "install nodes list not provided in the yaml file"
-    listNodes = " ".join(listNodes)
-    cmd = 'ceph-deploy purge %s' % (listNodes)
+    allnodes = " ".join(listNodes)
+    cmd = 'ceph-deploy purge %s' % (allnodes)
     rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    cmd = 'ceph-deploy purgedata %s' % (listNodes)
+    cmd = 'ceph-deploy purgedata %s' % (allnodes)
     rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
