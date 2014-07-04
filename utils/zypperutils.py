@@ -48,6 +48,10 @@ def removeRepo(reponame):
         return True
     else:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    cmd = "sudo zypper refresh"
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     
     
     

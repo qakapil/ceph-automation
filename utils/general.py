@@ -40,3 +40,13 @@ def createDir(dirPath, machineName=None):
     if rc != 0:
         log.error("error while creating the directory %s " % (dirPath))
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+
+def removerpm(rpmname):
+    cmd = "sudo rpm -e %s" % (rpmname)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        log.error("error while creating the directory %s " % (rpmname))
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+   

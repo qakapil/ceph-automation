@@ -1,5 +1,6 @@
 from launch import launch
 import logging
+import zypperutils
 
 log = logging.getLogger(__name__)
 
@@ -73,3 +74,37 @@ def addAdminNodes(listNodes, strWorkingdir):
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
       
+
+def cleanupNodes(listNodes, reponame, strWorkingdir):
+    if len(listNodes) < 1:
+        log.error("install nodes list not provided in the yaml file")
+        raise Exception, "install nodes list not provided in the yaml file"
+    listNodes = " ".join(listNodes)
+    cmd = 'ceph-deploy purge %s' % (listNodes)
+    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    cmd = 'ceph-deploy purgedata %s' % (listNodes)
+    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    cmd = 'ceph-deploy forgetkeys'
+    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    
+    for node in listNodes:
+        cmd1 = "ssh %s sudo zypper removerepo %s" % (node, reponame)
+        rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+        cmd1 = "ssh %s sudo zypper refresh" % (node)
+        rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    zypperutils.removePkg('ceph-deploy')
+    zypperutils.removeRepo('ceph')
+    
+    
+    
+        
