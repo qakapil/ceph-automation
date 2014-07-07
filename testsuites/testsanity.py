@@ -90,7 +90,7 @@ class TestSanity(basetest.Basetest):
                           active+clean')
                 active_clean = True
                 continue
-            if (counter > 300):
+            if (counter > 20):
                 raise Exception, 'PGs did not reach active+clean state \
                                    after 5 mins'
             log.debug('waiting for 5 seconds for ceph status to update')
