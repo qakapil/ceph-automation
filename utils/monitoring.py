@@ -38,8 +38,8 @@ def getCephStatus():
 
     
 def getExpectedVersion(url):
-    url = url+'/src'
-    cmd = 'wget -q -O- %s | grep ceph-0 | sed -e "s|.*ceph-\(.*\).src.rpm.*|\1|"' % (url)
+    url = url+'src'
+    cmd = 'wget -q -O- %s | grep ceph-0 | sed -e "s|.*ceph-\\(.*\\).src.rpm.*|\\1|"' % (url)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)

@@ -113,8 +113,8 @@ def cleanupNodes(listNodes, reponame, strWorkingdir):
            
     
 def getExpectedVersion(url):
-    url = url+'/src'
-    cmd = 'wget -q -O- %s | grep ceph-deploy | sed -e "s|.*ceph-deploy-\(.*\).src.rpm.*|\1|"' % (url)
+    url = url+'src'
+    cmd = 'wget -q -O- %s | grep ceph-deploy | sed -e "s|.*ceph-deploy-\\(.*\\).src.rpm.*|\\1|"' % (url)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)

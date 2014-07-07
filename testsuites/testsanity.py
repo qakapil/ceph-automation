@@ -98,7 +98,7 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.warning('cluster health is OK and PGs are active+clean') 
         log.info('completed test8_ValidateCephStatus')
-    """
+    
     def test09_ValidateCephDeployVersion(self):
         log.info('starting test9_ValidateCephVersion')
         expVersion = cephdeploy.getExpectedVersion(self.config.get('env','repo_baseurl'))
@@ -106,7 +106,7 @@ class TestSanity(basetest.Basetest):
         if actVersion not in expVersion:
             raise Exception, "expected '%s' and actual '%s' versions did not match" % (expVersion,actVersion)
         log.info('completed test9_ValidateCephVersion')
-        
+    """   
     def test10_ValidateCephVersion(self):
         log.info('starting test10_ValidateCephVersion')
         expVersion = monitoring.getExpectedVersion(self.config.get('env','repo_baseurl'))
@@ -114,7 +114,7 @@ class TestSanity(basetest.Basetest):
         if actVersion not in expVersion:
             raise Exception, "expected '%s' and actual '%s' versions did not match" % (expVersion,actVersion)
         log.info('completed test10_ValidateCephVersion')
-    """   
+     
         
     @classmethod
     def teardown_class(self):
@@ -123,3 +123,4 @@ class TestSanity(basetest.Basetest):
                                 self.config.get('env','repo_name'), 
                                 self.ctx['workingdir'])
         log.info('Completed teardown_class')
+    """
