@@ -90,7 +90,7 @@ class TestSanity(basetest.Basetest):
                 raise Exception, 'PGs did not reach active+clean state \
                                    after 5 mins'
             log.debug('waiting for 5 seconds for ceph status to update')
-            time.sleep()
+            time.sleep(5)
             counter += 1
             status = monitoring.getCephStatus()
         if 'health HEALTH_WARN clock skew detected' in status:
