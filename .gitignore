@@ -2,3 +2,4 @@
 /.pydevproject
 /.project
 *.log
+nosetests.xml

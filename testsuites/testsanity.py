@@ -15,6 +15,8 @@ class TestSanity(basetest.Basetest):
         cls.fetchIniData(cls)
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
+        cephdeploy.cleanupNodes(cls.ctx['allnodes'], cls.config.get('env','repo_name'), cls.ctx['workingdir'])
+        print cls.ctx['allnodes']
         
         
     def test00_createDirs(self):
