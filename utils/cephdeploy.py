@@ -2,7 +2,6 @@ from launch import launch
 import zypperutils
 import logging, sys
 
-
 log = logging.getLogger(__name__)
 
 def decalreInitialMons(listMons, strWorkingdir):
@@ -106,11 +105,11 @@ def cleanupNodes(listNodes, reponame, strWorkingdir):
     try:
         zypperutils.removePkg('ceph-deploy')
     except Exception as e:
-        log.warning("Error while removing ceph-deploy "+sys.exc_info()[0])
+        log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
     try:
         zypperutils.removeRepo('ceph')
     except Exception as e:
-        log.warning("Error while removing ceph-deploy "+sys.exc_info()[0])
+        log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
            
     
 def getExpectedVersion(url):
