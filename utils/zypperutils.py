@@ -16,10 +16,10 @@ def addRepo(reponame, url):
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    zypperRefresh() 
+    zypperRefresh()
 
 def zypperRefresh():
-    cmd = "sudo zypper --gpg-auto-import-keys refresh"
+    cmd = "sudo zypper --gpg-auto-import-keys --non-interactive refresh"
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
@@ -49,10 +49,7 @@ def removeRepo(reponame):
         return True
     else:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    cmd = "sudo zypper refresh"
-    rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    zypperRefresh()
     
     
     

@@ -1,6 +1,6 @@
 from launch import launch
 import zypperutils
-import logging
+import logging, sys
 
 
 log = logging.getLogger(__name__)
@@ -84,28 +84,34 @@ def cleanupNodes(listNodes, reponame, strWorkingdir):
     cmd = 'ceph-deploy purge %s' % (allnodes)
     rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
     if rc != 0:
-        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
     cmd = 'ceph-deploy purgedata %s' % (allnodes)
     rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
     if rc != 0:
-        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
     cmd = 'ceph-deploy forgetkeys'
     rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
     if rc != 0:
-        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
     
     for node in listNodes:
         cmd = "ssh %s sudo zypper removerepo %s" % (node, reponame)
         rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
         if rc != 0:
-            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+            log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
         cmd = "ssh %s sudo zypper refresh" % (node)
         rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
         if rc != 0:
-            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    zypperutils.removePkg('ceph-deploy')
-    zypperutils.removeRepo('ceph')
-    
+            log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+    try:
+        zypperutils.removePkg('ceph-deploy')
+    except Exception as e:
+        log.warning("Error while removing ceph-deploy "+sys.exc_info()[0])
+    try:
+        zypperutils.removeRepo('ceph')
+    except Exception as e:
+        log.warning("Error while removing ceph-deploy "+sys.exc_info()[0])
+           
     
 def getExpectedVersion(url):
     url = url+'/src'
