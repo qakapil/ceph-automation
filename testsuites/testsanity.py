@@ -15,9 +15,9 @@ class TestSanity(basetest.Basetest):
         cls.fetchIniData(cls)
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
-        cephdeploy.cleanupNodes(cls.ctx['allnodes'], cls.config.get('env','repo_name'), cls.ctx['workingdir'])
-        print cls.ctx['allnodes']
-        
+        cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
+                                cls.config.get('env','repo_name'),
+                                cls.ctx['workingdir'])
         
     def test00_createDirs(self):
         log.info('starting test0_createDirs')
@@ -42,27 +42,32 @@ class TestSanity(basetest.Basetest):
     
     def test03_DeclareInitialMons(self):
         log.info('starting test3_DeclareInitialMons')
-        cephdeploy.decalreInitialMons(self.ctx['initmons'], self.ctx['workingdir'])
+        cephdeploy.decalreInitialMons(self.ctx['initmons'], 
+                                      self.ctx['workingdir'])
         log.info('Completed test3_DeclareInitialMons')
     
     def test04_InstallCeph(self):
         log.info('starting test4_installCeph')
-        cephdeploy.installNodes(self.ctx['allnodes'], self.ctx['workingdir'])
+        cephdeploy.installNodes(self.ctx['allnodes'], 
+                                self.ctx['workingdir'])
         log.info('Completed test4_installCeph')
         
     def test05_CreateInitialMons(self):
         log.info('starting test5_createInitialMons')
-        cephdeploy.createInitialMons(self.ctx['initmons'], self.ctx['workingdir'])
+        cephdeploy.createInitialMons(self.ctx['initmons'], 
+                                     self.ctx['workingdir'])
         log.info('Completed test5_createInitialMons')
     
     def test06_PrepareActivateOSDs(self):
         log.info('starting test6_PrepareActivateOSDs')
-        cephdeploy.PrepareActivateOSDs(self.ctx['osds'], self.ctx['workingdir'])
+        cephdeploy.PrepareActivateOSDs(self.ctx['osds'], 
+                                       self.ctx['workingdir'])
         log.info('Completed test6_PrepareActivateOSDs')
     
     def test07_AdminNodes(self):
         log.info('starting test7_AdminNodes')
-        cephdeploy.addAdminNodes(self.ctx['allnodes'], self.ctx['workingdir'])
+        cephdeploy.addAdminNodes(self.ctx['allnodes'], 
+                                 self.ctx['workingdir'])
         log.info('completed test7_AdminNodes')
     
     def test08_ValidateCephStatus(self):
@@ -70,22 +75,26 @@ class TestSanity(basetest.Basetest):
         fsid = monitoring.getFSID(self.ctx['workingdir'])
         status = monitoring.getCephStatus()
         if fsid not in status:
-            raise Exception, "fsid %s was not found in ceph status %s" % (fsid,status)
+            raise Exception, "fsid %s was not found in ceph status %s" \
+                              % (fsid,status)
         active_clean = False
         counter = 0
         while not active_clean:
             if 'active+clean' in status:
-                log.info('placement groups in ceph status were active+clean')
+                log.info('placement groups in ceph status were \
+                          active+clean')
                 active_clean = True
                 continue
             if (counter > 300):
-                raise Exception, 'PGs did not reach active+clean state after 5 mins'
+                raise Exception, 'PGs did not reach active+clean state \
+                                   after 5 mins'
             log.debug('waiting for 5 seconds for ceph status to update')
             time.sleep()
             counter += 1
             status = monitoring.getCephStatus()
         if 'health HEALTH_WARN clock skew detected' in status:
-            log.warning('health HEALTH_WARN clock skew detected in ceph status')
+            log.warning('health HEALTH_WARN clock skew detected in\
+                         ceph status')
         if 'health HEALTH_OK' in status:
             log.warning('cluster health is OK and PGs are active+clean') 
         log.info('completed test8_ValidateCephStatus')
@@ -110,5 +119,7 @@ class TestSanity(basetest.Basetest):
     @classmethod
     def teardown_class(self):
         log.info('starting teardown_class')
-        cephdeploy.cleanupNodes(self.ctx['allnodes'], self.config.get('env','repo_name'), self.ctx['workingdir'])
+        cephdeploy.cleanupNodes(self.ctx['allnodes'], 
+                                self.config.get('env','repo_name'), 
+                                self.ctx['workingdir'])
         log.info('Completed teardown_class')
