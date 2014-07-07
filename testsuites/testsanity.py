@@ -15,6 +15,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchIniData(cls)
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
+        monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
                                 cls.config.get('env','repo_name'),
                                 cls.ctx['workingdir'])
@@ -80,7 +81,7 @@ class TestSanity(basetest.Basetest):
         active_clean = False
         counter = 0
         while not active_clean:
-            if 'active+clean' in status:
+            if '192 active+clean' in status:
                 log.info('placement groups in ceph status were \
                           active+clean')
                 active_clean = True
@@ -115,7 +116,7 @@ class TestSanity(basetest.Basetest):
             raise Exception, "expected '%s' and actual '%s' versions did not match" % (expVersion,actVersion)
         log.info('completed test10_ValidateCephVersion')
      
-    """    
+     
     @classmethod
     def teardown_class(self):
         log.info('starting teardown_class')
@@ -123,4 +124,3 @@ class TestSanity(basetest.Basetest):
                                 self.config.get('env','repo_name'), 
                                 self.ctx['workingdir'])
         log.info('Completed teardown_class')
-    """
