@@ -124,7 +124,8 @@ def getExpectedVersion(url):
 
 
 def getActuaVersion():
-    cmd = 'ceph-deploy --version'
+    #cmd = 'ceph-deploy --version'
+    cmd = 'rpm -qa | grep ceph-deploy | sed -e "s|.*ceph-deploy-\\(.*\\)|\\1|"'
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)

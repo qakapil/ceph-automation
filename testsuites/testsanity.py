@@ -106,7 +106,7 @@ class TestSanity(basetest.Basetest):
         if actVersion not in expVersion:
             raise Exception, "expected '%s' and actual '%s' versions did not match" % (expVersion,actVersion)
         log.info('completed test9_ValidateCephVersion')
-    """   
+     
     def test10_ValidateCephVersion(self):
         log.info('starting test10_ValidateCephVersion')
         expVersion = monitoring.getExpectedVersion(self.config.get('env','repo_baseurl'))
@@ -115,7 +115,7 @@ class TestSanity(basetest.Basetest):
             raise Exception, "expected '%s' and actual '%s' versions did not match" % (expVersion,actVersion)
         log.info('completed test10_ValidateCephVersion')
      
-        
+    """    
     @classmethod
     def teardown_class(self):
         log.info('starting teardown_class')
