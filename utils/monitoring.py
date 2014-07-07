@@ -73,6 +73,6 @@ def printRPMVersions(url):
     print ("The rpm version of ceph is ' "+ cephdeploy_ver)
     
     f = open('rpm_versions.txt', 'w')
-    f.write('ceph rpm version is - ceph_ver'++'\n')
-    f.write('ceph-deploy rpm version is - cephdeploy_ver'++'\n')
+    f.write('ceph rpm version is - '+ceph_ver+'\n')
+    f.write('ceph-deploy rpm version is - '+cephdeploy_ver+'\n')
     f.close()
