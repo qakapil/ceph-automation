@@ -5,12 +5,13 @@ Created on Jul 11, 2014
 '''
 
 
-def launch(*wargs):
-    print str(wargs)
-    print type(wargs)
-    print (wargs[0][0])
+def launch(dict):
+    print(dict['name'])
+    print(dict['age'])
+    a = dict.get('pool','rbd')
+    print a
 
 if __name__ == '__main__':
-    l = [1,2,3,4]
-    launch(l)
+    d = {'name':1, 'age':3}
+    launch(d)
     pass
