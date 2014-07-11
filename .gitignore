@@ -3,3 +3,4 @@
 /.project
 *.log
 nosetests.xml
+rpm_versions.txt

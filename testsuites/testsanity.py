@@ -19,22 +19,28 @@ class TestSanity(basetest.Basetest):
         cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
                                 cls.config.get('env','repo_name'),
                                 cls.ctx['workingdir'])
-        
+    
+    
+      
     def test00_createDirs(self):
         log.info('++++++++++starting test0_createDirs++++++++++++++')
         if not self.ctx.has_key('workingdir'):
             self.ctx['workingdir'] = '~/cephdeploy-cluster'
         general.createDir(self.ctx['workingdir'])
-        #for node in self.ctx['allnodes']:
-            #general.createDir('/var/lib/ceph/osd',node)
-            #general.createDir('/var/lib/ceph/bootstrap-osd',node)
+        for node in self.ctx['allnodes']:
+            general.createDir('/var/lib/ceph/osd',node)
+            general.createDir('/var/lib/ceph/bootstrap-osd',node)
         log.info('++++++++++Completed test0_createDirs+++++++++++++')
       
+    
+    
     def test01_AddRepo(self):
         log.info('++++++++++starting test1_AddRepo+++++++++++++++++')
         url = self.config.get('env','repo_baseurl')
         zypperutils.addRepo('ceph', url)
         log.info('++++++++++Completed test1_AddRepo++++++++++++++++')
+    
+    
     
     def test02_InstallCephDeploy(self):
         log.info('++++++++++starting the test test2_InstallCephDeploy\
@@ -42,6 +48,8 @@ class TestSanity(basetest.Basetest):
         zypperutils.installPkg('ceph-deploy')
         log.info('+++++++++++++++Completed test2_InstallCephDeploy\
                   +++++++++++++++')
+    
+    
     
     def test03_DeclareInitialMons(self):
         log.info('+++++++++++++++++starting test3_DeclareInitialMons \
@@ -51,17 +59,23 @@ class TestSanity(basetest.Basetest):
         log.info('+++++++++++++++++Completed test3_DeclareInitialMons \
                   +++++++++++++++++')
     
+    
+    
     def test04_InstallCeph(self):
         log.info('++++++++++++starting test4_installCeph+++++++++++++')
         cephdeploy.installNodes(self.ctx['allnodes'], 
                                 self.ctx['workingdir'])
         log.info('++++++++++++Completed test4_installCeph++++++++++++')
         
+    
+    
     def test05_CreateInitialMons(self):
         log.info('+++++++++starting test5_createInitialMons+++++++++')
         cephdeploy.createInitialMons(self.ctx['initmons'], 
                                      self.ctx['workingdir'])
         log.info('+++++++++Completed test5_createInitialMons++++++++')
+    
+    
     
     def test06_PrepareActivateOSDs(self):
         log.info('+++++++++starting test6_PrepareActivateOSDs++++++++')
@@ -69,11 +83,15 @@ class TestSanity(basetest.Basetest):
                                        self.ctx['workingdir'])
         log.info('+++++++++Completed test6_PrepareActivateOSDs+++++++')
     
+    
+    
     def test07_AdminNodes(self):
         log.info('++++++++++starting test7_AdminNodes++++++++++++++++')
         cephdeploy.addAdminNodes(self.ctx['allnodes'], 
                                  self.ctx['workingdir'])
         log.info('++++++++++completed test7_AdminNodes+++++++++++++++')
+    
+    
     
     def test08_ValidateCephStatus(self):
         log.info('++++++++++starting test8_ValidateCephStatus+++++++')
@@ -85,7 +103,7 @@ class TestSanity(basetest.Basetest):
         active_clean = False
         counter = 0
         while not active_clean:
-            if '192 active+clean' in status:
+            if self.ctx['default_pgs'].strip()+' active+clean' in status:
                 log.info('placement groups in ceph status were \
                           active+clean')
                 active_clean = True
@@ -104,6 +122,8 @@ class TestSanity(basetest.Basetest):
             log.warning('cluster health is OK and PGs are active+clean') 
         log.info('+++++++++completed test8_ValidateCephStatus++++++++')
     
+    
+    
     def test09_ValidateCephDeployVersion(self):
         log.info('+++++++++starting test9_ValidateCephVersion++++++++')
         expVersion = cephdeploy.getExpectedVersion(
@@ -114,6 +134,8 @@ class TestSanity(basetest.Basetest):
                               did not match" % (expVersion,actVersion)
         log.info('++++++++completed test9_ValidateCephVersion++++++++')
      
+    
+    
     def test10_ValidateCephVersion(self):
         log.info('++++++++++++++++starting test10_ValidateCephVersion\
                   ++++++++++++++++')
@@ -127,6 +149,8 @@ class TestSanity(basetest.Basetest):
                   ++++++++++++++++')
      
      
+    
+    
     @classmethod
     def teardown_class(self):
         log.info('++++++++++++++starting teardown_class+++++++++++++')
