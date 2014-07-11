@@ -12,3 +12,7 @@ osds:
 - teuthida-4-1:vdb2
 - teuthida-4-2:vdb2
 - teuthida-4-3:vdb2
+default_pgs: 192
+treeroot:
+     branch1: branch1 text
+     branch2: branch2 text

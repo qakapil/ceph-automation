@@ -79,3 +79,13 @@ def printRPMVersions(url):
     f.write('ceph rpm version is - '+ceph_ver+'\n')
     f.write('ceph-deploy rpm version is - '+cephdeploy_ver+'\n')
     f.close()
+    
+
+def getDefaultPools():
+    cmd = 'ceph osd lspools'
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    return str(stdout).strip()
+    log.info("the default pools are '0 data,1 metadata,2 rbd,'")
+    

@@ -6,10 +6,15 @@ log = logging.getLogger(__name__)
 
 
 def restartCluster():
-    cmd = 'ceph restart'
+    pass
+
+
+def createRBDImages(**kwargs):
+    name = kwargs.get('name', None)
+    size = kwargs.get('size', None)
+    pool = kwargs.get('pool', 'rbd')
+    cmd = "rbd create %s --size %s --pool %s" % (name,size,pool)
     rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        raise Exception, "Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)
-    log.info('restarted the ceph cluster successfully')
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
     
