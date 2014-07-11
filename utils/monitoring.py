@@ -2,6 +2,7 @@ from launch import launch
 import logging
 import ConfigParser
 import cephdeploy
+import re
 
 log = logging.getLogger(__name__)
 
@@ -60,7 +61,9 @@ def getActuaVersion():
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
     ceph_version = stdout.strip()
-    log.info('Ceph expected version is - '+ceph_version)
+    matchObj = re.match( r'ceph version (.*) .*', ceph_version, re.M|re.I)
+    ceph_version = matchObj.group(1)
+    log.info('Ceph actual version is - '+ceph_version)
     return ceph_version
 
 def printRPMVersions(url):

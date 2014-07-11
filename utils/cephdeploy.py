@@ -107,7 +107,8 @@ def cleanupNodes(listNodes, reponame, strWorkingdir):
     except Exception as e:
         log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
     try:
-        zypperutils.removeRepo('ceph')
+        #zypperutils.removeRepo('ceph')
+        zypperutils.zypperRefresh()
     except Exception as e:
         log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
            

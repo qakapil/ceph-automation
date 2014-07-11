@@ -27,11 +27,12 @@ class TestSanity(basetest.Basetest):
         if not self.ctx.has_key('workingdir'):
             self.ctx['workingdir'] = '~/cephdeploy-cluster'
         general.createDir(self.ctx['workingdir'])
+        """
         for node in self.ctx['allnodes']:
             general.createDir('/var/lib/ceph/osd',node)
             general.createDir('/var/lib/ceph/bootstrap-osd',node)
         log.info('++++++++++Completed test0_createDirs+++++++++++++')
-      
+        """
     
     
     def test01_AddRepo(self):
