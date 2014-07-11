@@ -152,7 +152,7 @@ class TestSanity(basetest.Basetest):
      
      
     
-    
+    """ 
     @classmethod
     def teardown_class(self):
         log.info('++++++++++++++starting teardown_class+++++++++++++')
@@ -160,3 +160,4 @@ class TestSanity(basetest.Basetest):
                                 self.config.get('env','repo_name'), 
                                 self.ctx['workingdir'])
         log.info('++++++++++++++Completed teardown_class++++++++++++')
+    """
