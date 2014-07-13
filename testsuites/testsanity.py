@@ -16,7 +16,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchIniData(cls)
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
-        """monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
+        monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
                                 cls.config.get('env','repo_name'),
                                 cls.ctx['workingdir'])
@@ -28,12 +28,12 @@ class TestSanity(basetest.Basetest):
         if not self.ctx.has_key('workingdir'):
             self.ctx['workingdir'] = '~/cephdeploy-cluster'
         general.createDir(self.ctx['workingdir'])
-        /*
+        """
         for node in self.ctx['allnodes']:
             general.createDir('/var/lib/ceph/osd',node)
             general.createDir('/var/lib/ceph/bootstrap-osd',node)
         log.info('++++++++++Completed test0_createDirs+++++++++++++')
-        */
+        """
     
     
     def test01_AddRepo(self):
@@ -150,7 +150,7 @@ class TestSanity(basetest.Basetest):
                 versions did not match" % (expVersion,actVersion)
         log.info('++++++++++++++++completed test10_ValidateCephVersion\
                   ++++++++++++++++')
-    """
+    
     def test11_ValidateDefaultPools(self):
         log.info('+++++++++starting test11_ValidateDefaultPools++++++++')
         def_pools = monitoring.getDefaultPools()
