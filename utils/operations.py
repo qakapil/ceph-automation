@@ -96,8 +96,8 @@ def validatePool(dictPool):
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    poollist = stdout.split(',')
-    assert (poolname in poollist), "pool %s was not found" % (poolname)
+    poollist = stdout#.split(',')
+    assert (poolname in poollist), "pool %s was not found in %s" % (poolname,poollist)
     cmd = "ceph osd pool get %s pg_num" % (poolname)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
