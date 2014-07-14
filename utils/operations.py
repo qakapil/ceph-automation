@@ -60,4 +60,56 @@ def removeObject(dictObject):
     Error message: %s" % (cmd, stderr)
     objlist = stdout.split('\n')
     assert (name not in objlist),"object %s could not be removed" % (name)
+    log.info("removed the object - %s " % (name))
+    
+
+def createPool(dictPool):
+    poolname = dictPool.get('poolname', None)
+    pgnum = dictPool.get('pg-num', None)
+    size = dictPool.get('size', None)
+    cmd = "ceph osd lspools"
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    poollist = stdout.split(',')
+    if (poolname in poollist):
+        log.warning("pool with name %s already exists" % (poolname))
+        return
+    cmd = "ceph osd pool create %s %s" % (poolname, pgnum)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    if (size is not None):
+        cmd = "ceph osd pool set %s size %s" % (poolname, size)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert (rc == 0), "Error while executing the command %s.\
+        Error message: %s" % (cmd, stderr)
+    log.info("created the pool - %s " % (poolname))
+
+
+
+def validatePool(dictPool):
+    poolname = dictPool.get('poolname', None)
+    pgnum = dictPool.get('pg-num', None)
+    size = dictPool.get('size', None)
+    cmd = "ceph osd lspools"
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    poollist = stdout.split(',')
+    assert (poolname in poollist), "pool %s was not found" % (poolname)
+    cmd = "ceph osd pool get %s pg_num" % (poolname)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    act_pgnum = stdout.strip()
+    assert (int(act_pgnum)==int(pgnum)), "pgnum for pool %s were %s" % (poolname,str(act_pgnum))
+    cmd = "ceph osd pool get %s size" % (size)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    act_size = stdout.strip()
+    assert (int(act_size)==int(size)), "replica size for pool %s was %s" % (poolname,str(act_size))
+    
+    
     

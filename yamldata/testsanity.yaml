@@ -19,3 +19,5 @@ images:
 - {name: im3, size: 512, pool: data}
 radosobjects:
 - {objname: test-obj-1, pool: data}
+createpools:
+- {poolname: test-pool-1, pg-num: 64, size: 2}

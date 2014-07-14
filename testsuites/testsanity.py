@@ -192,6 +192,20 @@ class TestSanity(basetest.Basetest):
         for object in self.ctx['radosobjects']:
             operations.removeObject(object)
         log.info('+++++++++completed test15_RadosObjects++++++++')
+    
+    
+       
+    def test16_CreatePools(self):
+        log.info('+++++++++starting test16_CreatePools++++++++')
+        for pool in self.ctx['createpools']:
+            operations.createPool(pool)
+        log.info('+++++++++completed test16_CreatePools++++++++')
+        
+    def test17_ValidatePools(self):
+        log.info('+++++++++starting test17_ValidatePools++++++++')
+        for pool in self.ctx['createpools']:
+            operations.validatePool(pool)
+        log.info('+++++++++completed test17_ValidatePools++++++++')
         
         
     """
