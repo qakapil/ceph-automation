@@ -17,3 +17,5 @@ images:
 - {name: im1, size: 1024, pool: rbd}
 - {name: im2, size: 1024}
 - {name: im3, size: 512, pool: data}
+radosobjects:
+- {objname: test-obj-1, pool: data}

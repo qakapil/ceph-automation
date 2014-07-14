@@ -86,6 +86,31 @@ def getDefaultPools():
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
+    log.info("the default pools are "+stdout.strip())
     return str(stdout).strip()
-    log.info("the default pools are '0 data,1 metadata,2 rbd,'")
-    
+
+def getMonStat():
+    cmd = 'ceph mon stat'
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    log.info("the mon stat is "+stdout.strip())
+    return str(stdout).strip()
+
+def getOSDStat(): 
+    cmd = 'ceph osd stat' 
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    log.info("the osd stat is "+stdout.strip())
+    return str(stdout).strip()
+ 
+def getquorum_status(): 
+    cmd = 'ceph quorum_status' 
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    log.info("the quorum_status is "+stdout.strip())
+    return str(stdout).strip()
+
+

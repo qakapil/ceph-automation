@@ -4,7 +4,7 @@ from utils import cephdeploy
 from utils import general
 from utils import monitoring
 from utils import operations
-import logging,time
+import logging,time,re
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
@@ -162,8 +162,36 @@ class TestSanity(basetest.Basetest):
         log.info('+++++++++starting test12_CreateImages++++++++')
         for image in self.ctx['images']:
             operations.createRBDImages(image)
-        
         log.info('+++++++++completed test12_CreateImages++++++++')
+
+    def test13_ValidateMonStat(self):
+        log.info('+++++++++starting test13_ValidateMonStat++++++++')
+        mon_stat = monitoring.getMonStat()
+        matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
+        assert(len(self.ctx['initmons']) == int(matchObj.group(1))),\
+        "the number of mons active were not as expected"
+        assert(len(self.ctx['initmons']) == len(matchObj.group(2).split(','))),\
+        "the number of mons in quorum were not as expected"
+        assert(self.ctx['initmons'] == matchObj.group(3).split(',')),\
+        "the monlist in quorum was not as expected"
+        log.info('+++++++++completed test13_ValidateMonStat+++++++')
+
+    
+    def test14_ValidateOSDStat(self):
+        log.info('+++++++++starting test14_ValidateOSDStat++++++++')
+        osd_stat = monitoring.getOSDStat()
+        n = len(self.ctx['osds'])
+        expStr = "%s osds: %s up, %s in" % (n,n,n)
+        assert(expStr in osd_stat),"osd stat validation failed"
+        log.info('+++++++++completed test14_ValidateOSDStat+++++++') 
+    
+    def test15_RadosObjects(self):
+        log.info('+++++++++starting test15_RadosObjects++++++++')
+        for object in self.ctx['radosobjects']:
+            operations.createValidateObject(object)
+        for object in self.ctx['radosobjects']:
+            operations.removeObject(object)
+        log.info('+++++++++completed test15_RadosObjects++++++++')
         
         
     """
