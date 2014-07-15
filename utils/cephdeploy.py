@@ -16,12 +16,14 @@ def decalreInitialMons(listMons, strWorkingdir):
     
     
     
-def installNodes(listNodes, strWorkingdir):
+def installNodes(listNodes, strWorkingdir, repourl, gpgurl):
     if len(listNodes) < 1:
         log.error("install nodes list not provided in the yaml file")
         raise Exception, "install nodes list not provided in the yaml file"
     listNodes = " ".join(listNodes)
-    cmd = 'ceph-deploy install %s' % (listNodes)
+    #cmd = 'ceph-deploy install %s' % (listNodes)
+    cmd = 'ceph-deploy install --adjust-repos --repo-url %s --gpg-url %s \
+    %s' % (repourl, gpgurl, listNodes)
     rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)

@@ -18,8 +18,7 @@ class TestSanity(basetest.Basetest):
         cls.setLogger(cls)
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                cls.config.get('env','repo_name'),
-                                cls.ctx['workingdir'])
+                                'ceph', cls.ctx['workingdir'])
     
     
       
@@ -43,14 +42,12 @@ class TestSanity(basetest.Basetest):
         log.info('++++++++++Completed test1_AddRepo++++++++++++++++')
     
     
-    
     def test02_InstallCephDeploy(self):
         log.info('++++++++++starting the test test2_InstallCephDeploy\
                   +++++++++++++++')
         zypperutils.installPkg('ceph-deploy')
         log.info('+++++++++++++++Completed test2_InstallCephDeploy\
                   +++++++++++++++')
-    
     
     
     def test03_DeclareInitialMons(self):
@@ -66,7 +63,9 @@ class TestSanity(basetest.Basetest):
     def test04_InstallCeph(self):
         log.info('++++++++++++starting test4_installCeph+++++++++++++')
         cephdeploy.installNodes(self.ctx['allnodes'], 
-                                self.ctx['workingdir'])
+                                self.ctx['workingdir'],
+                                self.config.get('env','repo_baseurl'),
+                                self.config.get('env','gpg_url'))
         log.info('++++++++++++Completed test4_installCeph++++++++++++')
         
     
@@ -208,12 +207,11 @@ class TestSanity(basetest.Basetest):
         log.info('+++++++++completed test17_ValidatePools++++++++')
         
         
-    """
+    
     @classmethod
     def teardown_class(self):
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
-                                self.config.get('env','repo_name'), 
-                                self.ctx['workingdir'])
+                               'ceph', self.ctx['workingdir'])
         log.info('++++++++++++++Completed teardown_class++++++++++++')
-    """
+    

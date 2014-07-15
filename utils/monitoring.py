@@ -78,6 +78,9 @@ def printRPMVersions(url):
     f = open('rpm_versions.txt', 'w')
     f.write('ceph rpm version is - '+ceph_ver+'\n')
     f.write('ceph-deploy rpm version is - '+cephdeploy_ver+'\n')
+    cmd = 'lsb_release -a'
+    rc,stdout,stderr = launch(cmd=cmd)
+    f.write('Admin node details - \n'+stdout)
     f.close()
     
 
