@@ -109,7 +109,7 @@ def validatePool(dictPool):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     act_size = stdout.strip()
-    assert (int(act_size)==int(size)), "replica size for pool %s was %s" % (poolname,str(act_size))
+    assert (str(size) in str(act_size)), "replica size for pool %s was %s" % (poolname,str(act_size))
     
     
     
