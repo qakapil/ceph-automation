@@ -104,7 +104,7 @@ def validatePool(dictPool):
     Error message: %s" % (cmd, stderr)
     act_pgnum = stdout.strip()
     assert (str(pgnum) in act_pgnum), "pgnum for pool %s were %s" % (poolname,str(act_pgnum))
-    cmd = "ceph osd pool get %s size" % (size)
+    cmd = "ceph osd pool get %s size" % (poolname)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
