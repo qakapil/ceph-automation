@@ -1,4 +1,6 @@
 import rados,rbd
+import logging
+log = logging.getLogger(__name__)
 
 def createCluster(cephconf):
     cluster = rados.Rados(conffile='/etc/ceph/ceph.conf')
@@ -13,6 +15,8 @@ def createPoolIOctx(poolname,cluster):
 def createImage(sizeGB,imgname,pool_ctx):
     rbd_inst = rbd.RBD()
     size = float(sizeGB) * 1024**3
+    size = int(size)
+    size = 1
     rbd_inst.create(pool_ctx, imgname, size)
 
 

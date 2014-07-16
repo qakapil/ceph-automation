@@ -4,7 +4,6 @@ from utils import cephdeploy
 from utils import general
 from utils import monitoring
 from utils import operations
-from utils import librbd_tasks
 import logging,time,re
 #from nose import with_setup
 
@@ -210,28 +209,36 @@ class TestSanity(basetest.Basetest):
     
     def test18_Validatelibrbd(self):
         log.info('+++++++++starting test18_Validatelibrbd++++++++')
+        from utils import librbd_tasks
         for image in self.ctx['librbd_images']:
             cluster = librbd_tasks.createCluster('/etc/ceph/ceph.conf')
+            log.info("created the cluster")
             pool_ctx = librbd_tasks.createPoolIOctx(image['poolname'],cluster)
+            log.info("created the pool ctx")
             librbd_tasks.createImage(image['size_gb'],image['imagename'],pool_ctx)
+            log.info("created the image")
             imageslist = librbd_tasks.getImagesList(pool_ctx)
+            log.info("got the image list %s") %(str(imageslist))
             assert(image['imagename'] in imageslist),"image %s could \
             was not created" %(image['imagename'])
             image_ctx = librbd_tasks.createImgCtx(image['imagename'], pool_ctx)
+            log.info("created the image ctx")
             size = librbd_tasks.getImageSize(image_ctx)
             expsize = float(image['size_gb']) * 1024**3
             assert(int(size) == int(expsize)),"image %s could \
             was not created" %(image['imagename'])
+            log.info("validated the image size "+size)
             librbd_tasks.removeImage(pool_ctx, image['imagename'])
+            log.info("removed the image")
             librbd_tasks.close_all(cluster, pool_ctx, image_ctx)
         log.info('+++++++++completed test18_Validatelibrbd++++++++')
         
         
-    
+    """
     @classmethod
     def teardown_class(self):
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
                                'ceph', self.ctx['workingdir'])
         log.info('++++++++++++++Completed teardown_class++++++++++++')
-    
+    """
