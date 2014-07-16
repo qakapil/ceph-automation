@@ -54,7 +54,7 @@ class TestSanity(basetest.Basetest):
     def test03_DeclareInitialMons(self):
         log.info('+++++++++++++++++starting test3_DeclareInitialMons \
                  ++++++++++++++++++')
-        cephdeploy.decalreInitialMons(self.ctx['initmons'], 
+        cephdeploy.declareInitialMons(self.ctx['initmons'], 
                                       self.ctx['workingdir'])
         log.info('+++++++++++++++++Completed test3_DeclareInitialMons \
                   +++++++++++++++++')
