@@ -4,7 +4,7 @@ import logging, sys
 
 log = logging.getLogger(__name__)
 
-def decalreInitialMons(listMons, strWorkingdir):
+def declareInitialMons(listMons, strWorkingdir):
     if len(listMons) < 1:
         log.error("initial mons list not provided in the yaml file")
         raise Exception, "initial mons list not provided in the yaml file"

@@ -4,6 +4,7 @@ from utils import cephdeploy
 from utils import general
 from utils import monitoring
 from utils import operations
+from utils import librbd_tasks
 import logging,time,re
 #from nose import with_setup
 
@@ -205,6 +206,25 @@ class TestSanity(basetest.Basetest):
         for pool in self.ctx['createpools']:
             operations.validatePool(pool)
         log.info('+++++++++completed test17_ValidatePools++++++++')
+        
+    
+    def test18_Validatelibrbd(self):
+        log.info('+++++++++starting test18_Validatelibrbd++++++++')
+        for image in self.ctx['librbd_images']:
+            cluster = librbd_tasks.createCluster('/etc/ceph/ceph.conf')
+            pool_ctx = librbd_tasks.createPoolIOctx(image['poolname'],cluster)
+            librbd_tasks.createImage(image['size_gb'],image['imagename'],pool_ctx)
+            imageslist = librbd_tasks.getImagesList(pool_ctx)
+            assert(image['imagename'] in imageslist),"image %s could \
+            was not created" %(image['imagename'])
+            image_ctx = librbd_tasks.createImgCtx(image['imagename'], pool_ctx)
+            size = librbd_tasks.getImageSize(image_ctx)
+            expsize = float(image['size_gb']) * 1024**3
+            assert(int(size) == int(expsize)),"image %s could \
+            was not created" %(image['imagename'])
+            librbd_tasks.removeImage(pool_ctx, image['imagename'])
+            librbd_tasks.close_all(cluster, pool_ctx, image_ctx)
+        log.info('+++++++++completed test18_Validatelibrbd++++++++')
         
         
     
