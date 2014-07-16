@@ -22,4 +22,4 @@ radosobjects:
 createpools:
 - {poolname: test-pool-1, pg-num: 64, size: 2}
 librbd_images:
--{poolname: test-librbd-pool1, imagename: image1, size_gb: 0.2}
+-{poolname: rbd, imagename: librbdimg1, size_gb: 0.2}
