@@ -237,6 +237,12 @@ class TestSanity(basetest.Basetest):
              "are "+str(stats))
             librbd_tasks.close_all(cluster, pool_ctx, image_ctx)
         log.info('+++++++++completed test18_Validatelibrbd++++++++')
+    
+    def test17_ValidateOSDtree(self):
+        log.info('+++++++++starting test17_ValidatePools++++++++')
+        for pool in self.ctx['createpools']:
+            operations.validatePool(pool)
+        log.info('+++++++++completed test17_ValidatePools++++++++')
         
         
     """

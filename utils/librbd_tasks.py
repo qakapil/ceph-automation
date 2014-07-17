@@ -11,7 +11,7 @@ def createCluster(cephconf):
 
 def createPoolIOctx(poolname,cluster):
     pool_ctx = cluster.open_ioctx(poolname)
-    log.debug('created the pool ctx for %s') %(poolname)
+    log.debug('created the pool ctx for %s'+poolname)
     return pool_ctx
 
 
@@ -26,7 +26,7 @@ def createImage(sizeGB,imgname,pool_ctx):
 
 def createImgCtx(imgname,pool_ctx):
     image_ctx = rbd.Image(pool_ctx, imgname)
-    log.debug('created the image ctx for image %s') %(imgname)
+    log.debug('created the image ctx for image '+imgname)
     return image_ctx  
     
 def getImagesList(pool_ctx):
