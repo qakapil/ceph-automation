@@ -218,18 +218,23 @@ class TestSanity(basetest.Basetest):
             librbd_tasks.createImage(image['size_gb'],image['imagename'],pool_ctx)
             log.info("created the image")
             imageslist = librbd_tasks.getImagesList(pool_ctx)
-            log.info("got the image list %s") %(str(imageslist))
+            log.info("got the image list "+str(imageslist))
             assert(image['imagename'] in imageslist),"image %s could \
             was not created" %(image['imagename'])
             image_ctx = librbd_tasks.createImgCtx(image['imagename'], pool_ctx)
             log.info("created the image ctx")
             size = librbd_tasks.getImageSize(image_ctx)
-            expsize = float(image['size_gb']) * 1024**3
-            assert(int(size) == int(expsize)),"image %s could \
-            was not created" %(image['imagename'])
-            log.info("validated the image size "+size)
-            librbd_tasks.removeImage(pool_ctx, image['imagename'])
-            log.info("removed the image")
+            expsize = image['size_gb'] * 1024**3
+            size = str(int(size)).strip()
+            expsize = str(int(expsize)).strip()
+            log.info('actual image size is '+size)
+            log.info('expected image size is '+expsize)
+            assert(size == expsize,"image size not as expected")
+            #librbd_tasks.removeImage(pool_ctx, image['imagename'])
+            #log.info("removed the image")
+            stats = librbd_tasks.getImageStat(image_ctx)
+            log.info("the stats for the image "+image['imagename']+\
+             "are "+str(stats))
             librbd_tasks.close_all(cluster, pool_ctx, image_ctx)
         log.info('+++++++++completed test18_Validatelibrbd++++++++')
         
