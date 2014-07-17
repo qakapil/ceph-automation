@@ -4,11 +4,13 @@ log = logging.getLogger(__name__)
 
 def createCluster(cephconf):
     cluster = rados.Rados(conffile='/etc/ceph/ceph.conf')
-        
+    cluster.connect()
+    log.debug('created the cluster object')
     return cluster
 
 def createPoolIOctx(poolname,cluster):
     pool_ctx = cluster.open_ioctx(poolname)
+    log.debug('created the pool ctx for %s') %(poolname)
     return pool_ctx
 
 
@@ -16,12 +18,14 @@ def createImage(sizeGB,imgname,pool_ctx):
     rbd_inst = rbd.RBD()
     size = sizeGB * 1024**3
     size = int(size)
-    log.info('creating image '+imgname+' of size '+str(size))
+    log.debug('creating image '+imgname+' of size '+str(size))
     rbd_inst.create(pool_ctx, imgname, size)
+    log.info('created image '+imgname+' of size '+str(size))
 
 
 def createImgCtx(imgname,pool_ctx):
     image_ctx = rbd.Image(pool_ctx, imgname)
+    log.debug('created the image ctx for image %s') %(imgname)
     return image_ctx  
     
 def getImagesList(pool_ctx):
