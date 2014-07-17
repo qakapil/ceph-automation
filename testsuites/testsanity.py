@@ -237,12 +237,19 @@ class TestSanity(basetest.Basetest):
              "are "+str(stats))
             librbd_tasks.close_all(cluster, pool_ctx, image_ctx)
         log.info('+++++++++completed test18_Validatelibrbd++++++++')
+        
     
-    def test17_ValidateOSDtree(self):
-        log.info('+++++++++starting test17_ValidatePools++++++++')
-        for pool in self.ctx['createpools']:
-            operations.validatePool(pool)
-        log.info('+++++++++completed test17_ValidatePools++++++++')
+    def test19_ValidateDefaultOSDtree(self):
+        log.info('+++++++++starting test19_ValidateOSDtree++++++++')
+        str_osd_tree = monitoring.getOSDtree()
+        osd_tree = str_osd_tree.split('\n')
+        for i in range(len(osd_tree)-1):
+            osd_tree[i] = osd_tree[i].split('\t')
+        indx = osd_tree[0].index('weight')
+        for i in range(len(osd_tree)-1):
+            assert('0'==osd_tree[0][indx].strip(),"the weight of the\
+            osd was zero \n"+str_osd_tree)
+        log.info('+++++++++completed test19_ValidateOSDtree++++++++')
         
         
     """
