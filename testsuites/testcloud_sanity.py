@@ -17,8 +17,8 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
-        cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                'ceph', cls.ctx['workingdir'])
+        #cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
+                                #'ceph', cls.ctx['workingdir'])
     
     
     
@@ -169,10 +169,11 @@ class TestSanity(basetest.Basetest):
         log.info('+++++++++completed test19_ValidateOSDtree++++++++')
         
         
-    
+    """
     @classmethod
     def teardown_class(self):
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
                                'ceph', self.ctx['workingdir'])
         log.info('++++++++++++++Completed teardown_class++++++++++++')
+    """
