@@ -122,6 +122,6 @@ def getOSDtree():
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    log.info("the osd tree is "+stdout.strip())
+    log.info("the osd tree is \n"+stdout.strip())
     return str(stdout).strip()
 
