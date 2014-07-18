@@ -102,10 +102,10 @@ class TestSanity(basetest.Basetest):
     
     def test08_RadosObjects(self):
         log.info('+++++++++starting test15_RadosObjects++++++++')
-        for object in self.ctx['radosobjects']:
-            operations.createValidateObject(object)
-        for object in self.ctx['radosobjects']:
-            operations.removeObject(object)
+        for radosobject in self.ctx['radosobjects']:
+            operations.createValidateObject(radosobject)
+        for radosobject in self.ctx['radosobjects']:
+            operations.removeObject(radosobject)
         log.info('+++++++++completed test15_RadosObjects++++++++')
     
     
