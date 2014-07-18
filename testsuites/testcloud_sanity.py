@@ -1,7 +1,4 @@
 from utils import basetest
-from utils import zypperutils
-from utils import cephdeploy
-from utils import general
 from utils import monitoring
 from utils import operations
 import logging,time,re
@@ -17,14 +14,11 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
-        #cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                #'ceph', cls.ctx['workingdir'])
-    
     
     
     def test01_ValidateCephStatus(self):
-        log.info('++++++++++starting test8_ValidateCephStatus+++++++')
-        fsid = monitoring.getFSID(self.ctx['workingdir'])
+        log.info('++++++++++starting test01_ValidateCephStatus+++++++')
+        fsid = monitoring.getFSID('/etc/ceph')
         status = monitoring.getCephStatus()
         if fsid not in status:
             raise Exception, "fsid %s was not found in ceph status %s"\
@@ -50,7 +44,7 @@ class TestSanity(basetest.Basetest):
                          ceph status')
         if 'health HEALTH_OK' in status:
             log.warning('cluster health is OK and PGs are active+clean') 
-        log.info('+++++++++completed test8_ValidateCephStatus++++++++')
+        log.info('+++++++++completed test01_ValidateCephStatus++++++++')
     
      
     
@@ -77,10 +71,16 @@ class TestSanity(basetest.Basetest):
     def test04_CreateImages(self):
         log.info('+++++++++starting test12_CreateImages++++++++')
         for image in self.ctx['images']:
-            operations.createRBDImages(image)
+            operations.createRBDImage(image)
         log.info('+++++++++completed test12_CreateImages++++++++')
+    
+    def test05_RemoveImages(self):
+        log.info('+++++++++starting test05_RemoveImages++++++++')
+        for image in self.ctx['images']:
+            operations.rbdRemovePoolImage(image)
+        log.info('+++++++++completed test05_RemoveImages++++++++')
 
-    def test05_ValidateMonStat(self):
+    def test06_ValidateMonStat(self):
         log.info('+++++++++starting test13_ValidateMonStat++++++++')
         mon_stat = monitoring.getMonStat()
         matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
@@ -93,7 +93,7 @@ class TestSanity(basetest.Basetest):
         log.info('+++++++++completed test13_ValidateMonStat+++++++')
 
     
-    def test06_ValidateOSDStat(self):
+    def test07_ValidateOSDStat(self):
         log.info('+++++++++starting test14_ValidateOSDStat++++++++')
         osd_stat = monitoring.getOSDStat()
         n = len(self.ctx['osds'])
@@ -101,7 +101,7 @@ class TestSanity(basetest.Basetest):
         assert(expStr in osd_stat),"osd stat validation failed"
         log.info('+++++++++completed test14_ValidateOSDStat+++++++') 
     
-    def test07_RadosObjects(self):
+    def test08_RadosObjects(self):
         log.info('+++++++++starting test15_RadosObjects++++++++')
         for object in self.ctx['radosobjects']:
             operations.createValidateObject(object)
@@ -111,21 +111,27 @@ class TestSanity(basetest.Basetest):
     
     
        
-    def test08_CreatePools(self):
+    def test09_CreatePools(self):
         log.info('+++++++++starting test16_CreatePools++++++++')
         for pool in self.ctx['createpools']:
             operations.createPool(pool)
         log.info('+++++++++completed test16_CreatePools++++++++')
         
-    def test09_ValidatePools(self):
+    def test10_ValidatePools(self):
         log.info('+++++++++starting test17_ValidatePools++++++++')
         for pool in self.ctx['createpools']:
             operations.validatePool(pool)
         log.info('+++++++++completed test17_ValidatePools++++++++')
         
+    def test11_DeletePools(self):
+        log.info('+++++++++starting test10_DeletePools++++++++')
+        for pool in self.ctx['createpools']:
+            operations.deletePool(pool)
+        log.info('+++++++++completed test10_DeletePools++++++++')
+        
     
-    def test10_Validatelibrbd(self):
-        log.info('+++++++++starting test18_Validatelibrbd++++++++')
+    def test12_Validatelibrbd(self):
+        log.info('+++++++++starting test10_Validatelibrbd++++++++')
         from utils import librbd_tasks
         for image in self.ctx['librbd_images']:
             cluster = librbd_tasks.createCluster('/etc/ceph/ceph.conf')
@@ -147,33 +153,27 @@ class TestSanity(basetest.Basetest):
             log.info('actual image size is '+size)
             log.info('expected image size is '+expsize)
             assert(size == expsize,"image size not as expected")
-            #librbd_tasks.removeImage(pool_ctx, image['imagename'])
-            #log.info("removed the image")
+            librbd_tasks.close_imgctx(image_ctx)
+            librbd_tasks.removeImage(pool_ctx, image['imagename'])
+            log.info("removed the image")
             stats = librbd_tasks.getImageStat(image_ctx)
             log.info("the stats for the image "+image['imagename']+\
              "are "+str(stats))
-            librbd_tasks.close_all(cluster, pool_ctx, image_ctx)
-        log.info('+++++++++completed test18_Validatelibrbd++++++++')
+            librbd_tasks.close_cluster(cluster, pool_ctx)
+        log.info('+++++++++completed test10_Validatelibrbd++++++++')
         
     
-    def test11_ValidateDefaultOSDtree(self):
-        log.info('+++++++++starting test19_ValidateOSDtree++++++++')
+    def test13_ValidateDefaultOSDtree(self):
+        log.info('+++++++++starting test11_ValidateDefaultOSDtree++++++++')
         str_osd_tree = monitoring.getOSDtree()
         osd_tree = str_osd_tree.split('\n')
         for i in range(len(osd_tree)-1):
             osd_tree[i] = osd_tree[i].split('\t')
         indx = osd_tree[0].index('weight')
+        log.info('INDEX is - '+indx)
+        log.info('LENGTH osd_tree is - '+len(osd_tree))
         for i in range(len(osd_tree)-1):
+            log.info("validate value - "+osd_tree[0][indx].strip())
             assert('0'==osd_tree[0][indx].strip(),"the weight of the\
             osd was zero \n"+str_osd_tree)
-        log.info('+++++++++completed test19_ValidateOSDtree++++++++')
-        
-        
-    """
-    @classmethod
-    def teardown_class(self):
-        log.info('++++++++++++++starting teardown_class+++++++++++++')
-        cephdeploy.cleanupNodes(self.ctx['allnodes'], 
-                               'ceph', self.ctx['workingdir'])
-        log.info('++++++++++++++Completed teardown_class++++++++++++')
-    """
+        log.info('+++++++++completed test11_ValidateDefaultOSDtree++++++++')

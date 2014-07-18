@@ -75,3 +75,11 @@ def close_all(cluster,pool_ctx,image_ctx):
     cluster.shutdown()
 
 
+def close_imgctx(image_ctx):
+    image_ctx.close()
+
+
+def close_cluster(cluster,pool_ctx):
+    pool_ctx.close()
+    cluster.shutdown()
+

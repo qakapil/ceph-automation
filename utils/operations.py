@@ -1,5 +1,6 @@
 from launch import launch
 import logging
+import os
 
 log = logging.getLogger(__name__)
 
@@ -9,13 +10,13 @@ def restartCluster():
     pass
 
 
-def createRBDImages(dictImg):
+def createRBDImage(dictImg):
     name = dictImg.get('name', None)
     size = dictImg.get('size', None)
     pool = dictImg.get('pool', 'rbd')
     imglist = rbdGetPoolImages(pool)
     if name in imglist:
-        rbdRemovePoolImage(pool,name)
+        rbdRemovePoolImage(dictImg)
     cmd = "rbd create %s --size %s --pool %s" % (name,size,pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -29,7 +30,9 @@ def rbdGetPoolImages(poolname):
     Error message: %s" % (cmd, stderr)
     return stdout.strip().split('\n')
 
-def rbdRemovePoolImage(poolname, imgname):
+def rbdRemovePoolImage(dictImg):
+    imgname = dictImg.get('name', None)
+    poolname = dictImg.get('pool', 'rbd')
     cmd = "rbd -p %s rm %s" % (poolname,imgname)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -46,6 +49,7 @@ def createValidateObject(dictObject):
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
+    os.remove(filename)
     cmd = "rados -p %s ls" % (pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -128,6 +132,17 @@ def validatePool(dictPool):
     Error message: %s" % (cmd, stderr)
     act_size = stdout.strip()
     assert (str(size) in str(act_size)), "replica size for pool %s was %s" % (poolname,str(act_size))
+    
+    
+def deletePool(dictPool):
+    poolname = dictPool.get('poolname', None)
+    cmd = "ceph osd pool delete %s %s --yes-i-really-really-mean-it" % (poolname,poolname)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    poollist = stdout#.split(',')
+    assert (poolname not in poollist), "pool %s was not deleted in %s" % (poolname,poollist)
+    
     
     
     

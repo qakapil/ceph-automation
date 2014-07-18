@@ -160,10 +160,16 @@ class TestSanity(basetest.Basetest):
     def test12_CreateImages(self):
         log.info('+++++++++starting test12_CreateImages++++++++')
         for image in self.ctx['images']:
-            operations.createRBDImages(image)
+            operations.createRBDImage(image)
         log.info('+++++++++completed test12_CreateImages++++++++')
+    
+    def test13_RemoveImages(self):
+        log.info('+++++++++starting test05_RemoveImages++++++++')
+        for image in self.ctx['images']:
+            operations.rbdRemovePoolImage(image)
+        log.info('+++++++++completed test05_RemoveImages++++++++')
 
-    def test13_ValidateMonStat(self):
+    def test14_ValidateMonStat(self):
         log.info('+++++++++starting test13_ValidateMonStat++++++++')
         mon_stat = monitoring.getMonStat()
         matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
@@ -176,7 +182,7 @@ class TestSanity(basetest.Basetest):
         log.info('+++++++++completed test13_ValidateMonStat+++++++')
 
     
-    def test14_ValidateOSDStat(self):
+    def test15_ValidateOSDStat(self):
         log.info('+++++++++starting test14_ValidateOSDStat++++++++')
         osd_stat = monitoring.getOSDStat()
         n = len(self.ctx['osds'])
@@ -184,7 +190,7 @@ class TestSanity(basetest.Basetest):
         assert(expStr in osd_stat),"osd stat validation failed"
         log.info('+++++++++completed test14_ValidateOSDStat+++++++') 
     
-    def test15_RadosObjects(self):
+    def test16_RadosObjects(self):
         log.info('+++++++++starting test15_RadosObjects++++++++')
         for object in self.ctx['radosobjects']:
             operations.createValidateObject(object)
@@ -194,20 +200,25 @@ class TestSanity(basetest.Basetest):
     
     
        
-    def test16_CreatePools(self):
+    def test17_CreatePools(self):
         log.info('+++++++++starting test16_CreatePools++++++++')
         for pool in self.ctx['createpools']:
             operations.createPool(pool)
         log.info('+++++++++completed test16_CreatePools++++++++')
         
-    def test17_ValidatePools(self):
+    def test18_ValidatePools(self):
         log.info('+++++++++starting test17_ValidatePools++++++++')
         for pool in self.ctx['createpools']:
             operations.validatePool(pool)
         log.info('+++++++++completed test17_ValidatePools++++++++')
-        
     
-    def test18_Validatelibrbd(self):
+    def test19_DeletePools(self):
+        log.info('+++++++++starting test10_DeletePools++++++++')
+        for pool in self.ctx['createpools']:
+            operations.deletePool(pool)
+        log.info('+++++++++completed test10_DeletePools++++++++')
+    
+    def test20_Validatelibrbd(self):
         log.info('+++++++++starting test18_Validatelibrbd++++++++')
         from utils import librbd_tasks
         for image in self.ctx['librbd_images']:
@@ -230,26 +241,31 @@ class TestSanity(basetest.Basetest):
             log.info('actual image size is '+size)
             log.info('expected image size is '+expsize)
             assert(size == expsize,"image size not as expected")
-            #librbd_tasks.removeImage(pool_ctx, image['imagename'])
-            #log.info("removed the image")
+            librbd_tasks.close_imgctx(image_ctx)
+            librbd_tasks.removeImage(pool_ctx, image['imagename'])
+            log.info("removed the image")
             stats = librbd_tasks.getImageStat(image_ctx)
             log.info("the stats for the image "+image['imagename']+\
              "are "+str(stats))
-            librbd_tasks.close_all(cluster, pool_ctx, image_ctx)
+            librbd_tasks.close_cluster(cluster, pool_ctx)
         log.info('+++++++++completed test18_Validatelibrbd++++++++')
         
     
-    def test19_ValidateDefaultOSDtree(self):
-        log.info('+++++++++starting test19_ValidateOSDtree++++++++')
+    def test21_ValidateDefaultOSDtree(self):
+        log.info('+++++++++starting test11_ValidateDefaultOSDtree++++++++')
         str_osd_tree = monitoring.getOSDtree()
         osd_tree = str_osd_tree.split('\n')
         for i in range(len(osd_tree)-1):
             osd_tree[i] = osd_tree[i].split('\t')
         indx = osd_tree[0].index('weight')
+        log.info('INDEX is - '+indx)
+        log.info('LENGTH osd_tree is - '+len(osd_tree))
         for i in range(len(osd_tree)-1):
+            log.info("validate value - "+osd_tree[0][indx].strip())
             assert('0'==osd_tree[0][indx].strip(),"the weight of the\
             osd was zero \n"+str_osd_tree)
-        log.info('+++++++++completed test19_ValidateOSDtree++++++++')
+        log.info('+++++++++completed test11_ValidateDefaultOSDtree++++++++')
+
         
         
     """
