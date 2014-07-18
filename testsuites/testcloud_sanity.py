@@ -13,8 +13,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchIniData(cls)
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
-        monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
-    
+        
     
     def test01_ValidateCephStatus(self):
         log.info('++++++++++starting test01_ValidateCephStatus+++++++')
@@ -52,10 +51,9 @@ class TestSanity(basetest.Basetest):
     def test02_ValidateCephVersion(self):
         log.info('++++++++++++++++starting test10_ValidateCephVersion\
                   ++++++++++++++++')
-        expVersion = monitoring.getExpectedVersion(
-                     self.config.get('env','repo_baseurl'))
+        expVersion = self.ctx['ceph_version']
         actVersion = monitoring.getActuaVersion()
-        if actVersion not in expVersion:
+        if expVersion not in actVersion:
             raise Exception, "expected '%s' and actual '%s' \
                 versions did not match" % (expVersion,actVersion)
         log.info('++++++++++++++++completed test10_ValidateCephVersion\
@@ -131,7 +129,7 @@ class TestSanity(basetest.Basetest):
         
     
     def test12_Validatelibrbd(self):
-        log.info('+++++++++starting test10_Validatelibrbd++++++++')
+        log.info('+++++++++starting test18_Validatelibrbd++++++++')
         from utils import librbd_tasks
         for image in self.ctx['librbd_images']:
             cluster = librbd_tasks.createCluster('/etc/ceph/ceph.conf')
@@ -153,14 +151,14 @@ class TestSanity(basetest.Basetest):
             log.info('actual image size is '+size)
             log.info('expected image size is '+expsize)
             assert(size == expsize,"image size not as expected")
+            stats = librbd_tasks.getImageStat(image_ctx)
+            log.info("the stats for the image "+image['imagename']+\
+            "are "+str(stats))
             librbd_tasks.close_imgctx(image_ctx)
             librbd_tasks.removeImage(pool_ctx, image['imagename'])
             log.info("removed the image")
-            stats = librbd_tasks.getImageStat(image_ctx)
-            log.info("the stats for the image "+image['imagename']+\
-             "are "+str(stats))
             librbd_tasks.close_cluster(cluster, pool_ctx)
-        log.info('+++++++++completed test10_Validatelibrbd++++++++')
+        log.info('+++++++++completed test18_Validatelibrbd++++++++')
         
     
     def test13_ValidateDefaultOSDtree(self):

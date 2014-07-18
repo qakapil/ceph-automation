@@ -1,5 +1,4 @@
-workingdir: /home/jenkins/cephdeploy-cluster
-ceph_version: 0.80.1
+workingdir: /home/jenkins/cephdeploy-cluster 
 allnodes:
 - teuthida-4-0
 - teuthida-4-1

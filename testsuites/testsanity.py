@@ -241,12 +241,12 @@ class TestSanity(basetest.Basetest):
             log.info('actual image size is '+size)
             log.info('expected image size is '+expsize)
             assert(size == expsize,"image size not as expected")
+            stats = librbd_tasks.getImageStat(image_ctx)
+            log.info("the stats for the image "+image['imagename']+\
+            "are "+str(stats))
             librbd_tasks.close_imgctx(image_ctx)
             librbd_tasks.removeImage(pool_ctx, image['imagename'])
             log.info("removed the image")
-            stats = librbd_tasks.getImageStat(image_ctx)
-            log.info("the stats for the image "+image['imagename']+\
-             "are "+str(stats))
             librbd_tasks.close_cluster(cluster, pool_ctx)
         log.info('+++++++++completed test18_Validatelibrbd++++++++')
         
