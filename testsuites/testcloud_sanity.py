@@ -81,6 +81,7 @@ class TestSanity(basetest.Basetest):
     def test06_ValidateMonStat(self):
         log.info('+++++++++starting test13_ValidateMonStat++++++++')
         mon_stat = monitoring.getMonStat()
+        log.info("the mon stat is "+ str(mon_stat))
         matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
         assert(len(self.ctx['initmons']) == int(matchObj.group(1))),\
         "the number of mons active were not as expected"
@@ -122,14 +123,14 @@ class TestSanity(basetest.Basetest):
         log.info('+++++++++completed test17_ValidatePools++++++++')
         
     def test11_DeletePools(self):
-        log.info('+++++++++starting test10_DeletePools++++++++')
+        log.info('+++++++++starting test11_DeletePools++++++++')
         for pool in self.ctx['createpools']:
             operations.deletePool(pool)
-        log.info('+++++++++completed test10_DeletePools++++++++')
+        log.info('+++++++++completed test11_DeletePools++++++++')
         
     
     def test12_Validatelibrbd(self):
-        log.info('+++++++++starting test18_Validatelibrbd++++++++')
+        log.info('+++++++++starting test12_Validatelibrbd++++++++')
         from utils import librbd_tasks
         for image in self.ctx['librbd_images']:
             cluster = librbd_tasks.createCluster('/etc/ceph/ceph.conf')
@@ -150,7 +151,7 @@ class TestSanity(basetest.Basetest):
             expsize = str(int(expsize)).strip()
             log.info('actual image size is '+size)
             log.info('expected image size is '+expsize)
-            assert(size == expsize,"image size not as expected")
+            assert(size == expsize),"image size not as expected"
             stats = librbd_tasks.getImageStat(image_ctx)
             log.info("the stats for the image "+image['imagename']+\
             "are "+str(stats))
@@ -158,21 +159,18 @@ class TestSanity(basetest.Basetest):
             librbd_tasks.removeImage(pool_ctx, image['imagename'])
             log.info("removed the image")
             librbd_tasks.close_cluster(cluster, pool_ctx)
-        log.info('+++++++++completed test18_Validatelibrbd++++++++')
+        log.info('+++++++++completed test12_Validatelibrbd++++++++')
         
     
     def test13_ValidateDefaultOSDtree(self):
-        log.info('+++++++++starting test11_ValidateDefaultOSDtree++++++++')
+        log.info('+++++++++starting test13_ValidateDefaultOSDtree++++++++')
         str_osd_tree = monitoring.getOSDtree()
         osd_tree = str_osd_tree.split('\n')
         for i in range(len(osd_tree)-1):
             osd_tree[i] = osd_tree[i].split('\t')
         indx = osd_tree[0].index('weight')
-        log.info('INDEX is - '+str(indx))
-        log.info('LENGTH osd_tree is - '+str(len(osd_tree)))
         for i in range(len(osd_tree)-1):
             value = osd_tree[i][indx].strip()
-            log.info("validate value - "+value)
             assert('0' != value),"the weight of the\
             osd was zero \n"+str_osd_tree
-        log.info('+++++++++completed test11_ValidateDefaultOSDtree++++++++')
+        log.info('+++++++++completed test13_ValidateDefaultOSDtree++++++++')

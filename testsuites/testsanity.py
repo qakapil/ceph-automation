@@ -172,6 +172,7 @@ class TestSanity(basetest.Basetest):
     def test14_ValidateMonStat(self):
         log.info('+++++++++starting test13_ValidateMonStat++++++++')
         mon_stat = monitoring.getMonStat()
+        log.info("the mon stat is "+ str(mon_stat))
         matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
         assert(len(self.ctx['initmons']) == int(matchObj.group(1))),\
         "the number of mons active were not as expected"
@@ -240,7 +241,7 @@ class TestSanity(basetest.Basetest):
             expsize = str(int(expsize)).strip()
             log.info('actual image size is '+size)
             log.info('expected image size is '+expsize)
-            assert(size == expsize,"image size not as expected")
+            assert(size == expsize),"image size not as expected"
             stats = librbd_tasks.getImageStat(image_ctx)
             log.info("the stats for the image "+image['imagename']+\
             "are "+str(stats))
@@ -258,11 +259,8 @@ class TestSanity(basetest.Basetest):
         for i in range(len(osd_tree)-1):
             osd_tree[i] = osd_tree[i].split('\t')
         indx = osd_tree[0].index('weight')
-        log.info('INDEX is - '+str(indx))
-        log.info('LENGTH osd_tree is - '+str(len(osd_tree)))
         for i in range(len(osd_tree)-1):
             value = osd_tree[i][indx].strip()
-            log.info("validate value - "+value)
             assert('0' != value),"the weight of the\
             osd was zero \n"+str_osd_tree
         log.info('+++++++++completed test11_ValidateDefaultOSDtree++++++++')
