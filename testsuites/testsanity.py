@@ -261,7 +261,7 @@ class TestSanity(basetest.Basetest):
         log.info('INDEX is - '+str(indx))
         log.info('LENGTH osd_tree is - '+str(len(osd_tree)))
         for i in range(len(osd_tree)-1):
-            log.info("validate value - "+osd_tree[0][indx].strip())
+            log.info("validate value - "+osd_tree[i][indx].strip())
             assert('0'==osd_tree[i][indx].strip(),"the weight of the\
             osd was zero \n"+str_osd_tree)
         log.info('+++++++++completed test11_ValidateDefaultOSDtree++++++++')
