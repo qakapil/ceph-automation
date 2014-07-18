@@ -13,10 +13,28 @@ def createRBDImages(dictImg):
     name = dictImg.get('name', None)
     size = dictImg.get('size', None)
     pool = dictImg.get('pool', 'rbd')
+    imglist = rbdGetPoolImages(pool)
+    if name in imglist:
+        rbdRemovePoolImage(pool,name)
     cmd = "rbd create %s --size %s --pool %s" % (name,size,pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
+
+
+def rbdGetPoolImages(poolname):
+    cmd = "rbd -p %s ls" % (poolname)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    return stdout.strip().split('\n')
+
+def rbdRemovePoolImage(poolname, imgname):
+    cmd = "rbd -p %s rm %s" % (poolname,imgname)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    
 
 def createValidateObject(dictObject):
     name = dictObject.get('objname', None)

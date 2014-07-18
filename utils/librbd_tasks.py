@@ -16,6 +16,9 @@ def createPoolIOctx(poolname,cluster):
 
 
 def createImage(sizeGB,imgname,pool_ctx):
+    imglist = getImagesList(pool_ctx)
+    if imgname in imglist:
+        removeImage(pool_ctx, imgname)
     rbd_inst = rbd.RBD()
     size = sizeGB * 1024**3
     size = int(size)
