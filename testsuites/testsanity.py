@@ -132,7 +132,7 @@ class TestSanity(basetest.Basetest):
         expVersion = cephdeploy.getExpectedVersion(
                                 self.config.get('env','repo_baseurl'))
         actVersion = cephdeploy.getActuaVersion()
-        if actVersion not in expVersion:
+        if expVersion not in actVersion:
             raise Exception, "expected '%s' and actual '%s' versions \
                               did not match" % (expVersion,actVersion)
         log.info('++++++++completed test9_ValidateCephVersion++++++++')
