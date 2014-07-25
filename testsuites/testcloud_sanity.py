@@ -24,7 +24,8 @@ class TestSanity(basetest.Basetest):
                               % (fsid,status)
         active_clean = False
         counter = 0
-        default_pgs = str(self.ctx['default_pgs']).strip()
+        #default_pgs = str(self.ctx['default_pgs']).strip()
+        default_pgs = monitoring.getTotalPGs()
         while not active_clean:
             if default_pgs +' active+clean' in status:
                 log.info('placement groups in ceph status were \
