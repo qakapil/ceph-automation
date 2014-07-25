@@ -17,17 +17,16 @@ def getCephHealth():
     log.info('Ceph health is - '+stdout)
     return stdout
 
-def getFSID(workingdir):
-    log.info('fetching fsid from ceph.conf in cephdeploy \
-              working dir')
-    configParser = ConfigParser.RawConfigParser()
-    configFilePath = workingdir+r'/ceph.conf'
-    #configFilePath = r'ceph.conf'
-    configParser.read(configFilePath)
-    s = configParser.sections()
-    print str(s)
-    fsid = configParser.get('global','fsid')
-    return fsid.strip()
+def getFSID():
+    cmd = 'ceph-conf --lookup fsid'
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+    fsid = stdout.strip()
+    log.info('ceph fsid is - '+fsid)
+    return fsid
+
 
 
 

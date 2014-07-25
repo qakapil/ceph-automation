@@ -96,7 +96,7 @@ class TestSanity(basetest.Basetest):
     
     def test08_ValidateCephStatus(self):
         log.info('++++++++++starting test8_ValidateCephStatus+++++++')
-        fsid = monitoring.getFSID(self.ctx['workingdir'])
+        fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
         if fsid not in status:
             raise Exception, "fsid %s was not found in ceph status %s"\
