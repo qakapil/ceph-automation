@@ -153,7 +153,7 @@ class TestSanity(basetest.Basetest):
     def test11_ValidateDefaultPools(self):
         log.info('+++++++++starting test11_ValidateDefaultPools++++++++')
         def_pools = monitoring.getDefaultPools()
-        assert (def_pools == '0 data,1 metadata,2 rbd,'),"The default \
+        assert ('0 data,1 metadata,2 rbd,' in def_pools),"The default \
         pools were %s" % def_pools
         log.info('++++++++completed test11_ValidateDefaultPools++++++++')
      
