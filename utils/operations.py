@@ -142,7 +142,12 @@ def deletePool(dictPool):
     Error message: %s" % (cmd, stderr)
     poollist = stdout#.split(',')
     assert (poolname not in poollist), "pool %s was not deleted in %s" % (poolname,poollist)
-    
+
+def restartCeph(node):
+    cmd = "ssh %s sudo /etc/init.d/ceph restart" % (node)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
     
     
     
