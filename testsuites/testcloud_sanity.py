@@ -89,7 +89,7 @@ class TestSanity(basetest.Basetest):
         "the number of mons active were not as expected"
         assert(len(self.ctx['initmons']) == len(matchObj.group(2).split(','))),\
         "the number of mons in quorum were not as expected"
-        assert(self.ctx['initmons'] == matchObj.group(3).split(',')),\
+        assert(sorted(self.ctx['initmons']) == sorted(matchObj.group(3).split(','))),\
         "the monlist in quorum was not as expected"
         log.info('+++++++++completed test06_ValidateMonStat+++++++')
 
