@@ -133,7 +133,7 @@ def getActuaVersion():
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     cephdeploy_version = stdout.strip()
-    cephdeploy_version = cephdeploy_version.split("-")
+    cephdeploy_version = cephdeploy_version.split("-")[0]
     log.info('CephDeploy actual version is - '+cephdeploy_version)
     return cephdeploy_version
     
