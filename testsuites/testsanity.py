@@ -223,10 +223,15 @@ class TestSanity(basetest.Basetest):
             assert('0' != value),"the weight of the\
             osd was zero \n"+str_osd_tree
 
-        
+    
+    def test23_InvalidDiskOSDPrepare(self): 
+        rc = cephdeploy.prepareInvalidOSD(self.ctx['osds'])
+        assert (rc == 1), "OSD Prepare for invalid disk did not fail"
+    
     
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
+        
         
          
     """

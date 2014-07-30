@@ -136,6 +136,13 @@ def getActuaVersion():
     cephdeploy_version = cephdeploy_version.split("-")[0]
     log.info('CephDeploy actual version is - '+cephdeploy_version)
     return cephdeploy_version
+
+def prepareInvalidOSD(listOSDs):
+    node = listOSDs[0].split(":")[0]
+    invaliddrive='sdz'  #assume sdz does not exist
+    cmd = 'ceph-deploy osd prepare %s:%s' % (node, invaliddrive)
+    rc,stdout,stderr = launch(cmd=cmd)
+    return rc
     
     
     
