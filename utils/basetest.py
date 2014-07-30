@@ -3,7 +3,7 @@ import yaml
 import unittest
 import logging
 
-class Basetest():
+class Basetest(unittest.TestCase):
     config = None
     ctx = None
     
