@@ -176,5 +176,11 @@ class TestSanity(basetest.Basetest):
             osd was zero \n"+str_osd_tree
     
     
+    
+    def test13_restartRadosGW(self):
+        operations.restartRadosGW(self.ctx['radosgw_node'])
+        
+        
+    
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)

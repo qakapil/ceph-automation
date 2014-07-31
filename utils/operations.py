@@ -148,6 +148,11 @@ def restartCeph(node):
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    
+
+def restartRadosGW(node):
+    cmd = "ssh %s sudo /etc/init.d/ceph-radosgw restart" % (node)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
     
     
