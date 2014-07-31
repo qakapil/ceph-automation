@@ -177,7 +177,7 @@ class TestSanity(basetest.Basetest):
     
     
     
-    def test13_restartRadosGW(self):
+    def test14_restartRadosGW(self):
         operations.restartRadosGW(self.ctx['radosgw_node'])
         
         
