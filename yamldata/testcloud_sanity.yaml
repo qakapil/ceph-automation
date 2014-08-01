@@ -23,4 +23,4 @@ createpools:
 - {poolname: test-pool-1, pg-num: 64, size: 2}
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
-radosgw_name: <node_name>
+radosgw_node: <node_name>
