@@ -99,7 +99,6 @@ class downloader(object):
         if self.repo.is_dirty():
             self.log.error("Repository is dirty")
             return False
-        self.repo.remotes.origin.fetch()
 
         if len(self.repo.branches) == 0:
             path = "%s/README" % (self.git_dir)
