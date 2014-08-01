@@ -1,0 +1,119 @@
+import logging
+import os
+import git
+import urllib2
+import BeautifulSoup
+import urimunge
+import os.path
+import tempfile
+import filecmp
+import shutil
+
+def uriYieldRpm(uri):
+    uri_decomposed = urimunge.setUri(uri)
+    pathStack = [uri_decomposed['path']]
+    while len(pathStack) > 0:
+        uri_decomposed["path"] = pathStack.pop()
+        req = urllib2.Request(urimunge.getUri(uri_decomposed))
+        page=urllib2.urlopen(req).read()
+        soup = BeautifulSoup.BeautifulSoup(page)
+        links = soup.findAll("a")
+        linkset = set([])
+        for link in links:
+            linkset.add(link.get("href"))
+        for link in linkset:
+            link_decomposed = urimunge.setUri(link)
+            link_path = link_decomposed.get('path')
+            if link_path == None:
+                continue
+            if len(link_path) < 1:
+                continue
+            if link_path[0] == '/':
+                continue
+            if link_path[-1] == '/':
+                newpath = "%s%s" % (uri_decomposed["path"],link_path)
+                pathStack.append(newpath)
+                continue
+            link_split = link_path.split('.')
+            if link_split[-1] != "rpm":
+                continue
+            uri_output = dict(uri_decomposed)
+            uri_output["path"] = "%s%s" % (uri_decomposed["path"],link_path)
+            yield urimunge.getUri(uri_output)
+
+
+def download_rpm(uri,relpath):
+    output = False
+    tmpfile = tempfile.NamedTemporaryFile()
+    uri_ptr = urllib2.urlopen(uri)
+    tmpfile.write(uri_ptr.read())
+    if not os.path.exists(relpath):
+        output = True
+
+    if output == False:
+        if not filecmp.cmp(tmpfile.name, relpath, shallow=False):
+            output = True
+    if output == True:
+        shutil.copyfile(tmpfile.name, relpath)
+    return output
+
+
+class downloader(object):
+    def __init__(self,**kwargs):
+        self.log = logging.getLogger("downloader")
+        self.git_dir = kwargs.get('workingdir', None)
+        self.git_origin = kwargs.get('origin', None)
+    def work_dir_setup(self):
+        if not os.path.isdir(self.git_dir):
+            try:
+                self.repo = git.Repo.clone_from(self.git_origin, self.git_dir )
+            except git.exc.InvalidGitRepositoryError as E:
+                log.warning("failed to load git repo from:%s" % (E.message))
+        else:
+            self.repo = git.Repo(self.git_dir)
+        if self.repo.is_dirty():
+            self.log.error("Repository is dirty")
+            return False
+        self.repo.remotes.origin.fetch()
+        return True
+
+    def update(self,**kwargs):
+        branch = kwargs.get('branch', None)
+        if len(self.repo.branches) == 0:
+            path = "%s/README" % (self.git_dir)
+            f = open(path,'w')
+            f.write("hello\n")
+            f.close()
+            print dir(self.repo)
+            self.repo.commit()
+        if not branch in self.repo.branches:
+            self.repo.git.checkout('master', b=branch)
+        else:
+            self.repo.git.checkout(branch)
+        index = self.repo.index
+        somethingChanged = False
+        uri = kwargs.get('uri', None)
+        uri_decomposed = urimunge.setUri(uri)
+        for uri_rpm in uriYieldRpm(uri):
+            uri_rpm_decomposed = urimunge.setUri(uri_rpm)
+            relpath = os.path.relpath(uri_rpm_decomposed["path"],uri_decomposed ["path"])
+            newpath = "%s/%s" % (self.git_dir,relpath)
+            newfile = False
+            if not os.path.exists(newpath):
+                newfile = True
+                directory = os.path.dirname(newpath)
+                if not os.path.isdir(directory):
+                    os.makedirs(directory)
+            changed = download_rpm(uri_rpm,newpath)
+            if newfile:
+                somethingChanged = True
+                index.add([relpath])
+            if changed:
+                self.log.info("uri %s changed" % (uri_rpm))
+                somethingChanged = True
+            else:
+                self.log.debug("uri %s unchanged" % (uri_rpm))
+        if somethingChanged:
+            index.commit("Updated from OBS repo\n\n%s" % (uri))
+        else:
+            self.log.info("No changes to the repo")
