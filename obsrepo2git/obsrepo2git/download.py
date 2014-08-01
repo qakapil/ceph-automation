@@ -66,6 +66,7 @@ class downloader(object):
         self.git_origin = kwargs.get('origin', None)
         self.shared_clone = kwargs.get('shared_clone', None)
     def work_dir_setup(self,**kwargs):
+        branch = kwargs.get('branch', 'ibs_product_1.0')
         if len(self.shared_clone):
             if not os.path.isdir(self.shared_clone):
                 try:
@@ -74,8 +75,8 @@ class downloader(object):
                     log.warning("failed to clone shared git repo from:%s" % (E.message))
 
             if not os.path.isdir(self.git_dir):
-                if not subprocess.call("git-new-workdir %s %s" %
-                                       (self.shared_clone, self.git_dir)):
+                if not subprocess.call("git-new-workdir %s %s %s" %
+                                       (self.shared_clone, self.git_dir, branch)):
                     log.warning("failed to load git repo from:%s" % (E.message))
 
             self.repo = git.Repo(self.git_dir)
@@ -93,7 +94,6 @@ class downloader(object):
             return False
         self.repo.remotes.origin.fetch()
 
-        branch = kwargs.get('branch', None)
         if len(self.repo.branches) == 0:
             path = "%s/README" % (self.git_dir)
             f = open(path,'w')
