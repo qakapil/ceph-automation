@@ -8,6 +8,7 @@ import os.path
 import tempfile
 import filecmp
 import shutil
+import subprocess
 
 def uriYieldRpm(uri):
     uri_decomposed = urimunge.setUri(uri)
@@ -63,14 +64,30 @@ class downloader(object):
         self.log = logging.getLogger("downloader")
         self.git_dir = kwargs.get('workingdir', None)
         self.git_origin = kwargs.get('origin', None)
+        self.shared_clone = kwargs.get('shared_clone', None)
     def work_dir_setup(self):
-        if not os.path.isdir(self.git_dir):
-            try:
-                self.repo = git.Repo.clone_from(self.git_origin, self.git_dir )
-            except git.exc.InvalidGitRepositoryError as E:
-                log.warning("failed to load git repo from:%s" % (E.message))
-        else:
+        if len(self.shared_clone):
+            if not os.path.isdir(self.shared_clone):
+                try:
+                    self.repo = git.Repo.clone_from(self.git_origin, self.shared_clone)
+                except git.exc.InvalidGitRepositoryError as E:
+                    log.warning("failed to clone shared git repo from:%s" % (E.message))
+
+            if not os.path.isdir(self.git_dir):
+                if not subprocess.call("git-new-workdir %s %s" %
+                                       (self.shared_clone, self.git_dir)):
+                    log.warning("failed to load git repo from:%s" % (E.message))
+
             self.repo = git.Repo(self.git_dir)
+        else:
+            if not os.path.isdir(self.git_dir):
+                try:
+                    self.repo = git.Repo.clone_from(self.git_origin, self.git_dir )
+                except git.exc.InvalidGitRepositoryError as E:
+                    log.warning("failed to clone git repo from:%s" % (E.message))
+            else:
+                self.repo = git.Repo(self.git_dir)
+
         if self.repo.is_dirty():
             self.log.error("Repository is dirty")
             return False

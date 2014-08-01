@@ -13,6 +13,8 @@ Options:
                         base uri to downlaod
   --git-origin=OBSREPOARCH_ORIGIN
                         upstream git repo.
+  --git-master-repo=OBSREPOARCH_MASTERREPO
+                        local shared git pack object store path.
   --dir-work=OBSREPOARCH_WORKINGDIR
                         Working directory fro checkout of repo.
   --log-config=LOGFILE  Logfile configuration file, (overrides command line).
@@ -24,4 +26,5 @@ OBSREPOARCH_URI
 OBSREPOARCH_BRANCH
 OBSREPOARCH_WORKINGDIR
 OBSREPOARCH_ORIGIN
+OBSREPOARCH_MASTERREPO
 OBSREPOARCH_LOG_CONF
