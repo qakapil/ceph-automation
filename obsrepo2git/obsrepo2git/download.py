@@ -79,7 +79,9 @@ class downloader(object):
             if not os.path.isdir(self.git_dir):
                 self.log.info("creating new workdir %s..." % (self.git_dir))
                 if not subprocess.call("git-new-workdir %s %s %s" %
-                                       (self.shared_clone, self.git_dir, branch),
+                                       (os.path.abspath(self.shared_clone),
+                                        os.path.abspath(self.git_dir),
+                                        branch),
                                        shell=True):
                     self.log.warning("failed to load git repo from:%s" % (E.message))
 
