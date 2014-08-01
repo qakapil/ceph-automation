@@ -97,9 +97,10 @@ class downloader(object):
         if len(self.repo.branches) == 0:
             path = "%s/README" % (self.git_dir)
             f = open(path,'w')
-            f.write("hello\n")
+            f.write("This master branch has no content.\n\n"
+                    "Switch to one of the branches for actual bits.\n\n"
+                    "Used to store all successful OBS build artifacts.")
             f.close()
-            print dir(self.repo)
             self.repo.commit()
         if not branch in self.repo.branches:
             self.repo.git.checkout('master', b=branch)
