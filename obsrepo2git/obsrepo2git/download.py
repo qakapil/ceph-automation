@@ -48,7 +48,8 @@ def download_rpm(uri,relpath,log):
     output = False
     tmpfile = tempfile.NamedTemporaryFile()
     uri_ptr = urllib2.urlopen(uri)
-    tmpfile.write(uri_ptr.read())
+    shutil.copyfileobj(uri_ptr, tmpfile)
+
     if not os.path.exists(relpath):
         output = True
 
