@@ -90,9 +90,10 @@ def main():
         origin=origin,
         shared_clone=shared_clone
         )
-    downloader.work_dir_setup()
+    downloader.work_dir_setup(
+        branch=branch
+        )
     downloader.update(
-        branch=branch,
         uri=uri
         )
     return 0

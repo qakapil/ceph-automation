@@ -65,7 +65,7 @@ class downloader(object):
         self.git_dir = kwargs.get('workingdir', None)
         self.git_origin = kwargs.get('origin', None)
         self.shared_clone = kwargs.get('shared_clone', None)
-    def work_dir_setup(self):
+    def work_dir_setup(self,**kwargs):
         if len(self.shared_clone):
             if not os.path.isdir(self.shared_clone):
                 try:
@@ -92,9 +92,7 @@ class downloader(object):
             self.log.error("Repository is dirty")
             return False
         self.repo.remotes.origin.fetch()
-        return True
 
-    def update(self,**kwargs):
         branch = kwargs.get('branch', None)
         if len(self.repo.branches) == 0:
             path = "%s/README" % (self.git_dir)
@@ -107,6 +105,10 @@ class downloader(object):
             self.repo.git.checkout('master', b=branch)
         else:
             self.repo.git.checkout(branch)
+
+        return True
+
+    def update(self,**kwargs):
         index = self.repo.index
         somethingChanged = False
         uri = kwargs.get('uri', None)
