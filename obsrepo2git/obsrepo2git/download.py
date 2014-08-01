@@ -43,7 +43,8 @@ def uriYieldRpm(uri):
             yield urimunge.getUri(uri_output)
 
 
-def download_rpm(uri,relpath):
+def download_rpm(uri,relpath,log):
+    log.info("downloading %s..." % (uri))
     output = False
     tmpfile = tempfile.NamedTemporaryFile()
     uri_ptr = urllib2.urlopen(uri)
@@ -70,22 +71,26 @@ class downloader(object):
         if len(self.shared_clone):
             if not os.path.isdir(self.shared_clone):
                 try:
+                    self.log.info("cloning from %s..." % (self.git_origin))
                     self.repo = git.Repo.clone_from(self.git_origin, self.shared_clone)
                 except git.exc.InvalidGitRepositoryError as E:
-                    log.warning("failed to clone shared git repo from:%s" % (E.message))
+                    self.log.warning("failed to clone shared git repo from:%s" % (E.message))
 
             if not os.path.isdir(self.git_dir):
+                self.log.info("creating new workdir %s..." % (self.git_dir))
                 if not subprocess.call("git-new-workdir %s %s %s" %
-                                       (self.shared_clone, self.git_dir, branch)):
-                    log.warning("failed to load git repo from:%s" % (E.message))
+                                       (self.shared_clone, self.git_dir, branch),
+                                       shell=True):
+                    self.log.warning("failed to load git repo from:%s" % (E.message))
 
             self.repo = git.Repo(self.git_dir)
         else:
             if not os.path.isdir(self.git_dir):
                 try:
+                    self.log.info("cloning from %s..." % (self.git_origin))
                     self.repo = git.Repo.clone_from(self.git_origin, self.git_dir )
                 except git.exc.InvalidGitRepositoryError as E:
-                    log.warning("failed to clone git repo from:%s" % (E.message))
+                    self.log.warning("failed to clone git repo from:%s" % (E.message))
             else:
                 self.repo = git.Repo(self.git_dir)
 
@@ -102,6 +107,7 @@ class downloader(object):
                     "Used to store all successful OBS build artifacts.")
             f.close()
             self.repo.commit()
+        self.log.info("checking out branch %s..." % (branch))
         if not branch in self.repo.branches:
             self.repo.git.checkout('master', b=branch)
         else:
@@ -124,7 +130,7 @@ class downloader(object):
                 directory = os.path.dirname(newpath)
                 if not os.path.isdir(directory):
                     os.makedirs(directory)
-            changed = download_rpm(uri_rpm,newpath)
+            changed = download_rpm(uri_rpm,newpath, self.log)
             if newfile:
                 somethingChanged = True
                 index.add([relpath])
