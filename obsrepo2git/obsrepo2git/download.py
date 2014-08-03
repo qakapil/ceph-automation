@@ -75,7 +75,7 @@ class downloader(object):
                     self.log.info("cloning from %s..." % (self.git_origin))
                     self.repo = git.Repo.clone_from(self.git_origin, self.shared_clone)
                 except git.exc.InvalidGitRepositoryError as E:
-                    self.log.warning("failed to clone shared git repo from:%s" % (E.message))
+                    self.log.warning("failed to clone shared git repo from: %s" % (E.message))
 
             if not os.path.isdir(self.git_dir):
                 self.log.info("creating new workdir %s..." % (self.git_dir))
@@ -84,7 +84,8 @@ class downloader(object):
                                         os.path.abspath(self.git_dir),
                                         branch),
                                        shell=True):
-                    self.log.warning("failed to load git repo from:%s" % (E.message))
+                    self.log.warning("failed to create shared clone from repo: %s" %
+                                     (self.shared_clone))
 
             self.repo = git.Repo(self.git_dir)
         else:
@@ -93,7 +94,7 @@ class downloader(object):
                     self.log.info("cloning from %s..." % (self.git_origin))
                     self.repo = git.Repo.clone_from(self.git_origin, self.git_dir )
                 except git.exc.InvalidGitRepositoryError as E:
-                    self.log.warning("failed to clone git repo from:%s" % (E.message))
+                    self.log.warning("failed to clone git repo from: %s" % (E.message))
             else:
                 self.repo = git.Repo(self.git_dir)
 
