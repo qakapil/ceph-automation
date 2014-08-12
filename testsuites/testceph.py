@@ -56,15 +56,16 @@ def getCephStatus(node):
 
 
 def check_health(node):
+    log = logging.getLogger("check_health")
     fsid = getFSID(node)
-    status = monitoring.getCephStatus()
+    status = monitoring.getCephStatus(node)
     if fsid not in status:
         raise Exception, "fsid %s was not found in ceph status %s"\
                           % (fsid,status)
     active_clean = False
     counter = 0
     #default_pgs = str(self.ctx['default_pgs']).strip()
-    default_pgs = monitoring.getTotalPGs()
+    default_pgs = monitoring.getTotalPGs(node)
     while not active_clean:
         if default_pgs +' active+clean' in status:
             log.info('placement groups in ceph status were \
@@ -77,7 +78,7 @@ def check_health(node):
         log.debug('waiting for 5 seconds for ceph status to update')
         time.sleep(5)
         counter += 1
-        status = monitoring.getCephStatus()
+        status = monitoring.getCephStatus(node)
     if 'health HEALTH_WARN clock skew detected' in status:
         log.warning('health HEALTH_WARN clock skew detected in\
                      ceph status')
@@ -85,6 +86,14 @@ def check_health(node):
         log.warning('cluster health is OK and PGs are active+clean') 
 
 
+def check_CephDeployVersion(node,repo_baseurl):
+    log = logging.getLogger("check_CephDeployVersion")
+    expVersion = cephdeploy.getExpectedVersion(repo_baseurl)
+    actVersion = cephdeploy.getActuaVersion()
+    log.debug("actVersion=%s" % (actVersion))
+    if actVersion not in expVersion:
+        raise Exception, "expected '%s' and actual '%s' versions \
+                          did not match" % (expVersion,actVersion)
 
 class TestCeph(basetest.Basetest):
     
@@ -145,5 +154,6 @@ class TestCeph(basetest.Basetest):
     def test_disgnostics(self):
         mon_node = self.ctx['mon_node']
         check_health(mon_node)
-    
+        repo_baseurl = self.config.get('env','repo_baseurl')
+        check_CephDeployVersion(mon_node,repo_baseurl)
     
