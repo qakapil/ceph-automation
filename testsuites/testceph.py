@@ -8,9 +8,9 @@ import logging,time,re
 from utils.launch import launch
 #from utils import librbd_tasks
 #from nose import with_setup
+import os
 
 log = logging.getLogger(__name__)
-
 
 
 # replacements of kapil's methods
@@ -181,6 +181,23 @@ def check_InvalidDiskOSDPrepare(osds):
     assert (rc == 1), "OSD Prepare for invalid disk did not fail"
 
 class TestCeph(basetest.Basetest):
+    def __init__(self, *args, **kwargs):
+        super(basetest.Basetest, self).__init__(*args, **kwargs)
+        self.log = logging.getLogger("TestCeph")
+        self.fetchIniData(self)
+        self.setLogger(self)
+
+        self.fetchTestYamlData(self,__name__)
+        if not self.ctx.has_key('workingdir'):
+            self.ctx['workingdir'] = '~/cephdeploy-cluster'
+        self.flag_cleanup_early = False
+        self.flag_cleanup_late = False
+        test_earlycleanup = os.environ.get("TEST_NOEARLYCLEANUP")
+        if test_earlycleanup == None:
+            self.flag_cleanup_early = True
+        test_cleanup_late = os.environ.get("TEST_NOLATECLEANUP")
+        if test_cleanup_late == None:
+            self.flag_cleanup_late = True
 
     def system_buildup(self):
         uri_repo = self.config.get('env','repo_baseurl')
@@ -205,25 +222,24 @@ class TestCeph(basetest.Basetest):
 
 
     def system_tear_down(self):
+
         cephdeploy.cleanupNodes(self.ctx['allnodes'],
                                 'ceph', self.ctx['workingdir'])
+
         zypperutils.removePkg('ceph-deploy')
+
 
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
-        self.fetchIniData(self)
-        self.setLogger(self)
-        self.log = logging.getLogger("TestCeph")
-        self.fetchTestYamlData(self,__name__)
-        if not self.ctx.has_key('workingdir'):
-            self.ctx['workingdir'] = '~/cephdeploy-cluster'
-        self.system_tear_down()
+        if self.flag_cleanup_early:
+            self.system_tear_down()
         self.system_buildup()
 
 
     def tearDown(self):
         self.log.info('++++++completed %s ++++++' % self._testMethodName)
-        self.system_tear_down()
+        if self.flag_cleanup_late:
+           self.system_tear_down()
 
     def test_disgnostics(self):
         mon_node = self.ctx['mon_node']
