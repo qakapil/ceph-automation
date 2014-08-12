@@ -37,7 +37,7 @@ def rbdRemovePoolImage(node, dictImg):
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    
+
 
 def createValidateObject(node, dictObject):
     name = dictObject.get('objname', None)
@@ -86,7 +86,7 @@ def removeObject(node, dictObject):
     objlist = stdout.split('\n')
     assert (name not in objlist),"object %s could not be removed" % (name)
     log.info("removed the object - %s " % (name))
-    
+
 
 def createPool(node, dictPool):
     poolname = dictPool.get('poolname', None)
@@ -135,8 +135,8 @@ def validatePool(node, dictPool):
     Error message: %s" % (cmd, stderr)
     act_size = stdout.strip()
     assert (str(size) in str(act_size)), "replica size for pool %s was %s" % (poolname,str(act_size))
-    
-    
+
+
 def deletePool(node, dictPool):
     poolname = dictPool.get('poolname', None)
     cmd = "ssh %s sudo ceph osd pool delete %s %s --yes-i-really-really-mean-it" % (node, poolname, poolname)
@@ -157,5 +157,5 @@ def restartRadosGW(node):
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    
-    
+
+
