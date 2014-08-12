@@ -1,20 +1,20 @@
 workingdir: foo
 allnodes:
-- ceph-node1
-- ceph-node3
-- ceph-node4
+- teuthida-4-0
+- teuthida-4-1
+- teuthida-4-2
 initmons:
-- ceph-node1
-- ceph-node3
-- ceph-node4
+- teuthida-4-0
+- teuthida-4-1
+- teuthida-4-2
 osds:
-- ceph-node1:vdb
-- ceph-node3:vdb
-- ceph-node4:vdb
+- teuthida-4-0:vdb
+- teuthida-4-1:vdb
+- teuthida-4-2:vdb
 osds_activate:
-- ceph-node1:vdb1
-- ceph-node3:vdb1
-- ceph-node4:vdb1
+- teuthida-4-0:vdb1
+- teuthida-4-1:vdb1
+- teuthida-4-2:vdb1
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
@@ -26,4 +26,4 @@ createpools:
 - {poolname: test-pool-1, pg-num: 64, size: 2}
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
-mon_node: ceph-node1
+mon_node: teuthida-4-0
