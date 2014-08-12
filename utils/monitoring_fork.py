@@ -9,6 +9,7 @@ log = logging.getLogger(__name__)
 # this code is forked as most methods must take a node
 
 
+
 def getCephHealth(node):
     cmd = 'ceph health'
     rc,stdout,stderr = launch(cmd=cmd)
