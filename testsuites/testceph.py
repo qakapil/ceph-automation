@@ -83,7 +83,7 @@ def check_health(node):
         log.warning('health HEALTH_WARN clock skew detected in\
                      ceph status')
     if 'health HEALTH_OK' in status:
-        log.warning('cluster health is OK and PGs are active+clean') 
+        log.warning('cluster health is OK and PGs are active+clean')
 
 
 def check_CephDeployVersion(node,repo_baseurl):
@@ -175,8 +175,8 @@ def check_ValidateDefaultOSDtree(node):
         assert('0' != value),"the weight of the\
         osd was zero \n"+str_osd_tree
 
-    
-def check_InvalidDiskOSDPrepare(osds): 
+
+def check_InvalidDiskOSDPrepare(osds):
     rc = cephdeploy.prepareInvalidOSD(osds)
     assert (rc == 1), "OSD Prepare for invalid disk did not fail"
 
@@ -186,29 +186,29 @@ class TestCeph(basetest.Basetest):
         uri_repo = self.config.get('env','repo_baseurl')
         zypperutils.addRepo('ceph', uri_repo)
         zypperutils.installPkg('ceph-deploy')
-        cephdeploy.declareInitialMons(self.ctx['initmons'], 
+        cephdeploy.declareInitialMons(self.ctx['initmons'],
             self.ctx['workingdir'])
-        cephdeploy.installNodes(self.ctx['allnodes'], 
+        cephdeploy.installNodes(self.ctx['allnodes'],
             self.ctx['workingdir'],
             self.config.get('env','repo_baseurl'),
             self.config.get('env','gpg_url'))
-        cephdeploy.createInitialMons(self.ctx['initmons'], 
+        cephdeploy.createInitialMons(self.ctx['initmons'],
             self.ctx['workingdir'])
-        osd_prepare(self.ctx['osds'], 
+        osd_prepare(self.ctx['osds'],
             self.ctx['workingdir'])
-        osd_activate(self.ctx['osds_activate'], 
+        osd_activate(self.ctx['osds_activate'],
             self.ctx['workingdir'])
-        cephdeploy.addAdminNodes(self.ctx['allnodes'], 
+        cephdeploy.addAdminNodes(self.ctx['allnodes'],
             self.ctx['workingdir'])
         for node in self.ctx['allnodes']:
             operations.restartCeph(node)
-        
-        
+
+
     def system_tear_down(self):
-        cephdeploy.cleanupNodes(self.ctx['allnodes'], 
+        cephdeploy.cleanupNodes(self.ctx['allnodes'],
                                 'ceph', self.ctx['workingdir'])
         zypperutils.removePkg('ceph-deploy')
-    
+
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
         self.fetchIniData(self)
@@ -219,12 +219,12 @@ class TestCeph(basetest.Basetest):
             self.ctx['workingdir'] = '~/cephdeploy-cluster'
         self.system_tear_down()
         self.system_buildup()
-        
-        
+
+
     def tearDown(self):
         self.log.info('++++++completed %s ++++++' % self._testMethodName)
         self.system_tear_down()
-    
+
     def test_disgnostics(self):
         mon_node = self.ctx['mon_node']
         check_health(mon_node)

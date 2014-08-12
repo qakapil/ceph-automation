@@ -39,7 +39,7 @@ def getCephStatus(node):
     log.info('ceph status is - '+stdout)
     return stdout.strip()
 
-    
+
 def getExpectedVersion(url):
     url = url+'src'
     cmd = 'wget -q -O- %s | grep ceph-0 | sed -e "s|.*ceph-\\(.*\\).src.rpm.*|\\1|"' % (url)
@@ -68,11 +68,11 @@ def printRPMVersions(url):
     ceph_ver = getExpectedVersion(url)
     log.info("The rpm version of ceph is "+ ceph_ver)
     print ("The rpm version of ceph is "+ ceph_ver)
-    
+
     cephdeploy_ver = cephdeploy.getExpectedVersion(url)
     log.info("The rpm version of ceph is "+ cephdeploy_ver)
     print ("The rpm version of ceph is ' "+ cephdeploy_ver)
-    
+
     f = open('rpm_versions.txt', 'w')
     f.write('ceph rpm version is - '+ceph_ver+'\n')
     f.write('ceph-deploy rpm version is - '+cephdeploy_ver+'\n')
@@ -80,7 +80,7 @@ def printRPMVersions(url):
     rc,stdout,stderr = launch(cmd=cmd)
     f.write('Admin node details - \n'+stdout)
     f.close()
-    
+
 
 def getPoolList(node):
     cmd = 'ssh %s sudo ceph osd lspools' % (node)
@@ -98,15 +98,15 @@ def getMonStat(node):
     log.info("the mon stat is "+stdout.strip())
     return str(stdout).strip()
 
-def getOSDStat(node): 
+def getOSDStat(node):
     cmd = 'ssh %s sudo ceph osd stat'  % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     log.info("the osd stat is "+stdout.strip())
     return str(stdout).strip()
- 
-def getquorum_status(node): 
+
+def getquorum_status(node):
     cmd = 'ssh %s sudo ceph quorum_status'  % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -115,7 +115,7 @@ def getquorum_status(node):
     return str(stdout).strip()
 
 
-def getOSDtree(node): 
+def getOSDtree(node):
     cmd = 'ssh %s sudo ceph osd tree' % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -123,7 +123,7 @@ def getOSDtree(node):
     log.info("the osd tree is \n"+stdout.strip())
     return str(stdout).strip()
 
-def getTotalPGs(node): 
+def getTotalPGs(node):
     cmd = "ssh %s sudo ceph pg stat| awk '{print $2;}'" % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
