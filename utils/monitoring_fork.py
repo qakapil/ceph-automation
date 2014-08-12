@@ -82,7 +82,7 @@ def printRPMVersions(url):
     f.close()
     
 
-def getDefaultPools(node):
+def getPoolList(node):
     cmd = 'ssh %s sudo ceph osd lspools' % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\

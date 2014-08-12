@@ -3,10 +3,10 @@ from utils import zypperutils
 from utils import cephdeploy
 from utils import general
 from utils import monitoring_fork as monitoring
-from utils import operations
+from utils import operations_fork as operations
 import logging,time,re
 from utils.launch import launch
-
+#from utils import librbd_tasks
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
@@ -95,19 +95,95 @@ def check_CephDeployVersion(node,repo_baseurl):
         raise Exception, "expected '%s' and actual '%s' versions \
                           did not match" % (expVersion,actVersion)
 
+def check_DefaultPools(node):
+    log = logging.getLogger("check_DefaultPools")
+    def_pools = monitoring.getPoolList(node)
+    assert ('0 data,1 metadata,2 rbd,' in def_pools),"The default \
+    pools were %s" % def_pools
+
+
+def check_CreateDestroyImages(test_node, images):
+    log = logging.getLogger("check_CreateImages")
+    for image in images:
+        operations.createRBDImage(test_node, image)
+    for image in images:
+        operations.rbdRemovePoolImage(test_node, image)
+
+def check_ValidateMonStat(node, initmons):
+    mon_stat = monitoring.getMonStat(node)
+    log.info("the mon stat is "+ str(mon_stat))
+    matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
+    assert(len(initmons) == int(matchObj.group(1))),\
+    "the number of mons active were not as expected"
+    assert(len(initmons) == len(matchObj.group(2).split(','))),\
+    "the number of mons in quorum were not as expected"
+    assert(sorted(initmons) == sorted(matchObj.group(3).split(','))),\
+    "the monlist in quorum was not as expected"
+
+def check_Pools(node, createpools):
+    for pool in createpools:
+        operations.createPool(node, pool)
+    for pool in createpools:
+        operations.validatePool(node, pool)
+    for pool in createpools:
+        operations.deletePool(node, pool)
+
+def check_Validatelibrbd(librbd_images):
+    log = logging.getLogger("check_CreateImages")
+    try:
+        from utils import librbd_tasks
+    except ImportError, e:
+        log.warning(e)
+        return
+    for image in librbd_images:
+        cluster = librbd_tasks.createCluster('/etc/ceph/ceph.conf')
+        log.info("created the cluster")
+        pool_ctx = librbd_tasks.createPoolIOctx(image['poolname'],cluster)
+        log.info("created the pool ctx")
+        librbd_tasks.createImage(image['size_gb'],image['imagename'],pool_ctx)
+        log.info("created the image")
+        imageslist = librbd_tasks.getImagesList(pool_ctx)
+        log.info("got the image list "+str(imageslist))
+        assert(image['imagename'] in imageslist),"image %s could \
+        was not created" %(image['imagename'])
+        image_ctx = librbd_tasks.createImgCtx(image['imagename'], pool_ctx)
+        log.info("created the image ctx")
+        size = librbd_tasks.getImageSize(image_ctx)
+        expsize = image['size_gb'] * 1024**3
+        size = str(int(size)).strip()
+        expsize = str(int(expsize)).strip()
+        log.info('actual image size is '+size)
+        log.info('expected image size is '+expsize)
+        assert(size == expsize),"image size not as expected"
+        stats = librbd_tasks.getImageStat(image_ctx)
+        log.info("the stats for the image "+image['imagename']+\
+        "are "+str(stats))
+        librbd_tasks.close_imgctx(image_ctx)
+        librbd_tasks.removeImage(pool_ctx, image['imagename'])
+        log.info("removed the image")
+        librbd_tasks.close_cluster(cluster, pool_ctx)
+
+
+def check_ValidateDefaultOSDtree(node):
+    str_osd_tree = monitoring.getOSDtree(node)
+    osd_tree = str_osd_tree.split('\n')
+    for i in range(len(osd_tree)-1):
+        osd_tree[i] = osd_tree[i].split('\t')
+    indx = osd_tree[0].index('weight')
+    for i in range(len(osd_tree)-1):
+        value = osd_tree[i][indx].strip()
+        assert('0' != value),"the weight of the\
+        osd was zero \n"+str_osd_tree
+
+    
+def check_InvalidDiskOSDPrepare(osds): 
+    rc = cephdeploy.prepareInvalidOSD(osds)
+    assert (rc == 1), "OSD Prepare for invalid disk did not fail"
+
 class TestCeph(basetest.Basetest):
-    
-    
-    
-    def initialise(self):
-        #self.log.error(self.ctx.keys())
-        if not self.ctx.has_key('workingdir'):
-            self.ctx['workingdir'] = '~/cephdeploy-cluster'
 
     def system_buildup(self):
         uri_repo = self.config.get('env','repo_baseurl')
-        #self.log.error("url=%s" % (url))
-        uri_sig = "http://download.suse.de/ibs/Devel:/Storage:/1.0:/Staging/SLE_12/repodata/repomd.xml.key"
         zypperutils.addRepo('ceph', uri_repo)
         zypperutils.installPkg('ceph-deploy')
         cephdeploy.declareInitialMons(self.ctx['initmons'], 
@@ -118,8 +194,6 @@ class TestCeph(basetest.Basetest):
             self.config.get('env','gpg_url'))
         cephdeploy.createInitialMons(self.ctx['initmons'], 
             self.ctx['workingdir'])
-        self.log.error("self.ctx['osds']=%s" % (self.ctx['osds']))
-        self.log.error("self.ctx['workingdir']=%s" % (self.ctx['workingdir']))
         osd_prepare(self.ctx['osds'], 
             self.ctx['workingdir'])
         osd_activate(self.ctx['osds_activate'], 
@@ -136,14 +210,14 @@ class TestCeph(basetest.Basetest):
         zypperutils.removePkg('ceph-deploy')
     
     def setUp(self):
-        
         log.info('++++++starting %s ++++++' % self._testMethodName)
         self.fetchIniData(self)
         self.setLogger(self)
-        self.fetchTestYamlData(self,__name__)
         self.log = logging.getLogger("TestCeph")
+        self.fetchTestYamlData(self,__name__)
+        if not self.ctx.has_key('workingdir'):
+            self.ctx['workingdir'] = '~/cephdeploy-cluster'
         self.system_tear_down()
-        self.initialise()
         self.system_buildup()
         
         
@@ -155,5 +229,15 @@ class TestCeph(basetest.Basetest):
         mon_node = self.ctx['mon_node']
         check_health(mon_node)
         repo_baseurl = self.config.get('env','repo_baseurl')
-        check_CephDeployVersion(mon_node,repo_baseurl)
-    
+        check_CephDeployVersion(mon_node, repo_baseurl)
+        check_DefaultPools(mon_node)
+        check_CreateDestroyImages(mon_node, self.ctx['images'])
+        initmons = self.ctx['initmons']
+        check_ValidateMonStat(mon_node, initmons)
+        createpools = self.ctx['createpools']
+        check_Pools(mon_node, createpools)
+        librbd_images = self.ctx['librbd_images']
+        check_Validatelibrbd(librbd_images)
+        check_ValidateDefaultOSDtree(mon_node)
+        osd_list = self.ctx['osds']
+        check_InvalidDiskOSDPrepare(osd_list)
