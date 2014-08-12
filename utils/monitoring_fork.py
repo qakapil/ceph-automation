@@ -31,7 +31,7 @@ def getFSID(node):
 
 def getCephStatus(node):
     # forked as ceph local node is not part of cluster and must run on node
-    cmd = 'ssh %s sudo ceph --status'
+    cmd = 'ssh %s sudo ceph --status' % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -52,8 +52,8 @@ def getExpectedVersion(url):
     return ceph_version
 
 
-def getActuaVersion():
-    cmd = 'ceph --version'
+def getActuaVersion(node):
+    cmd = 'ssh %s sudo ceph --version' % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -82,32 +82,32 @@ def printRPMVersions(url):
     f.close()
     
 
-def getDefaultPools():
-    cmd = 'ceph osd lspools'
+def getDefaultPools(node):
+    cmd = 'ssh %s sudo ceph osd lspools' % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     log.info("the default pools are "+stdout.strip())
     return str(stdout).strip()
 
-def getMonStat():
-    cmd = 'ceph mon stat'
+def getMonStat(node):
+    cmd = 'ssh %s sudo ceph mon stat' % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     log.info("the mon stat is "+stdout.strip())
     return str(stdout).strip()
 
-def getOSDStat(): 
-    cmd = 'ceph osd stat' 
+def getOSDStat(node): 
+    cmd = 'ssh %s sudo ceph osd stat'  % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     log.info("the osd stat is "+stdout.strip())
     return str(stdout).strip()
  
-def getquorum_status(): 
-    cmd = 'ceph quorum_status' 
+def getquorum_status(node): 
+    cmd = 'ssh %s sudo ceph quorum_status'  % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -115,16 +115,16 @@ def getquorum_status():
     return str(stdout).strip()
 
 
-def getOSDtree(): 
-    cmd = 'ceph osd tree' 
+def getOSDtree(node): 
+    cmd = 'ssh %s sudo ceph osd tree' % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     log.info("the osd tree is \n"+stdout.strip())
     return str(stdout).strip()
 
-def getTotalPGs(): 
-    cmd = "ceph pg stat| awk '{print $2;}'" 
+def getTotalPGs(node): 
+    cmd = "ssh %s sudo ceph pg stat| awk '{print $2;}'" % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
