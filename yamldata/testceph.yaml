@@ -1,20 +1,20 @@
 workingdir: foo
 allnodes:
-- teuthida-4-0
-- teuthida-4-1
-- teuthida-4-2
+- teuthida-1
+- teuthida-2
+- teuthida-3
 initmons:
-- teuthida-4-0
-- teuthida-4-1
-- teuthida-4-2
+- teuthida-1
+- teuthida-2
+- teuthida-3
 osds:
-- teuthida-4-0:vdb
-- teuthida-4-1:vdb
-- teuthida-4-2:vdb
+- teuthida-1:vdb
+- teuthida-2:vdb
+- teuthida-3:vdb
 osds_activate:
-- teuthida-4-0:vdb1
-- teuthida-4-1:vdb1
-- teuthida-4-2:vdb1
+- teuthida-1:vdb1
+- teuthida-2:vdb1
+- teuthida-3:vdb1
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
@@ -26,4 +26,4 @@ createpools:
 - {poolname: test-pool-1, pg-num: 64, size: 2}
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
-mon_node: teuthida-4-0
+mon_node: teuthida-1
