@@ -8,13 +8,13 @@ initmons:
 - teuthida-2
 - teuthida-3
 osds:
-- teuthida-1:vdb
-- teuthida-2:vdb
-- teuthida-3:vdb
+- teuthida-1:sdd
+- teuthida-2:sdd
+- teuthida-3:sdd
 osds_activate:
-- teuthida-1:vdb1
-- teuthida-2:vdb1
-- teuthida-3:vdb1
+- teuthida-1:sdd1
+- teuthida-2:sdd1
+- teuthida-3:sdd1
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
