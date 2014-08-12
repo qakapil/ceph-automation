@@ -1,4 +1,4 @@
-workingdir: /home/oms101/home/suse/git.suse.de/qa-automation/foo
+workingdir: foo
 allnodes:
 - ceph-node1
 - ceph-node3
