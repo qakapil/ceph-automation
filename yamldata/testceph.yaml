@@ -1,0 +1,29 @@
+workingdir: /home/oms101/home/suse/git.suse.de/qa-automation/foo
+allnodes:
+- ceph-node1
+- ceph-node3
+- ceph-node4
+initmons:
+- ceph-node1
+- ceph-node3
+- ceph-node4
+osds:
+- ceph-node1:vdb
+- ceph-node3:vdb
+- ceph-node4:vdb
+osds_activate:
+- ceph-node1:vdb1
+- ceph-node3:vdb1
+- ceph-node4:vdb1
+default_pgs: 192
+images:
+- {name: im1, size: 1024, pool: rbd}
+- {name: im2, size: 1024}
+- {name: im3, size: 512, pool: data}
+radosobjects:
+- {objname: test-obj-1, pool: data}
+createpools:
+- {poolname: test-pool-1, pg-num: 64, size: 2}
+librbd_images:
+- {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
+mon_node: ceph-node1
