@@ -12,6 +12,11 @@ import os
 
 log = logging.getLogger(__name__)
 
+# Note:
+# the following test enviroment variabels can be used:
+# TEST_NOEARLYCLEANUP
+# TEST_NOLATECLEANUP
+
 
 # replacements of kapil's methods
 
