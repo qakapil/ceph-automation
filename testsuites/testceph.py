@@ -222,6 +222,7 @@ class TestCeph(basetest.Basetest):
             self.ctx['workingdir'])
         cephdeploy.addAdminNodes(self.ctx['allnodes'],
             self.ctx['workingdir'])
+        time.sleep(10)
         for node in self.ctx['allnodes']:
             operations.restartCeph(node)
 
