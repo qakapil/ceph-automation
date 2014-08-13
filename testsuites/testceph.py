@@ -245,7 +245,18 @@ class TestCeph(basetest.Basetest):
             rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
             if rc != 0:
                 raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-
+            device_path = splitLine[1]
+            if len(device_path) < 1:
+                continue
+            if device_path[0] != '/':
+                device_path = "/dev/%s" % (device_path)
+            cmd = 'ssh %s sudo mount' % (splitLine[0])
+            rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+            if rc != 0:
+                raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+            lines = stdout.split('\n')
+            for line in lines:
+                self.log.debug(line)
 
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
