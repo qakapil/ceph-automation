@@ -4,6 +4,7 @@ from utils import cephdeploy
 from utils import general
 from utils import monitoring_fork as monitoring
 from utils import operations_fork as operations
+from utils import 
 import logging,time,re
 from utils.launch import launch
 #from utils import librbd_tasks
@@ -234,6 +235,16 @@ class TestCeph(basetest.Basetest):
             zypperutils.removePkg('ceph-deploy')
         except:
             pass
+        
+        
+        for item in self.ctx['osds_activate']:
+            splitLine = self.ctx['osds_activate'][item].split(':')
+            if len(splitLine) < 2:
+                continue
+            cmd = 'ssh %s sudo rm -rf /etc/ceph/  /var/lib/ceph/' % (splitLine[0])
+            rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+            if rc != 0:
+                raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
     def setUp(self):
