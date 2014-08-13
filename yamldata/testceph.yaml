@@ -3,6 +3,7 @@ allnodes:
 - teuthida-1
 - teuthida-2
 - teuthida-3
+- teuthida-4
 initmons:
 - teuthida-1
 - teuthida-2
@@ -11,10 +12,12 @@ osds:
 - teuthida-1:sdd
 - teuthida-2:sdd
 - teuthida-3:sdd
+- teuthida-4:sdd
 osds_activate:
 - teuthida-1:sdd1
 - teuthida-2:sdd1
 - teuthida-3:sdd1
+- teuthida-4:sdd1
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
