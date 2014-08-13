@@ -235,7 +235,7 @@ class TestCeph(basetest.Basetest):
         except:
             pass
         
-        
+        strWorkingdir = self.ctx['workingdir']
         for item in self.ctx['osds_activate']:
             splitLine = item.split(':')
             if len(splitLine) < 2:
