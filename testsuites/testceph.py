@@ -254,10 +254,12 @@ class TestCeph(basetest.Basetest):
             rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
             if rc != 0:
                 raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-            lines = stdout.split('\n')
-            for mount_line in lines:
+            mount_lines = stdout.split('\n')
+            for mount_line in mount_lines:
                 splitmountline = mount_line.split(' ')
                 self.log.debug(splitmountline)
+                if splitmountline[0] == device_path:
+                    self.log.error("should unmount %s" % (device_path))
 
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
