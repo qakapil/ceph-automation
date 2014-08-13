@@ -230,8 +230,10 @@ class TestCeph(basetest.Basetest):
 
         cephdeploy.cleanupNodes(self.ctx['allnodes'],
                                 'ceph', self.ctx['workingdir'])
-
-        zypperutils.removePkg('ceph-deploy')
+        try: # we shoudl not do this but module makes untyped exceptions.
+            zypperutils.removePkg('ceph-deploy')
+        except:
+            pass
 
 
     def setUp(self):
