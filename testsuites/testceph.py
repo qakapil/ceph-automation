@@ -237,12 +237,11 @@ class TestCeph(basetest.Basetest):
         
         
         for item in self.ctx['osds_activate']:
-            self.log.error("item=%s" % item)
-            continue
-            splitLine = self.ctx['osds_activate'][item].split(':')
+            splitLine = item.split(':')
             if len(splitLine) < 2:
                 continue
             cmd = 'ssh %s sudo rm -rf /etc/ceph/  /var/lib/ceph/' % (splitLine[0])
+            self.log.error("executing=%s" % cmd)
             rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
             if rc != 0:
                 raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
