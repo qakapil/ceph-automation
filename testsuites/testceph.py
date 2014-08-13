@@ -1,4 +1,4 @@
-from utils import basetest
+from utils import basetest_fork as basetest
 from utils import zypperutils
 from utils import cephdeploy
 from utils import general
