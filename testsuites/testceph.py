@@ -241,7 +241,7 @@ class TestCeph(basetest.Basetest):
             if len(splitLine) < 2:
                 continue
             cmd = 'ssh %s sudo rm -rf /etc/ceph/  /var/lib/ceph/' % (splitLine[0])
-            self.log.error("executing=%s" % cmd)
+            self.log.debug("executing=%s" % cmd)
             rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
             if rc != 0:
                 raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
@@ -257,10 +257,14 @@ class TestCeph(basetest.Basetest):
             mount_lines = stdout.split('\n')
             for mount_line in mount_lines:
                 splitmountline = mount_line.split(' ')
-                self.log.debug(splitmountline)
                 if splitmountline[0] == device_path:
                     self.log.error("should unmount %s" % (device_path))
-
+                    cmd = 'ssh %s sudo umount %s' % (splitLine[0], device_path)
+                    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+                    self.log.debug("rc=%s" % (rc))
+                    self.log.debug("stdout=%s" % (stdout))
+                    self.log.debug("stderr=%s" % (stderr))
+                    
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
         if self.flag_cleanup_early:
