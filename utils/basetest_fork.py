@@ -18,6 +18,7 @@ class Basetest(unittest.TestCase):
 
     @staticmethod
     def fetchIniData(self):
+        log = logging.getLogger("fetchIniData")
         test_cfg = os.environ.get("TEST_CFG")
         if test_cfg == None:
             test_cfg = 'setup.cfg'
@@ -26,7 +27,7 @@ class Basetest(unittest.TestCase):
             self.config.read(test_cfg)
         else:
             log.error("Configuration file '%s' was not found." % (test_cfg))
-        
+            assert(False)
      
        
         
