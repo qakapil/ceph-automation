@@ -237,6 +237,8 @@ class TestCeph(basetest.Basetest):
         
         
         for item in self.ctx['osds_activate']:
+            print item
+            continue
             splitLine = self.ctx['osds_activate'][item].split(':')
             if len(splitLine) < 2:
                 continue
