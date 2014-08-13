@@ -188,8 +188,8 @@ def check_InvalidDiskOSDPrepare(osds):
 class TestCeph(basetest.Basetest):
     def __init__(self, *args, **kwargs):
         super(basetest.Basetest, self).__init__(*args, **kwargs)
-        self.log = logging.getLogger("TestCeph")
         self.setLogger(self)
+        self.log = logging.getLogger("TestCeph")
         self.fetchIniData(self)
         self.fetchTestYamlData(self,__name__)
         if not self.ctx.has_key('workingdir'):
