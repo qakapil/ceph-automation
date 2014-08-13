@@ -9,6 +9,7 @@ from utils.launch import launch
 #from utils import librbd_tasks
 #from nose import with_setup
 import os
+import unittest
 
 log = logging.getLogger(__name__)
 
@@ -57,6 +58,51 @@ def getCephStatus(node):
     log.info('ceph status is - '+stdout)
     return stdout.strip()
 
+# one very similar to kapils
+
+def osd_clean(item,strWorkingdir):
+    log = logging.getLogger("osd_clean")
+    splitLine = item.split(':')
+    if len(splitLine) < 2:
+        return
+    log.debug("Now processing:%s" % (splitLine[0]))
+    device_path = splitLine[1]
+    if len(device_path) < 1:
+        return
+    if device_path[0] != '/':
+        device_path = "/dev/%s" % (device_path)
+    cmd = 'ssh %s sudo mount' % (splitLine[0])
+    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    mount_lines = stdout.split('\n')
+    for mount_line in mount_lines:
+        splitmountline = mount_line.split(' ')
+        if splitmountline[0] != device_path:
+            continue
+        log.error("should unmount %s" % (device_path))
+        cmd = 'ssh %s sudo fuser %s' % (splitLine[0], splitmountline[2])
+        rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+        log.error("fuser %s" % (stdout))
+        for pid in str.split(stdout):
+            asint = int(pid.strip())
+            log.error("killing pid %s" % (asint))
+            cmd = 'ssh %s sudo kill %s' % (splitLine[0],asint)
+            rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+            log.error("sleeping 4 seconds ")
+        time.sleep(4)
+        cmd = 'ssh %s sudo umount %s' % (splitLine[0], device_path)
+        rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+        log.debug("rc=%s" % (rc))
+        log.debug("stdout=%s" % (stdout))
+        log.debug("stderr=%s" % (stderr))
+
+
+    cmd = 'ssh %s sudo rm -rf /etc/ceph/  /var/lib/ceph/' % (splitLine[0])
+    log.debug("executing=%s" % cmd)
+    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 # collection of tests scripts.
 
 
@@ -185,13 +231,12 @@ def check_InvalidDiskOSDPrepare(osds):
     rc = cephdeploy.prepareInvalidOSD(osds)
     assert (rc == 1), "OSD Prepare for invalid disk did not fail"
 
-class TestCeph(basetest.Basetest):
-    def __init__(self, *args, **kwargs):
-        super(basetest.Basetest, self).__init__(*args, **kwargs)
-        self.setLogger(self)
+class TestCeph(unittest.TestCase):
+    def startup(self, *args, **kwargs):
+        basetest.decorate_logger()
         self.log = logging.getLogger("TestCeph")
-        self.fetchIniData(self)
-        self.fetchTestYamlData(self,__name__)
+        basetest.decorate_config_ini(self)
+        basetest.decorate_config_yaml(self,__name__)
         if not self.ctx.has_key('workingdir'):
             self.ctx['workingdir'] = '~/cephdeploy-cluster'
         self.flag_cleanup_early = False
@@ -235,38 +280,13 @@ class TestCeph(basetest.Basetest):
             zypperutils.removePkg('ceph-deploy')
         except:
             pass
-        
+
         strWorkingdir = self.ctx['workingdir']
         for item in self.ctx['osds_activate']:
-            splitLine = item.split(':')
-            if len(splitLine) < 2:
-                continue
-            cmd = 'ssh %s sudo rm -rf /etc/ceph/  /var/lib/ceph/' % (splitLine[0])
-            self.log.debug("executing=%s" % cmd)
-            rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
-            if rc != 0:
-                raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-            device_path = splitLine[1]
-            if len(device_path) < 1:
-                continue
-            if device_path[0] != '/':
-                device_path = "/dev/%s" % (device_path)
-            cmd = 'ssh %s sudo mount' % (splitLine[0])
-            rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
-            if rc != 0:
-                raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-            mount_lines = stdout.split('\n')
-            for mount_line in mount_lines:
-                splitmountline = mount_line.split(' ')
-                if splitmountline[0] == device_path:
-                    self.log.error("should unmount %s" % (device_path))
-                    cmd = 'ssh %s sudo umount %s' % (splitLine[0], device_path)
-                    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
-                    self.log.debug("rc=%s" % (rc))
-                    self.log.debug("stdout=%s" % (stdout))
-                    self.log.debug("stderr=%s" % (stderr))
-                    
+            osd_clean(item,strWorkingdir)
+
     def setUp(self):
+        self.startup()
         log.info('++++++starting %s ++++++' % self._testMethodName)
         if self.flag_cleanup_early:
             self.system_tear_down()
