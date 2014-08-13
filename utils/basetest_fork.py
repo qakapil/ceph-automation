@@ -3,7 +3,7 @@ import yaml
 import unittest
 import logging
 import os
-
+import os.path
 
 class Basetest(unittest.TestCase):
     config = None
@@ -22,7 +22,10 @@ class Basetest(unittest.TestCase):
         if test_cfg == None:
             test_cfg = 'setup.cfg'
         self.config = SafeConfigParser()
-        self.config.read(test_cfg)
+        if os.path.isfile(str(test_cfg)):
+            self.config.read(test_cfg)
+        else:
+            log.error("Configuration file '%s' was not found." % (test_cfg))
         
      
        
