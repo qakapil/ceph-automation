@@ -257,7 +257,7 @@ class TestCeph(basetest.Basetest):
             lines = stdout.split('\n')
             for mount_line in lines:
                 splitmountline = mount_line.split(' ')
-                self.log.debug(line)
+                self.log.debug(splitmountline)
 
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
