@@ -255,7 +255,8 @@ class TestCeph(basetest.Basetest):
             if rc != 0:
                 raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
             lines = stdout.split('\n')
-            for line in lines:
+            for mount_line in lines:
+                splitmountline = mount_line.split(' ')
                 self.log.debug(line)
 
     def setUp(self):
