@@ -46,7 +46,9 @@ class Basetest(unittest.TestCase):
     
     @staticmethod   
     def setLogger(self):
-        level_name = self.config.get('env','loglevel') 
+        level_name = os.environ.get('TEST_LOG_LEVEL')
+        if level_name == None:
+            level_name = 'debug'
         logFile = os.environ.get('TEST_LOG_CONF')
         if logFile != None:
             if os.path.isfile(str(options.log_config)):
