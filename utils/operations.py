@@ -45,7 +45,7 @@ def createValidateObject(dictObject):
     pool = dictObject.get('pool', None)
     #fo = open(filename, "w")
     #fo.close()
-    cmd = "ssh teuthida-5 "+"\"python -c 'fo = open(\"%s\", \"w\"); fo.close'\"" %(filename)
+    cmd = "ssh %s touch %s " %(os.environ["CLIENTNODE"], filename)
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -56,7 +56,7 @@ def createValidateObject(dictObject):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     #os.remove(filename)
-    cmd = "ssh teuthida-5 "+"python -c 'import os; os.remove(%s)'" %(filename)
+    cmd = "ssh %s rm %s" %(os.environ["CLIENTNODE"], filename)
     
     cmd = "ssh %s rados -p %s ls" % (os.environ["CLIENTNODE"],pool)
     rc,stdout,stderr = launch(cmd=cmd)
