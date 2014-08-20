@@ -17,14 +17,14 @@ def createRBDImage(dictImg):
     imglist = rbdGetPoolImages(pool)
     if name in imglist:
         rbdRemovePoolImage(dictImg)
-    cmd = "rbd create %s --size %s --pool %s" % (name,size,pool)
+    cmd = "ssh %s rbd create %s --size %s --pool %s" % (os.environ["CLIENTNODE"],name,size,pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
 
 
 def rbdGetPoolImages(poolname):
-    cmd = "rbd -p %s ls" % (poolname)
+    cmd = "ssh %s rbd -p %s ls" % (os.environ["CLIENTNODE"],poolname)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -33,7 +33,7 @@ def rbdGetPoolImages(poolname):
 def rbdRemovePoolImage(dictImg):
     imgname = dictImg.get('name', None)
     poolname = dictImg.get('pool', 'rbd')
-    cmd = "rbd -p %s rm %s" % (poolname,imgname)
+    cmd = "ssh %s rbd -p %s rm %s" % (os.environ["CLIENTNODE"],poolname,imgname)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -45,19 +45,19 @@ def createValidateObject(dictObject):
     pool = dictObject.get('pool', None)
     fo = open(filename, "w")
     fo.close()
-    cmd = "rados put %s %s --pool=%s" % (name,filename,pool)
+    cmd = "ssh %s rados put %s %s --pool=%s" % (os.environ["CLIENTNODE"],name,filename,pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     os.remove(filename)
-    cmd = "rados -p %s ls" % (pool)
+    cmd = "ssh %s rados -p %s ls" % (os.environ["CLIENTNODE"],pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     objlist = stdout.split('\n')
     assert (name in objlist),"object %s could not be created" % (name)
     log.info("created object %s " % (name))
-    cmd = "ceph osd map %s %s" % (pool,name)
+    cmd = "ssh %s ceph osd map %s %s" % (os.environ["CLIENTNODE"],pool,name)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -68,7 +68,7 @@ def removeObject(dictObject):
     name = dictObject.get('objname', None)
     filename = dictObject.get('objname', None)+'.txt'
     pool = dictObject.get('pool', None)
-    cmd = "rados -p %s ls" % (pool)
+    cmd = "ssh %s rados -p %s ls" % (os.environ["CLIENTNODE"],pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -76,7 +76,7 @@ def removeObject(dictObject):
     if (name not in objlist):
         log.warning("object %s does not exist" % (name))
         return
-    cmd = "rados rm %s --pool=%s" % (name,pool)
+    cmd = "ssh %s rados rm %s --pool=%s" % (os.environ["CLIENTNODE"],name,pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -89,7 +89,7 @@ def createPool(dictPool):
     poolname = dictPool.get('poolname', None)
     pgnum = dictPool.get('pg-num', None)
     size = dictPool.get('size', None)
-    cmd = "ceph osd lspools"
+    cmd = "ssh %s ceph osd lspools" % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -97,12 +97,12 @@ def createPool(dictPool):
     if (poolname in poollist):
         log.warning("pool with name %s already exists" % (poolname))
         return
-    cmd = "ceph osd pool create %s %s" % (poolname, pgnum)
+    cmd = "ssh %s ceph osd pool create %s %s" % (os.environ["CLIENTNODE"], poolname, pgnum)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     if (size is not None):
-        cmd = "ceph osd pool set %s size %s" % (poolname, size)
+        cmd = "ssh %s ceph osd pool set %s size %s" % (os.environ["CLIENTNODE"],poolname, size)
         rc,stdout,stderr = launch(cmd=cmd)
         assert (rc == 0), "Error while executing the command %s.\
         Error message: %s" % (cmd, stderr)
@@ -114,19 +114,19 @@ def validatePool(dictPool):
     poolname = dictPool.get('poolname', None)
     pgnum = dictPool.get('pg-num', None)
     size = dictPool.get('size', None)
-    cmd = "ceph osd lspools"
+    cmd = "ssh %s ceph osd lspools" % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     poollist = stdout#.split(',')
     assert (poolname in poollist), "pool %s was not found in %s" % (poolname,poollist)
-    cmd = "ceph osd pool get %s pg_num" % (poolname)
+    cmd = "ssh %s ceph osd pool get %s pg_num" % (os.environ["CLIENTNODE"],poolname)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     act_pgnum = stdout.strip()
     assert (str(pgnum) in act_pgnum), "pgnum for pool %s were %s" % (poolname,str(act_pgnum))
-    cmd = "ceph osd pool get %s size" % (poolname)
+    cmd = "ssh %s ceph osd pool get %s size" % (os.environ["CLIENTNODE"],poolname)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -136,7 +136,7 @@ def validatePool(dictPool):
     
 def deletePool(dictPool):
     poolname = dictPool.get('poolname', None)
-    cmd = "ceph osd pool delete %s %s --yes-i-really-really-mean-it" % (poolname,poolname)
+    cmd = "ssh %s ceph osd pool delete %s %s --yes-i-really-really-mean-it" % (os.environ["CLIENTNODE"],poolname,poolname)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)

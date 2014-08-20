@@ -4,7 +4,7 @@ from utils import cephdeploy
 from utils import general
 from utils import monitoring
 from utils import operations
-import logging,time,re
+import logging,time,re, os
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
@@ -16,6 +16,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchIniData(cls)
         cls.fetchTestYamlData(cls,__name__)
         cls.setLogger(cls)
+        os.environ["CLIENTNODE"] = cls.ctx['clientnode']
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
                                 'ceph', cls.ctx['workingdir'])

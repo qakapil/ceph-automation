@@ -2,14 +2,14 @@ from launch import launch
 import logging
 import ConfigParser
 import cephdeploy
-import re
+import re, os
 
 log = logging.getLogger(__name__)
 
 
 
 def getCephHealth():
-    cmd = 'ceph health'
+    cmd = 'ssh %s ceph health' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -18,7 +18,7 @@ def getCephHealth():
     return stdout
 
 def getFSID():
-    cmd = 'ceph-conf --lookup fsid'
+    cmd = 'ssh %s ceph-conf --lookup fsid' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -31,7 +31,7 @@ def getFSID():
 
 
 def getCephStatus():
-    cmd = 'ceph --status'
+    cmd = 'ssh %s ceph --status' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -43,7 +43,7 @@ def getCephStatus():
     
 def getExpectedVersion(url):
     url = url+'src'
-    cmd = 'wget -q -O- %s | grep ceph-0 | sed -e "s|.*ceph-\\(.*\\).src.rpm.*|\\1|"' % (url)
+    cmd = 'ssh %s wget -q -O- %s | grep ceph-0 | sed -e "s|.*ceph-\\(.*\\).src.rpm.*|\\1|"' % (os.environ["CLIENTNODE"], url)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -54,7 +54,7 @@ def getExpectedVersion(url):
 
 
 def getActuaVersion():
-    cmd = 'ceph --version'
+    cmd = 'ssh %s ceph --version' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -77,14 +77,14 @@ def printRPMVersions(url):
     f = open('rpm_versions.txt', 'w')
     f.write('ceph rpm version is - '+ceph_ver+'\n')
     f.write('ceph-deploy rpm version is - '+cephdeploy_ver+'\n')
-    cmd = 'lsb_release -a'
+    cmd = 'ssh %s lsb_release -a' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
-    f.write('Admin node details - \n'+stdout)
+    f.write('Client node details - \n'+stdout)
     f.close()
     
 
 def getDefaultPools():
-    cmd = 'ceph osd lspools'
+    cmd = 'ssh %s ceph osd lspools' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -92,7 +92,7 @@ def getDefaultPools():
     return str(stdout).strip()
 
 def getMonStat():
-    cmd = 'ceph mon stat'
+    cmd = 'ssh %s ceph mon stat' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -100,7 +100,7 @@ def getMonStat():
     return str(stdout).strip()
 
 def getOSDStat(): 
-    cmd = 'ceph osd stat' 
+    cmd = 'ssh %s ceph osd stat' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -108,7 +108,7 @@ def getOSDStat():
     return str(stdout).strip()
  
 def getquorum_status(): 
-    cmd = 'ceph quorum_status' 
+    cmd = 'ssh %s ceph quorum_status' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -117,7 +117,7 @@ def getquorum_status():
 
 
 def getOSDtree(): 
-    cmd = 'ceph osd tree' 
+    cmd = 'ssh %s ceph osd tree' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -125,7 +125,7 @@ def getOSDtree():
     return str(stdout).strip()
 
 def getTotalPGs(): 
-    cmd = "ceph pg stat| awk '{print $2;}'" 
+    cmd = "ssh %s ceph pg stat| awk '{print $2;}'" % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)

@@ -1,107 +1,107 @@
 from launch import launch
 import zypperutils
-import logging, sys
+import logging, sys, os
 
 log = logging.getLogger(__name__)
 
-def declareInitialMons(listMons, strWorkingdir):
+def declareInitialMons(listMons):
     if len(listMons) < 1:
         log.error("initial mons list not provided in the yaml file")
         raise Exception, "initial mons list not provided in the yaml file"
     monlist = " ".join(listMons)
-    cmd = 'ceph-deploy new %s' % (monlist)
-    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    cmd = 'ssh %s ceph-deploy new %s' % (os.environ["CLIENTNODE"], monlist)
+    rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     
     
     
-def installNodes(listNodes, strWorkingdir, repourl, gpgurl):
+def installNodes(listNodes, repourl, gpgurl):
     if len(listNodes) < 1:
         log.error("install nodes list not provided in the yaml file")
         raise Exception, "install nodes list not provided in the yaml file"
     listNodes = " ".join(listNodes)
     #cmd = 'ceph-deploy install %s' % (listNodes)
-    cmd = 'ceph-deploy install --adjust-repos --repo-url %s --gpg-url %s \
-    %s' % (repourl, gpgurl, listNodes)
-    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    cmd = 'ssh %s ceph-deploy install --adjust-repos --repo-url %s --gpg-url %s \
+    %s' % (os.environ["CLIENTNODE"], repourl, gpgurl, listNodes)
+    rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
 
-def createInitialMons(listMons, strWorkingdir):
+def createInitialMons(listMons):
     if len(listMons) < 1:
         log.error("initial mons list not provided in the yaml file")
         raise Exception, "initial mons list not provided in the yaml file"
-    cmd = 'ceph-deploy mon create-initial'
-    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    cmd = 'ssh %s ceph-deploy mon create-initial' % (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
 
-def PrepareActivateOSDs(listOSDs, strWorkingdir):
+def PrepareActivateOSDs(listOSDs):
     if len(listOSDs) < 1:
         log.error("OSDs list not provided in the yaml file")
         raise Exception, "OSDs list not provided in the yaml file"
     for osd in listOSDs:
-        cmd = 'ceph-deploy osd prepare %s' % (osd)
-        rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+        cmd = 'ssh %s ceph-deploy osd prepare %s' % (os.environ["CLIENTNODE"], osd)
+        rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-        cmd = 'ceph-deploy osd activate %s' % (osd)
-        rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+        cmd = 'ssh %s ceph-deploy osd activate %s' % (os.environ["CLIENTNODE"], osd)
+        rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
-def CreateOSDs(listOSDs, strWorkingdir):   
+def CreateOSDs(listOSDs):   
     if len(listOSDs) < 1:
         log.error("OSDs list not provided in the yaml file")
         raise Exception, "OSDs list not provided in the yaml file"
     for osd in listOSDs:
-        cmd = 'ceph-deploy osd create %s' % (osd)
-        rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+        cmd = 'ssh %s ceph-deploy osd create %s' % (os.environ["CLIENTNODE"], osd)
+        rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
   
     
-def addAdminNodes(listNodes, strWorkingdir):
+def addAdminNodes(listNodes):
     if len(listNodes) < 1:
         log.error("install nodes list not provided in the yaml file")
         raise Exception, "install nodes list not provided in the yaml file"
     listNodes = " ".join(listNodes)
-    cmd = 'ceph-deploy admin %s' % (listNodes)
-    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    cmd = 'ssh %s ceph-deploy admin %s' % (os.environ["CLIENTNODE"], listNodes)
+    rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
       
 
-def cleanupNodes(listNodes, reponame, strWorkingdir):
+def cleanupNodes(listNodes, reponame):
     if len(listNodes) < 1:
         log.error("install nodes list not provided in the yaml file")
         raise Exception, "install nodes list not provided in the yaml file"
     allnodes = " ".join(listNodes)
-    cmd = 'ceph-deploy purge %s' % (allnodes)
-    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    cmd = 'ssh %s ceph-deploy purge %s' % (os.environ["CLIENTNODE"], allnodes)
+    rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
-    cmd = 'ceph-deploy purgedata %s' % (allnodes)
-    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    cmd = 'ssh %s ceph-deploy purgedata %s' % (os.environ["CLIENTNODE"], allnodes)
+    rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
-    cmd = 'ceph-deploy forgetkeys'
-    rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+    cmd = 'ssh %s ceph-deploy forgetkeys' % (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
     
     for node in listNodes:
         cmd = "ssh %s sudo zypper removerepo %s" % (node, reponame)
-        rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+        rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
         cmd = "ssh %s sudo zypper refresh" % (node)
-        rc,stdout,stderr = launch(cmd=cmd,cwd=strWorkingdir)
+        rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
     try:
@@ -117,7 +117,8 @@ def cleanupNodes(listNodes, reponame, strWorkingdir):
     
 def getExpectedVersion(url):
     url = url+'src'
-    cmd = 'wget -q -O- %s | grep ceph-deploy | sed -e "s|.*ceph-deploy-\\(.*\\).src.rpm.*|\\1|"' % (url)
+    cmd = 'ssh %s wget -q -O- %s | grep ceph-deploy | sed -e "s|.*ceph-deploy-\\(.*\\).src.rpm.*|\\1|"' \
+     % (os.environ["CLIENTNODE"], url)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
@@ -128,7 +129,7 @@ def getExpectedVersion(url):
 
 def getActuaVersion():
     #cmd = 'ceph-deploy --version'
-    cmd = 'rpm -qa | grep ceph-deploy | sed -e "s|.*ceph-deploy-\\(.*\\)|\\1|"'
+    cmd = 'ssh %s rpm -qa | grep ceph-deploy | sed -e "s|.*ceph-deploy-\\(.*\\)|\\1|"' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
@@ -140,7 +141,7 @@ def getActuaVersion():
 def prepareInvalidOSD(listOSDs):
     node = listOSDs[0].split(":")[0]
     invaliddrive='sdz'  #assume sdz does not exist
-    cmd = 'ceph-deploy osd prepare %s:%s' % (node, invaliddrive)
+    cmd = 'ssh %s ceph-deploy osd prepare %s:%s' % (os.environ["CLIENTNODE"], node, invaliddrive)
     rc,stdout,stderr = launch(cmd=cmd)
     return rc
     
