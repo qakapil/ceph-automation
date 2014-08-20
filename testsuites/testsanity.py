@@ -59,6 +59,8 @@ class TestSanity(basetest.Basetest):
     
     
     def test06_ZapOSDs(self):
+        if self.ctx['osd_zap'] == None:
+            log.info('No disks to zap. Skipping')
         cephdeploy.osdZap(self.ctx['osd_zap'])
     
     
