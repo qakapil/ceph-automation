@@ -43,13 +43,21 @@ def createValidateObject(dictObject):
     name = dictObject.get('objname', None)
     filename = dictObject.get('objname', None)+'.txt'
     pool = dictObject.get('pool', None)
-    fo = open(filename, "w")
-    fo.close()
+    #fo = open(filename, "w")
+    #fo.close()
+    cmd = "ssh teuthida-5 "+"python -c 'fn = %s; fo = open(fn, \"w\"); fo.close'" %(filename)
+    
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    
     cmd = "ssh %s rados put %s %s --pool=%s" % (os.environ["CLIENTNODE"],name,filename,pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    os.remove(filename)
+    #os.remove(filename)
+    cmd = "ssh teuthida-5 "+"python -c 'import os; os.remove(%s)'" %(filename)
+    
     cmd = "ssh %s rados -p %s ls" % (os.environ["CLIENTNODE"],pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
