@@ -61,6 +61,7 @@ class TestSanity(basetest.Basetest):
     def test06_ZapOSDs(self):
         if self.ctx['osd_zap'] == None:
             log.info('No disks to zap. Skipping')
+            return
         cephdeploy.osdZap(self.ctx['osd_zap'])
     
     
@@ -156,7 +157,7 @@ class TestSanity(basetest.Basetest):
     
     def test17_ValidateOSDStat(self):
         osd_stat = monitoring.getOSDStat()
-        n = len(self.ctx['osds'])
+        n = len(self.ctx['osd_activate'])
         expStr = "%s osds: %s up, %s in" % (n,n,n)
         assert(expStr in osd_stat),"osd stat validation failed" 
     
@@ -224,7 +225,7 @@ class TestSanity(basetest.Basetest):
 
     
     def test24_InvalidDiskOSDPrepare(self): 
-        rc = cephdeploy.prepareInvalidOSD(self.ctx['osds'])
+        rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
     
     
