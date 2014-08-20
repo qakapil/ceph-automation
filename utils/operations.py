@@ -45,7 +45,7 @@ def createValidateObject(dictObject):
     pool = dictObject.get('pool', None)
     #fo = open(filename, "w")
     #fo.close()
-    cmd = "ssh teuthida-5 "+"python -c 'fo = open(\"%s\", \"w\"); fo.close'" %(filename)
+    cmd = "ssh teuthida-5 "+"\"python -c 'fo = open(\"%s\", \"w\"); fo.close'\"" %(filename)
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
