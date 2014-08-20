@@ -57,7 +57,9 @@ def createValidateObject(dictObject):
     Error message: %s" % (cmd, stderr)
     #os.remove(filename)
     cmd = "ssh %s rm %s" %(os.environ["CLIENTNODE"], filename)
-    
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr) 
     cmd = "ssh %s rados -p %s ls" % (os.environ["CLIENTNODE"],pool)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
