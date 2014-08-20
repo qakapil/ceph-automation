@@ -19,7 +19,7 @@ class TestSanity(basetest.Basetest):
         os.environ["CLIENTNODE"] = cls.ctx['clientnode']
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                'ceph', cls.ctx['workingdir'])
+                                'ceph')
     
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
