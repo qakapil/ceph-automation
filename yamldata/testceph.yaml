@@ -1,0 +1,29 @@
+workingdir: foo
+allnodes:
+- teuthida-1
+- teuthida-2
+- teuthida-3
+initmons:
+- teuthida-1
+- teuthida-2
+- teuthida-3
+osds:
+- teuthida-1:sdd
+- teuthida-2:sdd
+- teuthida-3:sdd
+osds_activate:
+- teuthida-1:sdd1
+- teuthida-2:sdd1
+- teuthida-3:sdd1
+default_pgs: 192
+images:
+- {name: im1, size: 1024, pool: rbd}
+- {name: im2, size: 1024}
+- {name: im3, size: 512, pool: data}
+radosobjects:
+- {objname: test-obj-1, pool: data}
+createpools:
+- {poolname: test-pool-1, pg-num: 64, size: 2}
+librbd_images:
+- {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
+mon_node: teuthida-1

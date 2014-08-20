@@ -1,0 +1,39 @@
+QA infrastructure used from jenkins to manage ceph project.
+
+Tests exist in the "testsuites" directory.
+
+Example running a test
+
+    # nosetests testsuites/testceph.py 
+
+Enviroment vairables:
+
+TEST_YAML
+
+specifies where the yaml data directing the tests should come from.
+
+TEST_CFG
+
+specifies where the yaml data directing the tests should come from.
+
+TEST_LOG_LEVEL
+
+Sets the log level.
+
+TEST_LOG_CONF
+
+Specifiy the log configuration this follows standard log configuration format.
+
+TEST_NOEARLYCLEANUP
+
+Set this variable to any value and it will block cleaning up the previous install before starting installing ceph.
+
+TEST_NOLATECLEANUP
+
+Set this variable to any value and it will block cleaning up the previous install after running  tests.
+
+
+Example running ceph with an enviroment variable.
+
+    # TEST_YAML=yamldata/on_laptop_testceph.yaml \
+        nosetests testsuites/testceph.py
