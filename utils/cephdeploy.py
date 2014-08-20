@@ -40,6 +40,36 @@ def createInitialMons(listMons):
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
+def osdZap(listOSDs):
+    if len(listOSDs) < 1:
+        log.error("OSDs list not provided in the yaml file")
+        raise Exception, "OSDs list not provided in the yaml file"
+    for osd in listOSDs:
+        cmd = 'ssh %s ceph-deploy disk zap %s' % (os.environ["CLIENTNODE"], osd)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+def osdPrepare(listOSDs):
+    if len(listOSDs) < 1:
+        log.error("OSDs list not provided in the yaml file")
+        raise Exception, "OSDs list not provided in the yaml file"
+    for osd in listOSDs:
+        cmd = 'ssh %s ceph-deploy osd prepare %s' % (os.environ["CLIENTNODE"], osd)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+def osdActivate(listOSDs):
+    if len(listOSDs) < 1:
+        log.error("OSDs list not provided in the yaml file")
+        raise Exception, "OSDs list not provided in the yaml file"
+    for osd in listOSDs:
+        cmd = 'ssh %s ceph-deploy osd activate %s' % (os.environ["CLIENTNODE"], osd)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
 
 def PrepareActivateOSDs(listOSDs):
     if len(listOSDs) < 1:

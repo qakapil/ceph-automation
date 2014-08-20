@@ -1,4 +1,5 @@
-workingdir: /home/jenkins/cephdeploy-cluster 
+workingdir: /home/jenkins/cephdeploy-cluster
+clientnode: teuthida-4-0 
 allnodes:
 - teuthida-4-0
 - teuthida-4-1
@@ -8,10 +9,18 @@ initmons:
 - teuthida-4-1
 - teuthida-4-2
 - teuthida-4-3
-osds:
-- teuthida-4-1:vdb2
-- teuthida-4-2:vdb2
-- teuthida-4-3:vdb2
+osd_zap:
+- teuthida-4-1:vdb
+- teuthida-4-2:vdb
+- teuthida-4-3:vdb
+osd_prepare:
+- teuthida-4-1:vdb
+- teuthida-4-2:vdb
+- teuthida-4-3:vdb
+osd_activate:
+- teuthida-4-1:vdb1
+- teuthida-4-2:vdb1
+- teuthida-4-3:vdb1
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}

@@ -25,17 +25,12 @@ class TestSanity(basetest.Basetest):
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
         
-      
+    """ 
     def test00_createDirs(self):
         if not self.ctx.has_key('workingdir'):
             self.ctx['workingdir'] = '~/cephdeploy-cluster'
         general.createDir(self.ctx['workingdir'])
-        """
-        for node in self.ctx['allnodes']:
-            general.createDir('/var/lib/ceph/osd',node)
-            general.createDir('/var/lib/ceph/bootstrap-osd',node)
-        """
-    
+    """
     
     def test01_AddRepo(self):
         url = self.config.get('env','repo_baseurl')
@@ -63,21 +58,27 @@ class TestSanity(basetest.Basetest):
     
     
     
-    def test06_PrepareActivateOSDs(self):
-        cephdeploy.PrepareActivateOSDs(self.ctx['osds'])
+    def test06_ZapOSDs(self):
+        cephdeploy.osdZap(self.ctx['osd_zap'])
     
     
+    def test07_PrepareOSDs(self):
+        cephdeploy.osdPrepare(self.ctx['osd_prepare'])
     
-    def test07_AdminNodes(self):
+    def test08_ActivateOSDs(self):
+        cephdeploy.osdActivate(self.ctx['osd_activate'])
+    
+    
+    def test09_AdminNodes(self):
         cephdeploy.addAdminNodes(self.ctx['allnodes'])
     
     
-    def test08_restartCeph(self):
+    def test10_restartCeph(self):
         for node in self.ctx['initmons']:
             operations.restartCeph(node)
         
         
-    def test09_ValidateCephStatus(self):
+    def test11_ValidateCephStatus(self):
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
         if fsid not in status:
@@ -108,7 +109,7 @@ class TestSanity(basetest.Basetest):
     
     
     
-    def test10_ValidateCephDeployVersion(self):
+    def test11_ValidateCephDeployVersion(self):
         expVersion = cephdeploy.getExpectedVersion(
                                 self.config.get('env','repo_baseurl'))
         actVersion = cephdeploy.getActuaVersion()
@@ -118,7 +119,7 @@ class TestSanity(basetest.Basetest):
      
     
     
-    def test11_ValidateCephVersion(self):
+    def test12_ValidateCephVersion(self):
         expVersion = monitoring.getExpectedVersion(
                      self.config.get('env','repo_baseurl'))
         actVersion = monitoring.getActuaVersion()
@@ -126,20 +127,20 @@ class TestSanity(basetest.Basetest):
             raise Exception, "expected '%s' and actual '%s' \
                 versions did not match" % (expVersion,actVersion)
     
-    def test12_ValidateDefaultPools(self):
+    def test13_ValidateDefaultPools(self):
         def_pools = monitoring.getDefaultPools()
         assert ('0 data,1 metadata,2 rbd,' in def_pools),"The default \
         pools were %s" % def_pools
      
-    def test13_CreateImages(self):
+    def test14_CreateImages(self):
         for image in self.ctx['images']:
             operations.createRBDImage(image)
     
-    def test14_RemoveImages(self):
+    def test15_RemoveImages(self):
         for image in self.ctx['images']:
             operations.rbdRemovePoolImage(image)
 
-    def test15_ValidateMonStat(self):
+    def test16_ValidateMonStat(self):
         mon_stat = monitoring.getMonStat()
         log.info("the mon stat is "+ str(mon_stat))
         matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
@@ -151,13 +152,13 @@ class TestSanity(basetest.Basetest):
         "the monlist in quorum was not as expected"
 
     
-    def test16_ValidateOSDStat(self):
+    def test17_ValidateOSDStat(self):
         osd_stat = monitoring.getOSDStat()
         n = len(self.ctx['osds'])
         expStr = "%s osds: %s up, %s in" % (n,n,n)
         assert(expStr in osd_stat),"osd stat validation failed" 
     
-    def test17_RadosObjects(self):
+    def test18_RadosObjects(self):
         for radosobject in self.ctx['radosobjects']:
             operations.createValidateObject(radosobject)
         for radosobject in self.ctx['radosobjects']:
@@ -165,19 +166,19 @@ class TestSanity(basetest.Basetest):
     
     
        
-    def test18_CreatePools(self):
+    def test19_CreatePools(self):
         for pool in self.ctx['createpools']:
             operations.createPool(pool)
         
-    def test19_ValidatePools(self):
+    def test20_ValidatePools(self):
         for pool in self.ctx['createpools']:
             operations.validatePool(pool)
     
-    def test20_DeletePools(self):
+    def test21_DeletePools(self):
         for pool in self.ctx['createpools']:
             operations.deletePool(pool)
     
-    def test21_Validatelibrbd(self):
+    def test22_Validatelibrbd(self):
         from utils import librbd_tasks
         for image in self.ctx['librbd_images']:
             cluster = librbd_tasks.createCluster('/etc/ceph/ceph.conf')
@@ -208,7 +209,7 @@ class TestSanity(basetest.Basetest):
             librbd_tasks.close_cluster(cluster, pool_ctx)
         
     
-    def test22_ValidateDefaultOSDtree(self):
+    def test23_ValidateDefaultOSDtree(self):
         str_osd_tree = monitoring.getOSDtree()
         osd_tree = str_osd_tree.split('\n')
         for i in range(len(osd_tree)-1):
@@ -220,7 +221,7 @@ class TestSanity(basetest.Basetest):
             osd was zero \n"+str_osd_tree
 
     
-    def test23_InvalidDiskOSDPrepare(self): 
+    def test24_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osds'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
     
