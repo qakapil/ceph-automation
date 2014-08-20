@@ -47,34 +47,29 @@ class TestSanity(basetest.Basetest):
     
     
     def test03_DeclareInitialMons(self):
-        cephdeploy.declareInitialMons(self.ctx['initmons'], 
-                                      self.ctx['workingdir'])
+        cephdeploy.declareInitialMons(self.ctx['initmons'])
     
     
     
     def test04_InstallCeph(self):
-        cephdeploy.installNodes(self.ctx['allnodes'], 
-                                self.ctx['workingdir'],
+        cephdeploy.installNodes(self.ctx['allnodes'],
                                 self.config.get('env','repo_baseurl'),
                                 self.config.get('env','gpg_url'))
         
     
     
     def test05_CreateInitialMons(self):
-        cephdeploy.createInitialMons(self.ctx['initmons'], 
-                                     self.ctx['workingdir'])
+        cephdeploy.createInitialMons(self.ctx['initmons'])
     
     
     
     def test06_PrepareActivateOSDs(self):
-        cephdeploy.PrepareActivateOSDs(self.ctx['osds'], 
-                                       self.ctx['workingdir'])
+        cephdeploy.PrepareActivateOSDs(self.ctx['osds'])
     
     
     
     def test07_AdminNodes(self):
-        cephdeploy.addAdminNodes(self.ctx['allnodes'], 
-                                 self.ctx['workingdir'])
+        cephdeploy.addAdminNodes(self.ctx['allnodes'])
     
     
     def test08_restartCeph(self):
