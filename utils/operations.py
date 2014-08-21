@@ -165,7 +165,7 @@ def restartRadosGW(node):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
 
-def validateLibRbdTests(self):
+def validateLibRbdTests():
         cmd = "cat librbd_tests.py | ssh %s python" % (os.environ["CLIENTNODE"])
         rc,stdout,stderr = launch(cmd=cmd)
         for output in stdout.split('\n'):
