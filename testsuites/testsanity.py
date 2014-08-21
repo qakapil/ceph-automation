@@ -113,7 +113,7 @@ class TestSanity(basetest.Basetest):
     
     
     
-    def test11_ValidateCephDeployVersion(self):
+    def test12_ValidateCephDeployVersion(self):
         expVersion = cephdeploy.getExpectedVersion(
                                 self.config.get('env','repo_baseurl'))
         actVersion = cephdeploy.getActuaVersion()
@@ -123,7 +123,7 @@ class TestSanity(basetest.Basetest):
      
     
     
-    def test12_ValidateCephVersion(self):
+    def test13_ValidateCephVersion(self):
         expVersion = monitoring.getExpectedVersion(
                      self.config.get('env','repo_baseurl'))
         actVersion = monitoring.getActuaVersion()
@@ -131,20 +131,20 @@ class TestSanity(basetest.Basetest):
             raise Exception, "expected '%s' and actual '%s' \
                 versions did not match" % (expVersion,actVersion)
     
-    def test13_ValidateDefaultPools(self):
+    def test14_ValidateDefaultPools(self):
         def_pools = monitoring.getDefaultPools()
         assert ('0 data,1 metadata,2 rbd,' in def_pools),"The default \
         pools were %s" % def_pools
      
-    def test14_CreateImages(self):
+    def test15_CreateImages(self):
         for image in self.ctx['images']:
             operations.createRBDImage(image)
     
-    def test15_RemoveImages(self):
+    def test16_RemoveImages(self):
         for image in self.ctx['images']:
             operations.rbdRemovePoolImage(image)
 
-    def test16_ValidateMonStat(self):
+    def test17_ValidateMonStat(self):
         mon_stat = monitoring.getMonStat()
         log.info("the mon stat is "+ str(mon_stat))
         matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
@@ -156,13 +156,13 @@ class TestSanity(basetest.Basetest):
         "the monlist in quorum was not as expected"
 
     
-    def test17_ValidateOSDStat(self):
+    def test18_ValidateOSDStat(self):
         osd_stat = monitoring.getOSDStat()
         n = len(self.ctx['osd_activate'])
         expStr = "%s osds: %s up, %s in" % (n,n,n)
         assert(expStr in osd_stat),"osd stat validation failed" 
     
-    def test18_RadosObjects(self):
+    def test19_RadosObjects(self):
         for radosobject in self.ctx['radosobjects']:
             operations.createValidateObject(radosobject)
         for radosobject in self.ctx['radosobjects']:
@@ -170,50 +170,23 @@ class TestSanity(basetest.Basetest):
     
     
        
-    def test19_CreatePools(self):
+    def test20_CreatePools(self):
         for pool in self.ctx['createpools']:
             operations.createPool(pool)
         
-    def test20_ValidatePools(self):
+    def test21_ValidatePools(self):
         for pool in self.ctx['createpools']:
             operations.validatePool(pool)
     
-    def test21_DeletePools(self):
+    def test22_DeletePools(self):
         for pool in self.ctx['createpools']:
             operations.deletePool(pool)
     
-    def test22_Validatelibrbd(self):
-        from utils import librbd_tasks
-        for image in self.ctx['librbd_images']:
-            cluster = librbd_tasks.createCluster('/etc/ceph/ceph.conf')
-            log.info("created the cluster")
-            pool_ctx = librbd_tasks.createPoolIOctx(image['poolname'],cluster)
-            log.info("created the pool ctx")
-            librbd_tasks.createImage(image['size_gb'],image['imagename'],pool_ctx)
-            log.info("created the image")
-            imageslist = librbd_tasks.getImagesList(pool_ctx)
-            log.info("got the image list "+str(imageslist))
-            assert(image['imagename'] in imageslist),"image %s could \
-            was not created" %(image['imagename'])
-            image_ctx = librbd_tasks.createImgCtx(image['imagename'], pool_ctx)
-            log.info("created the image ctx")
-            size = librbd_tasks.getImageSize(image_ctx)
-            expsize = image['size_gb'] * 1024**3
-            size = str(int(size)).strip()
-            expsize = str(int(expsize)).strip()
-            log.info('actual image size is '+size)
-            log.info('expected image size is '+expsize)
-            assert(size == expsize),"image size not as expected"
-            stats = librbd_tasks.getImageStat(image_ctx)
-            log.info("the stats for the image "+image['imagename']+\
-            "are "+str(stats))
-            librbd_tasks.close_imgctx(image_ctx)
-            librbd_tasks.removeImage(pool_ctx, image['imagename'])
-            log.info("removed the image")
-            librbd_tasks.close_cluster(cluster, pool_ctx)
+    def test23_Validatelibrbd(self):
+        operations.validateLibRbdTests()
         
     
-    def test23_ValidateDefaultOSDtree(self):
+    def test24_ValidateDefaultOSDtree(self):
         str_osd_tree = monitoring.getOSDtree()
         osd_tree = str_osd_tree.split('\n')
         for i in range(len(osd_tree)-1):
@@ -225,7 +198,7 @@ class TestSanity(basetest.Basetest):
             osd was zero \n"+str_osd_tree
 
     
-    def test24_InvalidDiskOSDPrepare(self): 
+    def test25_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
     

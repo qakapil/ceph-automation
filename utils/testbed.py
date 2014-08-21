@@ -62,4 +62,6 @@ def validateDefaultOSDtree(self):
             value = osd_tree[i][indx].strip()
             assert('0' != value),"the weight of the\
             osd was zero \n"+str_osd_tree
+
+
     
