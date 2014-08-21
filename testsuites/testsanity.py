@@ -77,9 +77,9 @@ class TestSanity(basetest.Basetest):
         cephdeploy.addAdminNodes(self.ctx['allnodes'])
     
     
-    def test10_restartCeph(self):
-        for node in self.ctx['initmons']:
-            operations.restartCeph(node)
+    #def test10_restartCeph(self):
+        #for node in self.ctx['initmons']:
+            #operations.restartCeph(node)
         
         
     def test11_ValidateCephStatus(self):
