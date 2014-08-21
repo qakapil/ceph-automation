@@ -1,7 +1,6 @@
 from utils import basetest
 from utils import zypperutils
 from utils import cephdeploy
-from utils import general
 from utils import monitoring
 from utils import operations
 import logging,time,re, os
@@ -12,25 +11,27 @@ log = logging.getLogger(__name__)
 class TestSanity(basetest.Basetest):
 
     @classmethod
-    def setup_class(cls):        
-        cls.fetchIniData(cls)
-        cls.fetchTestYamlData(cls,__name__)
+    def setup_class(cls):
+        filename = os.environ.get("CFG_FILE", "setup.cfg")    
+        cls.fetchIniData(cls, filename)
+        yamlfile = os.environ.get("YAMLDATA_FILE")
+        if yamlfile == None:
+            yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
+            yamlfile = 'yamldata/%s.yaml' % (yamlfile)
+        cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls)
         os.environ["CLIENTNODE"] = cls.ctx['clientnode']
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
-        cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                'ceph')
+        before_cleanup = os.environ.get("BEFORE_CLEANUP")
+        if before_cleanup != None:
+            log.info('starting teardown for before_cleanup')
+            cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
+                                    'ceph')
     
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
-        
-    """ 
-    def test00_createDirs(self):
-        if not self.ctx.has_key('workingdir'):
-            self.ctx['workingdir'] = '~/cephdeploy-cluster'
-        general.createDir(self.ctx['workingdir'])
-    """
+   
     
     def test01_AddRepo(self):
         url = self.config.get('env','repo_baseurl')
@@ -234,11 +235,13 @@ class TestSanity(basetest.Basetest):
         
         
          
-    """
     @classmethod
     def teardown_class(self):
+        after_cleanup = os.environ.get("AFTER_CLEANUP")
+        if after_cleanup == None:
+            log.info('skipping teardown for after_cleanup')
+            return
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
                                'ceph', self.ctx['workingdir'])
         log.info('++++++++++++++Completed teardown_class++++++++++++')
-    """

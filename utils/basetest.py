@@ -15,17 +15,15 @@ class Basetest(unittest.TestCase):
         pass
 
     @staticmethod
-    def fetchIniData(self):
+    def fetchIniData(self, filename):
         self.config = SafeConfigParser()
-        self.config.read('setup.cfg')
+        self.config.read(filename)
         
      
        
         
     @staticmethod   
-    def fetchTestYamlData(self, module):
-        yamlfile = module.split('.')[len(module.split('.'))-1]
-        yamlfile = 'yamldata/%s.yaml' % (yamlfile)
+    def fetchTestYamlData(self, yamlfile):
         document = open(yamlfile).read()
         self.ctx = yaml.load(document)
         
