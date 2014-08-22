@@ -77,9 +77,9 @@ def printRPMVersions(url):
     f = open('rpm_versions.txt', 'w')
     f.write('ceph rpm version is - '+ceph_ver+'\n')
     f.write('ceph-deploy rpm version is - '+cephdeploy_ver+'\n')
-    cmd = 'ssh %s lsb_release -a' % (os.environ["CLIENTNODE"])
+    cmd = 'ssh %s cat /etc/issue' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
-    f.write('Client node details - \n'+stdout)
+    f.write('Client node details - \n'+stdout.split('Welcome to')[1])
     f.close()
     
 
