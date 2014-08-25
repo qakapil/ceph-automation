@@ -19,7 +19,6 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls)
         os.environ["CLIENTNODE"] = cls.ctx['clientnode']
-        monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         
     
     
