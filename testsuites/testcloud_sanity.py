@@ -1,7 +1,7 @@
 from utils import basetest
 from utils import monitoring
 from utils import operations
-import logging,time,re
+import logging,time,re, os
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
@@ -10,9 +10,16 @@ class TestSanity(basetest.Basetest):
 
     @classmethod
     def setup_class(cls):        
-        cls.fetchIniData(cls)
-        cls.fetchTestYamlData(cls,__name__)
+        filename = os.environ.get("CFG_FILE", "setup.cfg")    
+        cls.fetchIniData(cls, filename)
+        yamlfile = os.environ.get("YAMLDATA_FILE")
+        if yamlfile == None:
+            yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
+            yamlfile = 'yamldata/%s.yaml' % (yamlfile)
+        cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls)
+        os.environ["CLIENTNODE"] = cls.ctx['clientnode']
+        monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         
     
     
