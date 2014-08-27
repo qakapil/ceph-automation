@@ -1,39 +1,42 @@
-QA infrastructure used from jenkins to manage ceph project.
+This project is an automation infrastructure for Ceph test automation.
+The framework uses python and nosetest for test execution. The tests
+can be executed via a jenkins job or standalone.
 
-Tests exist in the "testsuites" directory.
-
-Example running a test
-
-    # nosetests testsuites/testceph.py 
-
-Enviroment vairables:
-
-TEST_YAML
-
-specifies where the yaml data directing the tests should come from.
-
-TEST_CFG
-
-specifies where the yaml data directing the tests should come from.
-
-TEST_LOG_LEVEL
-
-Sets the log level.
-
-TEST_LOG_CONF
-
-Specifiy the log configuration this follows standard log configuration format.
-
-TEST_NOEARLYCLEANUP
-
-Set this variable to any value and it will block cleaning up the previous install before starting installing ceph.
-
-TEST_NOLATECLEANUP
-
-Set this variable to any value and it will block cleaning up the previous install after running  tests.
+Framework resources - 
+1. All the python testsuite files are located in the testsuites/ dir.
+2. The utils/ dir contains all the supporting python libraries.
+3. Test data for every test suite is stored in yaml files in the yamldata/ dir.
+4. ceph.log file will hold the latest test execution logs
+5. nosetests.xml will contain the latest test results which get exported to
+   jenkins to be dsiaplyed on jenkins ui.
+6. setup.cfg - specify the high level test information like repo url, log
+   level in this file.
+7. As an example, this is one of the jenkins job which is using this framework-
+   http://river.suse.de/view/Storage/job/storage-qa-automation-sle12/
+8. Use nosetest to execute your test suite. For example - 
+   nosetests testsuites/testceph.py
 
 
-Example running ceph with an enviroment variable.
+Prerequisites - following packages should be insatlled on the machine from
+which you plan to run the tests (either manually or via jenkins slave) - 
+1. Python 2.7
+2. Python setuptools
+3. Nosetest
+4. git
+5. osc - openSUSE Build Service Commander
+6. You also need to be able to SSH in to the listed targets without
+   passphrases, and the remote user needs to have passwordless sudo access
 
-    # TEST_YAML=yamldata/on_laptop_testceph.yaml \
-        nosetests testsuites/testceph.py
+
+Environment variables - The environment variables could be set prior to
+starting the test execution - 
+1. CFG_FILE - the default value is setup.cfg or you can specify a different
+   file.
+2. YAMLDATA_FILE - either you can give your yaml data filename using this
+   env variable or make sure that the .yaml file with exactly the same name
+   as the testsuite file name is present in the yamldata/ dir.
+3. BEFORE_CLEANUP - If this env variable is not None, then a previously deployed
+   ceph cluster will be cleaned up before starting the test execution.
+4. AFTER_CLEANUP - If this env variable is not None,then the ceph cluster will 
+   be cleaned up after the test execution.
+
