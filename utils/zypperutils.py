@@ -4,7 +4,7 @@ import logging, os
 log = logging.getLogger(__name__)
 
 def addRepo(reponame, url, node):
-    if isRepoPresent(reponame):
+    if isRepoPresent(reponame, node):
         if getRepoParamValue(reponame, "URI") == url:
             log.warn("repo %s with url %s is already present" % (reponame, url))
             zypperRefresh()
