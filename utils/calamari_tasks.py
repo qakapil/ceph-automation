@@ -26,24 +26,27 @@ def cleanupCalamari():
     if rc != 0:
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
         
+        
+        
 
 def initializeCalamari():
-    cmd = '''ssh %s "sudo expect \
-    -c 'spawn calamari-ctl initialize' \
-    -c 'expect Username' \
-    -c 'send root'\n \
-    -c 'expect Email' \
-    -c 'send root@example.com'\n \
-    -c 'expect Password' \
-    -c 'send linux'\n \
-    -c 'expect Password' \
-    -c 'send linux'\n \"''' % (os.environ["CALAMARI_NODE"])
+    cmd = "scp utils/expect %s:~" % (os.environ["CALAMARI_NODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
     
+    cmd = "ssh %s sudo chmod 755 expect" % (os.environ["CALAMARI_NODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    
+    cmd = "ssh %s sudo ./expect" % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     
     log.info(stdout)
+    
     
     cmd = 'ssh %s sudo rcapache2 restart' % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
@@ -54,6 +57,8 @@ def initializeCalamari():
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
+    
+    
 
 def runUnitTests():
     cmd = "ssh %s sudo \
@@ -68,6 +73,8 @@ def runUnitTests():
     log.info(stderr)  #this needs to be fixed. stdout doesn't conatin the output
     
 
+
+
 def runRestAPITests():
     cmd = "ssh %s sudo \
       CALAMARI_CONFIG=/etc/calamari/calamari.conf \
@@ -79,6 +86,8 @@ def runRestAPITests():
     Error message: %s" % (cmd, stderr)
     
     log.info(stderr) #this needs to be fixed. stdout doesn't conatin the output
+
+
 
 
 def copyClusterConf(yamlfile):

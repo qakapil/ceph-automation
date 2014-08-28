@@ -1,0 +1,11 @@
+#!/usr/bin/expect -f
+spawn calamari-ctl initialize
+expect "Username"
+send "root\n"
+expect "Email"
+send "root@example.com\n"
+expect "Password"
+send "linux\n"
+expect "Password"
+send "linux\n"
+expect eof
