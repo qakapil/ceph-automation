@@ -21,17 +21,18 @@ def cleanupCalamari():
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
 
 def initializeCalamari():
-    cmd = "ssh %s expect \
-     -c 'spawn calamari-ctl initialize' \
-     -c 'expect Username' \
-     -c 'send root\n' \
-     -c 'expect Email' \
-     -c 'send root@example.com\n' \
-     -c 'expect Password' \
-     -c 'send linux\n' \
-     -c 'expect Password' \
-     -c 'send linux\n' \
-     -c 'expect eof'" % (os.environ["CALAMARI_NODE"])
+    cmd = '''ssh %s "sudo expect \
+    -c 'spawn calamari-ctl initialize' \
+    -c 'expect Username' \
+    -c 'send root\n' \
+    -c 'expect Email' \
+    -c 'send root@example.com\n' \
+    -c 'expect Password' \
+    -c 'send linux\n' \
+    -c 'expect Password' \
+    -c 'send linux\n' \
+    -c 'expect eof'"''' % (os.environ["CALAMARI_NODE"])
+    
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
