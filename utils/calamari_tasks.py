@@ -19,6 +19,12 @@ def cleanupCalamari():
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+    
+    cmd = 'ssh %s sudo rm -rf /usr/lib/python2.7/site-packages/calamari-server-test/' % (os.environ["CALAMARI_NODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        
 
 def initializeCalamari():
     cmd = '''ssh %s "sudo expect \
