@@ -25,6 +25,11 @@ def cleanupCalamari():
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+    
+    cmd = 'ssh %s sudo rm expect /tmp/calamari_cluster.yaml /tmp/test.conf' % (os.environ["CALAMARI_NODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
         
         
         
@@ -47,12 +52,11 @@ def initializeCalamari():
     
     log.info(stdout)
     
-    
-    cmd = 'ssh %s sudo rcapache2 restart' % (os.environ["CALAMARI_NODE"])
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert (rc == 0), "Error while executing the command %s.\
-    Error message: %s" % (cmd, stderr)#this bug got fixed #893351
-
+    #cmd = 'ssh %s sudo rcapache2 restart' % (os.environ["CALAMARI_NODE"])
+    #rc,stdout,stderr = launch(cmd=cmd)
+    #assert (rc == 0), "Error while executing the command %s.\
+    #Error message: %s" % (cmd, stderr)#this bug got fixed #893351
+       
     cmd = 'ssh %s sudo wget -O /dev/null http://localhost/' % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
