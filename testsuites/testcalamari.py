@@ -41,23 +41,25 @@ class TestSanity(basetest.Basetest):
     def test02_InitializeCalamari(self):
         calamari_tasks.initializeCalamari()
     
+    
+    
     def test03_AllUnitTests(self):
         calamari_tasks.runUnitTests()
         
+    
         
     def test04_AllAPITests(self):
         calamari_tasks.runRestAPITests()
     
     
+    
     def test05_ServerTests(self):
         log.info(self.yamlfile)
         calamari_tasks.copyClusterConf(self.yamlfile)
+        calamari_tasks.runServerTests()
         
         
         
-        
-    
-    
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         

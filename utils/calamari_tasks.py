@@ -135,3 +135,14 @@ def cleanupStaleNodes(listNodes):
             log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
     
     
+
+
+def runServerTests():
+    cmd = "ssh %s sudo \
+      nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/tests" % (os.environ["CALAMARI_NODE"])
+    
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    
+    log.info(stderr) #this needs to be fixed. stdout doesn't conatin the output
