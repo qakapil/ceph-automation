@@ -1,14 +1,15 @@
 from launch import launch
 import logging, sys, os
+import zypperutils
 
 log = logging.getLogger(__name__)
 
 
-def cleanupCalamari():
-    cmd = 'ssh %s sudo zypper rm calamari-server-test calamari-clients calamari-server' % (os.environ["CALAMARI_NODE"])
-    rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+def cleanupCalamari():    
+    try:
+        zypperutils.removePkg('calamari-server-test calamari-clients calamari-server', os.environ["CALAMARI_NODE"])
+    except Exception as e:
+        log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
     
     cmd = 'ssh %s sudo rcpostgresql stop' % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
