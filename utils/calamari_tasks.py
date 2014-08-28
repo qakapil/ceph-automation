@@ -37,8 +37,7 @@ def initializeCalamari():
     -c 'expect Password' \
     -c 'send linux'\n \
     -c 'expect Password' \
-    -c 'send linux'\n \
-    -c 'expect eof'"''' % (os.environ["CALAMARI_NODE"])
+    -c 'send linux'\n \"''' % (os.environ["CALAMARI_NODE"])
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
