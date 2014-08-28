@@ -35,11 +35,11 @@ class TestSanity(basetest.Basetest):
     
     def test01_AddRepo(self):
         url = self.config.get('env','repo_baseurl')
-        zypperutils.addRepo('ceph', url)
+        zypperutils.addRepo('ceph', url, os.environ["CLIENTNODE"])
     
     
     def test02_InstallCephDeploy(self):
-        zypperutils.installPkg('ceph-deploy')
+        zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
     
     
     def test03_DeclareInitialMons(self):

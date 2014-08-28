@@ -3,30 +3,31 @@ import logging, os
 
 log = logging.getLogger(__name__)
 
-def addRepo(reponame, url):
+def addRepo(reponame, url, node):
     if isRepoPresent(reponame):
         if getRepoParamValue(reponame, "URI") == url:
             log.warn("repo %s with url %s is already present" % (reponame, url))
+            zypperRefresh()
             return
         else:
             log.warn("repo '%s' is present but with incorrect url, removing the repo" % (reponame))
             removeRepo(reponame)
             
-    cmd = "ssh %s sudo zypper addrepo %s %s" % (os.environ["CLIENTNODE"], url, reponame)
+    cmd = "ssh %s sudo zypper addrepo %s %s" % (node, url, reponame)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     zypperRefresh()
 
-def zypperRefresh():
-    cmd = "ssh %s sudo zypper --gpg-auto-import-keys --non-interactive refresh" % (os.environ["CLIENTNODE"])
+def zypperRefresh(node):
+    cmd = "ssh %s sudo zypper --gpg-auto-import-keys --non-interactive refresh" % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
-def isRepoPresent(reponame):
-    cmd = "ssh %s zypper lr %s" % (os.environ["CLIENTNODE"], reponame)
+def isRepoPresent(reponame, node):
+    cmd = "ssh %s zypper lr %s" % (node, reponame)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc == 0 and stderr.strip() == "":
         log.info("repo '%s' is present" % (reponame))
@@ -40,8 +41,8 @@ def isRepoPresent(reponame):
         return False
 
 
-def removeRepo(reponame):
-    cmd = "ssh %s sudo zypper removerepo %s" % (os.environ["CLIENTNODE"], reponame)
+def removeRepo(reponame, node):
+    cmd = "ssh %s sudo zypper removerepo %s" % (node, reponame)
     log.info("removing the repo '%s'"  % (reponame))
     rc,stdout,stderr = launch(cmd=cmd)
     if rc == 0 and stderr.strip() == "":
@@ -53,8 +54,8 @@ def removeRepo(reponame):
     
     
     
-def getRepoParamValue(reponame, paramname):
-    cmd = "ssh %s zypper lr %s" % (os.environ["CLIENTNODE"], reponame)
+def getRepoParamValue(reponame, paramname, node):
+    cmd = "ssh %s zypper lr %s" % (node, reponame)
     rc,stdout,stderr = launch(cmd=cmd)
     if stderr.strip() == "Repository '%s' not found by its alias, number, or URI." % (reponame):
         log.info("repo '%s' is not already present"  % (reponame))
@@ -71,20 +72,20 @@ def getRepoParamValue(reponame, paramname):
     return paramdict[paramname]
 
 
-def installPkg(pkgName):
-    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet install %s"  % (os.environ["CLIENTNODE"], pkgName)
+def installPkg(pkgName, node):
+    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet install %s"  % (node, pkgName)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-def removePkg(pkgName):
-    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet remove %s"  % (os.environ["CLIENTNODE"], pkgName)
+def removePkg(pkgName, node):
+    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet remove %s"  % (node, pkgName)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
-def getPkgParamValue(pkgname, paramname):
-    cmd = "ssh %s zypper info %s" % (os.environ["CLIENTNODE"], pkgname)
+def getPkgParamValue(pkgname, paramname, node):
+    cmd = "ssh %s zypper info %s" % (node, pkgname)
     rc,stdout,stderr = launch(cmd=cmd)
     if "package '"+pkgname+"' not found." in stdout.strip():
         log.warn("package '%s' is not contained in any repo" % (pkgname))
