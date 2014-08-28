@@ -100,8 +100,8 @@ def addAdminNodes(listNodes):
     if len(listNodes) < 1:
         log.error("install nodes list not provided in the yaml file")
         raise Exception, "install nodes list not provided in the yaml file"
-    listNodes = " ".join(listNodes)
-    cmd = 'ssh %s ceph-deploy admin %s' % (os.environ["CLIENTNODE"], listNodes)
+    strlistNodes = " ".join(listNodes)
+    cmd = 'ssh %s ceph-deploy admin %s' % (os.environ["CLIENTNODE"], strlistNodes)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
