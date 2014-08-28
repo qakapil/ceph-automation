@@ -5,6 +5,4 @@
 nosetests.xml
 rpm_versions.txt
 setup.cfg
-*.yaml
-/yamldata/*
 *~

@@ -1,0 +1,18 @@
+master_fqdn:
+   teuthida-6.suse.de
+cluster:
+   root@teuthida-1.suse.de:
+       roles:
+       - osd.0
+       - mon.teuthida-1
+       - client.0
+   root@teuthida-2.suse.de:
+       roles:
+       - osd.1
+       - mon.teuthida-2
+       - client.0
+   root@teuthida-3.suse.de:
+       roles:
+       - osd.2
+       - mon.teuthida-3
+       - client.0
