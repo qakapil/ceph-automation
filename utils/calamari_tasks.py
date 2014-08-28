@@ -66,7 +66,7 @@ def runUnitTests():
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     
-    log.info(stdout)
+    log.info(stderr)
     
 
 def runRestAPITests():
@@ -79,6 +79,4 @@ def runRestAPITests():
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     
-    log.info(stdout)
-    
-
+    log.info(stderr)
