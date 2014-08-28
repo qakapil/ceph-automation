@@ -31,13 +31,13 @@ def initializeCalamari():
     cmd = '''ssh %s "sudo expect \
     -c 'spawn calamari-ctl initialize' \
     -c 'expect Username' \
-    -c 'send root\n' \
+    -c 'send root' \
     -c 'expect Email' \
-    -c 'send root@example.com\n' \
+    -c 'send root@example.com' \
     -c 'expect Password' \
-    -c 'send linux\n' \
+    -c 'send linux' \
     -c 'expect Password' \
-    -c 'send linux\n' \
+    -c 'send linux' \
     -c 'expect eof'"''' % (os.environ["CALAMARI_NODE"])
     
     rc,stdout,stderr = launch(cmd=cmd)
@@ -46,10 +46,10 @@ def initializeCalamari():
     
     log.info(stdout)
     
-    cmd = 'ssh %s sudo rcapache2 restart' % (os.environ["CALAMARI_NODE"])
+    '''cmd = 'ssh %s sudo rcapache2 restart' % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
-    Error message: %s" % (cmd, stderr)
+    Error message: %s" % (cmd, stderr)''' #this bug got fixed #893351
 
     cmd = 'ssh %s sudo wget -O /dev/null http://localhost/' % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
