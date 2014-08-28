@@ -66,7 +66,7 @@ def runUnitTests():
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     
-    log.info(stderr)
+    log.info(stderr)  #this needs to be fixed. stdout doesn't conatin the output
     
 
 def runRestAPITests():
@@ -79,4 +79,4 @@ def runRestAPITests():
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     
-    log.info(stderr)
+    log.info(stderr) #this needs to be fixed. stdout doesn't conatin the output

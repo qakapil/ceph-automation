@@ -47,6 +47,7 @@ class TestSanity(basetest.Basetest):
         calamari_tasks.runRestAPITests()
     
     
+    def test05_ServerTests(self):
     
     
     def tearDown(self):
