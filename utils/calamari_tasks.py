@@ -37,7 +37,6 @@ def initializeCalamari():
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     
-    rc,stdout,stderr = launch(cmd=cmd)
     log.info(stdout)
     
     cmd = 'ssh %s sudo rcapache2 restart' % (os.environ["CALAMARI_NODE"])
