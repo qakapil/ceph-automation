@@ -5,9 +5,9 @@ log = logging.getLogger(__name__)
 
 def addRepo(reponame, url, node):
     if isRepoPresent(reponame, node):
-        if getRepoParamValue(reponame, "URI") == url:
+        if getRepoParamValue(reponame, "URI", node) == url:
             log.warn("repo %s with url %s is already present" % (reponame, url))
-            zypperRefresh()
+            zypperRefresh(node)
             return
         else:
             log.warn("repo '%s' is present but with incorrect url, removing the repo" % (reponame))
@@ -17,7 +17,7 @@ def addRepo(reponame, url, node):
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    zypperRefresh()
+    zypperRefresh(node)
 
 def zypperRefresh(node):
     cmd = "ssh %s sudo zypper --gpg-auto-import-keys --non-interactive refresh" % (node)
