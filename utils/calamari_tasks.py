@@ -80,3 +80,23 @@ def runRestAPITests():
     Error message: %s" % (cmd, stderr)
     
     log.info(stderr) #this needs to be fixed. stdout doesn't conatin the output
+
+
+def copyClusterConf(yamlfile):
+    cmd = 'scp utils/test.conf %s:/tmp' % (os.environ["CALAMARI_NODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    
+    cmd = 'ssh %s sudo cp /tmp/test.conf /usr/lib/python2.7/site-packages/calamari-server-test/tests' % (os.environ["CALAMARI_NODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    
+    cmd = 'scp %s %s:/tmp/calamari_cluster.yaml' % (yamlfile, os.environ["CALAMARI_NODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    
+    
+    

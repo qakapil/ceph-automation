@@ -16,6 +16,7 @@ class TestSanity(basetest.Basetest):
         if yamlfile == None:
             yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
             yamlfile = 'yamldata/%s.yaml' % (yamlfile)
+        cls.yamlfile = yamlfile
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls,'calamariauto.log')
         os.environ["CALAMARI_NODE"] = cls.ctx['master_fqdn'].split('.')[0]
@@ -48,6 +49,12 @@ class TestSanity(basetest.Basetest):
     
     
     def test05_ServerTests(self):
+        log.info(self.yamlfile)
+        calamari_tasks.copyClusterConf(self.yamlfile)
+        
+        
+        
+        
     
     
     def tearDown(self):
