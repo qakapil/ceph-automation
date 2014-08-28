@@ -19,7 +19,7 @@ class TestSanity(basetest.Basetest):
             yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
             yamlfile = 'yamldata/%s.yaml' % (yamlfile)
         cls.fetchTestYamlData(cls,yamlfile)
-        cls.setLogger(cls)
+        cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode']
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         before_cleanup = os.environ.get("BEFORE_CLEANUP")

@@ -29,7 +29,7 @@ class Basetest(unittest.TestCase):
         
     
     @staticmethod   
-    def setLogger(self):
+    def setLogger(self, logfile):
         LEVELS = {'debug': logging.DEBUG,
           'info': logging.INFO,
           'warning': logging.WARNING,
@@ -40,7 +40,7 @@ class Basetest(unittest.TestCase):
         logging.basicConfig(level=level,
                     format='%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
                     datefmt='%m-%d %H:%M',
-                    filename='cephauto.log',
+                    filename=logfile,
                     filemode='w')
         console = logging.StreamHandler()
         console.setLevel(logging.DEBUG)

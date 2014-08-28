@@ -17,7 +17,7 @@ class TestSanity(basetest.Basetest):
             yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
             yamlfile = 'yamldata/%s.yaml' % (yamlfile)
         cls.fetchTestYamlData(cls,yamlfile)
-        cls.setLogger(cls)
+        cls.setLogger(cls,'calamariauto.log')
         os.environ["CALAMARI_NODE"] = cls.ctx['master_fqdn'].split('.')[0]
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
