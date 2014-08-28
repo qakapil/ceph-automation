@@ -50,10 +50,10 @@ def initializeCalamari():
     Error message: %s" % (cmd, stderr)
 
 def runUnitTests():
-    cmd = "sudo \
+    cmd = "ssh %s sudo \
       CALAMARI_CONFIG=/etc/calamari/calamari.conf \
       DJANGO_SETTINGS_MODULE=calamari_web.settings \
-      nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/cthulhu/tests"
+      nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/cthulhu/tests" % (os.environ["CALAMARI_NODE"])
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -63,10 +63,10 @@ def runUnitTests():
     
 
 def runRestAPITests():
-    cmd = "sudo \
+    cmd = "ssh %s sudo \
       CALAMARI_CONFIG=/etc/calamari/calamari.conf \
       DJANGO_SETTINGS_MODULE=calamari_web.settings \
-      nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/rest-api/tests"
+      nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/rest-api/tests" % (os.environ["CALAMARI_NODE"])
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
