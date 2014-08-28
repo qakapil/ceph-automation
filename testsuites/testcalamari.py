@@ -23,6 +23,7 @@ class TestSanity(basetest.Basetest):
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
+            calamari_tasks.cleanupStaleNodes(cls.ctx['allnodes'])
             calamari_tasks.cleanupCalamari()
     
     def setUp(self):

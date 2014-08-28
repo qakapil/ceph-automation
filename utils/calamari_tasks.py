@@ -109,6 +109,29 @@ def copyClusterConf(yamlfile):
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    
+
+
+def cleanupStaleNodes(listNodes):
+    for node in listNodes:
+        cmd = "ssh %s sudo systemctl stop salt-minion" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        cmd = "ssh %s sudo systemctl disable salt-minion" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        cmd = "ssh %s sudo systemctl stop diamond" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        cmd = "ssh %s sudo systemctl disable diamond" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        cmd = "ssh %s sudo rm /etc/salt/pki/minion/minion_master.pub" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
     
     

@@ -105,6 +105,12 @@ def addAdminNodes(listNodes):
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    
+    for node in listNodes:
+        cmd = 'ssh %s sudo chmod +r /etc/ceph/ceph.client.admin.keyring' % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
       
 
 def cleanupNodes(listNodes, reponame):

@@ -5,7 +5,9 @@ allnodes:
 - teuthida-2
 - teuthida-3
 initmons:
+- teuthida-1
 - teuthida-2
+- teuthida-3
 osd_zap:
 - teuthida-1:sdb
 - teuthida-2:sdb
