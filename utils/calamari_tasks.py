@@ -139,7 +139,9 @@ def cleanupStaleNodes(listNodes):
 
 def runServerTests():
     cmd = "ssh %s sudo \
-      nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/tests" % (os.environ["CALAMARI_NODE"])
+    CALAMARI_CONFIG=/etc/calamari/calamari.conf \
+    DJANGO_SETTINGS_MODULE=calamari_web.settings \
+    nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/tests" % (os.environ["CALAMARI_NODE"])
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
