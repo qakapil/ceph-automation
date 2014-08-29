@@ -2,7 +2,6 @@ allnodes:
 - teuthida-1
 - teuthida-2
 - teuthida-3
-- teuthida-6
 master_fqdn:
    teuthida-6.suse.de
 cluster:
