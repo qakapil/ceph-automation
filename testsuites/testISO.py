@@ -22,7 +22,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode']
-        monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
+        #monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         
         cls.ctx['iso_build_num'] = general.getISOBuildNum(\
                                    cls.config.get('env','iso_url'))
