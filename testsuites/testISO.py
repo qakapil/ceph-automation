@@ -38,11 +38,14 @@ class TestSanity(basetest.Basetest):
 
    
     
-    def test01_AddISORepo(self):
+    def test00_AddISORepo(self):
         general.mountISO(self.ctx['iso_build_num'])
         url = 'http://'+self.ctx['clientnode_ip']+'/SLE12'
         for node in self.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
+    
+    def test01_xcdchk(self):
+        general.runXCDCHK(self.ctx['iso_build_num'])
     
     
     def test02_InstallCephDeploy(self):
@@ -244,6 +247,7 @@ class TestSanity(basetest.Basetest):
          
     @classmethod
     def teardown_class(self):
+        general.printRPMVersionsISO()
         after_cleanup = os.environ.get("AFTER_CLEANUP")
         if after_cleanup == None:
             log.info('skipping teardown for after_cleanup')
