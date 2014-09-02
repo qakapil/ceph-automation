@@ -139,7 +139,7 @@ def runXCDCHK(build_num):
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
     
-    cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/ChangeLog--%s.txt .'\
+    cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/ChangeLog--%s.txt ChangeLog.txt'\
     % (os.environ["CLIENTNODE"], build_num, build_num)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
