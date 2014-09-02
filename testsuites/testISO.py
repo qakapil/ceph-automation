@@ -39,6 +39,7 @@ class TestSanity(basetest.Basetest):
    
     
     def test01_AddRepo(self):
+        general.mountISO(self.ctx['iso_build_num'])
         url = 'http://'+self.ctx['clientnode_ip']+'/SLE12'
         for node in self.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
