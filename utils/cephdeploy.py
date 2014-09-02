@@ -30,6 +30,20 @@ def installNodes(listNodes, repourl, gpgurl):
 
 
 
+def installNodes_ISO(listNodes):
+    if len(listNodes) < 1:
+        log.error("install nodes list not provided in the yaml file")
+        raise Exception, "install nodes list not provided in the yaml file"
+    listNodes = " ".join(listNodes)
+    #cmd = 'ceph-deploy install %s' % (listNodes)
+    cmd = 'ssh %s ceph-deploy install %s' % (os.environ["CLIENTNODE"], listNodes)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    
+    
+
+
 def createInitialMons(listMons):
     if len(listMons) < 1:
         log.error("initial mons list not provided in the yaml file")

@@ -1,0 +1,34 @@
+workingdir: /home/jenkins/cephdeploy-cluster
+clientnode: teuthida-4
+clientnode_ip: 10.120.223.4
+allnodes:
+- teuthida-4
+- teuthida-2
+- teuthida-3
+initmons:
+- teuthida-4
+- teuthida-2
+- teuthida-3
+osd_zap:
+- teuthida-4:sdb
+- teuthida-2:sdb
+- teuthida-3:sdb
+osd_prepare:
+- teuthida-4:sdb
+- teuthida-2:sdb
+- teuthida-3:sdb
+osd_activate:
+- teuthida-4:sdb1
+- teuthida-2:sdb1
+- teuthida-3:sdb1
+default_pgs: 192
+images:
+- {name: im1, size: 1024, pool: rbd}
+- {name: im2, size: 1024}
+- {name: im3, size: 512, pool: data}
+radosobjects:
+- {objname: test-obj-1, pool: data}
+createpools:
+- {poolname: test-pool-1, pg-num: 64, size: 2}
+librbd_images:
+- {poolname: rbd, imagename: librbdimg, size_gb: 0.3}

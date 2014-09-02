@@ -48,5 +48,61 @@ def removerpm(rpmname):
     if rc != 0:
         log.error("error while creating the directory %s " % (rpmname))
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    
+    
+def getISOBuildNum(url):
+    url = url.strip()
+    cmd = 'wget -q -O- %s | grep Media1 | sed -e "s|.*Build\\(.*\\)-Media1.*|\\1|"' % (url)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+    build_version = stdout.strip()
+    log.info('ISO build version is - '+build_version)
+    return 'Build'+build_version
+
+
+def mountISO(build_num):
+    mount_dir = '/srv/www/htdocs/SLE12/'
+    cmd = 'ssh %s mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+                          
+    cmd = 'ssh %s sudo mount -o loop /mounts/dist/ibs/Devel:/\
+    Storage:/1.0:/Staging/images/iso/SUSE-Storage-1.0-DVD-\
+    x86_64-%s-Media1.iso %s' % (os.environ["CLIENTNODE"], build_num, mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+                          
+def getCephDeployExpVersionISO():
+    cmd = 'ssh %s ls /srv/www/htdocs/SLE12/suse/noarch/ | grep ceph-deploy'\
+    % (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+    cephdeploy_version = stdout.strip()
+    log.info('Ceph expected version is - '+cephdeploy_version)
+    return cephdeploy_version
+
+
+def getCephExpVersionISO():
+    cmd = 'ssh %s ls /srv/www/htdocs/SLE12/suse/x86_64/ | grep ^ceph-0'\
+    % (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+    ceph_version = stdout.strip()
+    log.info('Ceph expected version is - '+ceph_version)
+    return ceph_version
+
+
+
+    
 
    
