@@ -26,7 +26,9 @@ class TestSanity(basetest.Basetest):
         
         cls.ctx['iso_build_num'] = general.getISOBuildNum(\
                                    cls.config.get('env','iso_url'))
-        
+        for node in cls.ctx['allnodes']:
+            zypperutils.removeRepo('ceph', node)
+    
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
@@ -38,7 +40,7 @@ class TestSanity(basetest.Basetest):
 
    
     
-    def test01_AddRepo(self):
+    def test01_AddISORepo(self):
         general.mountISO(self.ctx['iso_build_num'])
         url = 'http://'+self.ctx['clientnode_ip']+'/SLE12'
         for node in self.ctx['allnodes']:
