@@ -26,8 +26,6 @@ class TestSanity(basetest.Basetest):
         
         cls.ctx['iso_build_num'] = general.getISOBuildNum(\
                                    cls.config.get('env','iso_url'))
-        for node in cls.ctx['allnodes']:
-            zypperutils.removeRepo('ceph', node)
     
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:

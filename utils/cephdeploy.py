@@ -154,15 +154,14 @@ def cleanupNodes(listNodes, reponame):
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
-    try:
-        zypperutils.removePkg('ceph-deploy')
-    except Exception as e:
-        log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
-    try:
-        #zypperutils.removeRepo('ceph')
-        zypperutils.zypperRefresh()
-    except Exception as e:
-        log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
+        try:
+            zypperutils.removePkg('ceph-deploy', node)
+        except Exception as e:
+            log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
+        try:
+            zypperutils.zypperRefresh(node)
+        except Exception as e:
+            log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
            
     
 def getExpectedVersion(url):
