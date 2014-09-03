@@ -154,6 +154,11 @@ def deletePool(dictPool):
     assert (poolname not in poollist), "pool %s was not deleted in %s" % (poolname,poollist)
 
 def restartCeph(node):
+    cmd = "ssh %s sudo ls /etc/init.d/ceph" % (node)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        log.warn('this is not a systemV ceph. Skipping restart')
+        return
     cmd = "ssh %s sudo /etc/init.d/ceph restart" % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
