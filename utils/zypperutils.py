@@ -11,7 +11,7 @@ def addRepo(reponame, url, node):
             return
         else:
             log.warn("repo '%s' is present but with incorrect url, removing the repo" % (reponame))
-            removeRepo(reponame)
+            removeRepo(reponame, node)
             
     cmd = "ssh %s sudo zypper addrepo %s %s" % (node, url, reponame)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -37,7 +37,7 @@ def isRepoPresent(reponame, node):
         return False
     else:
         log.warn("status for repo '%s' could not be validated. Deleting the repo" % (reponame))
-        removeRepo(reponame)
+        removeRepo(reponame, node)
         return False
 
 
