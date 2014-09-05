@@ -79,6 +79,7 @@ class TestSanity(basetest.Basetest):
     
                
     def test10_ValidateCephStatus(self):
+        time.sleep(10)
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
         if fsid not in status:
