@@ -74,7 +74,7 @@ class TestSanity(basetest.Basetest):
     
     
     def test09_AdminNodes(self):
-        cephdeploy.addAdminNodes(self.ctx['allnodes'])
+        cephdeploy.addAdminNodes(self.ctx['clientnode'])
     
     
                
