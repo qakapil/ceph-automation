@@ -13,14 +13,24 @@ osd_zap:
 - teuthida-4:sdb
 - teuthida-2:sdb
 - teuthida-3:sdb
+- teuthida-2:sdc
+- teuthida-3:sdc
+- teuthida-4:sdd
+- teuthida-4:sdn
 osd_prepare:
 - teuthida-4:sdb
 - teuthida-2:sdb
 - teuthida-3:sdb
+- teuthida-2:sdc:/dev/sdn1
+- teuthida-3:sdc:/dev/sdn1
+- teuthida-4:sdd:/dev/sdn
 osd_activate:
 - teuthida-4:sdb1
 - teuthida-2:sdb1
 - teuthida-3:sdb1
+- teuthida-2:sdc1:/dev/sdn1
+- teuthida-3:sdc1:/dev/sdn1
+- teuthida-4:sdd1:/dev/sdn1
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
