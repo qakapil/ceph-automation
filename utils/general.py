@@ -105,7 +105,7 @@ def getCephExpVersionISO():
 
 
 
-def printRPMVersionsISO():
+def printRPMVersionsISO(iso_build_num):
     ceph_ver = getCephExpVersionISO()
     log.info("The version of ceph is "+ ceph_ver)
     print ("The version of ceph is "+ ceph_ver)
@@ -115,6 +115,7 @@ def printRPMVersionsISO():
     print ("The version of cephdeploy is ' "+ cephdeploy_ver)
     
     f = open('iso_versions.txt', 'w')
+    f.write('ISO Build is - '+iso_build_num+'\n')
     f.write('ceph version is - '+ceph_ver+'\n')
     f.write('ceph-deploy version is - '+cephdeploy_ver+'\n')
     cmd = 'ssh %s cat /etc/issue' % (os.environ["CLIENTNODE"])
