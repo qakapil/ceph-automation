@@ -20,4 +20,4 @@ cluster:
        - mon.teuthida-3
    root@teuthida-10.suse.de:
        roles:
-       - client.o
+       - client.0
