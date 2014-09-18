@@ -1,4 +1,5 @@
 allnodes:
+- teuthida-10
 - teuthida-4
 - teuthida-2
 - teuthida-3
@@ -8,18 +9,15 @@ cluster:
    root@teuthida-4.suse.de:
        roles:
        - osd.0
-       - osd.5
        - mon.teuthida-4
-       - client.0
    root@teuthida-2.suse.de:
        roles:
        - osd.1
-       - osd.3
        - mon.teuthida-2
-       - client.0
    root@teuthida-3.suse.de:
        roles:
        - osd.2
-       - osd.4
        - mon.teuthida-3
-       - client.0
+   root@teuthida-10.suse.de:
+       roles:
+       - client.o
