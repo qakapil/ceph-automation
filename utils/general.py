@@ -130,7 +130,7 @@ def runXCDCHK(build_num):
     % (os.environ["CLIENTNODE"], build_num)
     rc,stdout,stderr = launch(cmd=cmd)
     log.info('build_num value '+ str(build_num))
-    log.info('build_num type '+ type(build_num))
+    log.info('build_num type '+ str(type(build_num)))
     if rc == 0:
          log.warning("/tmp/xcd-auto/SUSE-Storage-1.0/%s/ \
          already exists. removing it")% (str(build_num))
