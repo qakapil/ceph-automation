@@ -131,7 +131,7 @@ def runXCDCHK(build_num):
     rc,stdout,stderr = launch(cmd=cmd)
     if rc == 0:
          log.warning("/tmp/xcd-auto/SUSE-Storage-1.0/%s/ \
-         already exists. removing it")% (build_num)
+         already exists. removing it")% (str(build_num))
          cmd = 'ssh %s sudo rm -rf /tmp/xcd-auto/SUSE-Storage-1.0/%s/'\
          % (os.environ["CLIENTNODE"], build_num)
          rc,stdout,stderr = launch(cmd=cmd)
