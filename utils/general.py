@@ -132,14 +132,13 @@ def runXCDCHK(build_num):
     log.info('build_num value '+ str(build_num))
     log.info('build_num type '+ str(type(build_num)))
     if rc == 0:
-         log.warning("/tmp/xcd-auto/SUSE-Storage-1.0/%s/ \
-         already exists. removing it")% (str(build_num))
-         cmd = 'ssh %s sudo rm -rf /tmp/xcd-auto/SUSE-Storage-1.0/%s/'\
-         % (os.environ["CLIENTNODE"], build_num)
-         rc,stdout,stderr = launch(cmd=cmd)
-         if rc != 0:
-             log.warning("Error while executing the command '%s'. \
-             Error message: '%s'" % (cmd, stderr))
+        log.warning("/tmp/xcd-auto/SUSE-Storage-1.0 '%s' removing it" % (build_num))
+        cmd = 'ssh %s sudo rm -rf /tmp/xcd-auto/SUSE-Storage-1.0/%s/'\
+        % (os.environ["CLIENTNODE"], build_num)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
                           
                           
     cmd = 'ssh %s /suse/kukuk/bin/xcdchk -d /tmp/xcd-auto/ -p SUSE-Storage-1.0 \
