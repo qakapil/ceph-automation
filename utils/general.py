@@ -126,7 +126,7 @@ def printRPMVersionsISO(iso_build_num):
 
 def runXCDCHK(build_num):
     cmd = 'ssh %s /suse/kukuk/bin/xcdchk -d /tmp/xcd-auto/ -p SUSE-Storage-1.0 \
-    -b %s -i -S -s /mounts/dist/install/SLP/SLE-12-Server-LATEST/x86_64/DVD1/suse/setup/descr/packages.gz -a x86_64 \
+    -b %s -i -S -s /mounts/dist/install/SLP/SLE-12-Server-TEST/x86_64/DVD1/suse/setup/descr/packages.gz -a x86_64 \
     -n /srv/www/htdocs/SLE12/' % (os.environ["CLIENTNODE"], build_num)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
