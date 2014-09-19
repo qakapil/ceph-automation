@@ -240,7 +240,7 @@ class TestSanity(basetest.Basetest):
     
     def test26_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
-        assert (rc == 1), "OSD Prepare for invalid disk did not fail"
+        assert (rc == 0), "OSD Prepare for invalid disk did not fail"
     
     
     def tearDown(self):
