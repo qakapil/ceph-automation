@@ -49,7 +49,7 @@ class TestSanity(basetest.Basetest):
     def test01_xcdchk(self):
         general.runXCDCHK(self.ctx['iso_build_num'])
     
-   """ 
+    """ 
     def test02_InstallCephDeploy(self):
         zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
     
