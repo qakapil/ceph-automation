@@ -39,7 +39,7 @@ class TestSanity(basetest.Basetest):
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
    
-    
+    """
     def test00_AddISORepo(self):
         general.mountISO(self.ctx['iso_build_num'])
         url = 'http://'+self.ctx['clientnode_ip']+'/SLE12'
@@ -241,7 +241,7 @@ class TestSanity(basetest.Basetest):
     def test26_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
-    
+    """
     
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
