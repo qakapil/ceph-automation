@@ -49,7 +49,7 @@ class TestSanity(basetest.Basetest):
     def test01_xcdchk(self):
         general.runXCDCHK(self.ctx['iso_build_num'])
     
-    """ 
+    
     def test02_InstallCephDeploy(self):
         zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
     
@@ -242,7 +242,7 @@ class TestSanity(basetest.Basetest):
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
     
-    """
+    
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         
