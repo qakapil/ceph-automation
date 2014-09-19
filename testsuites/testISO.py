@@ -39,7 +39,7 @@ class TestSanity(basetest.Basetest):
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
    
-    """
+    
     def test00_AddISORepo(self):
         general.mountISO(self.ctx['iso_build_num'])
         url = 'http://'+self.ctx['clientnode_ip']+'/SLE12'
@@ -49,7 +49,7 @@ class TestSanity(basetest.Basetest):
     def test01_xcdchk(self):
         general.runXCDCHK(self.ctx['iso_build_num'])
     
-    
+    """
     def test02_InstallCephDeploy(self):
         zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
     
