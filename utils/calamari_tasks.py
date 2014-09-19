@@ -133,10 +133,7 @@ def cleanupStaleNodes(listNodes):
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
-        cmd = "ssh %s sudo rm -rf /etc/diamond/*" % (node)
-        rc,stdout,stderr = launch(cmd=cmd)
-        if rc != 0:
-            log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        
     
     
 
