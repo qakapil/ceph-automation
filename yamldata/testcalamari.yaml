@@ -2,7 +2,7 @@ allnodes:
 - teuthida-10
 - teuthida-4
 - teuthida-2
-- teuthida-3
+- teuthida-1
 master_fqdn:
    teuthida-6.suse.de
 cluster:
@@ -14,10 +14,10 @@ cluster:
        roles:
        - osd.1
        - mon.teuthida-2
-   root@teuthida-3.suse.de:
+   root@teuthida-1.suse.de:
        roles:
        - osd.2
-       - mon.teuthida-3
+       - mon.teuthida-1
    root@teuthida-10.suse.de:
        roles:
        - client.0
