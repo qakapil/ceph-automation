@@ -125,6 +125,21 @@ def printRPMVersionsISO(iso_build_num):
 
 
 def runXCDCHK(build_num):
+    
+    cmd = 'ssh %s ls /tmp/xcd-auto/SUSE-Storage-1.0/%s/'\
+    % (os.environ["CLIENTNODE"], build_num)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+         log.warning("/tmp/xcd-auto/SUSE-Storage-1.0/%s/ \
+         already exists. removing it")% (build_num)
+         cmd = 'ssh %s sudo rm -rf /tmp/xcd-auto/SUSE-Storage-1.0/%s/'\
+         % (os.environ["CLIENTNODE"], build_num)
+         rc,stdout,stderr = launch(cmd=cmd)
+         if rc != 0:
+             log.warning("Error while executing the command '%s'. \
+             Error message: '%s'" % (cmd, stderr))
+                          
+                          
     cmd = 'ssh %s /suse/kukuk/bin/xcdchk -d /tmp/xcd-auto/ -p SUSE-Storage-1.0 \
     -b %s -i -S -s /mounts/dist/install/SLP/SLE-12-Server-TEST/x86_64/DVD1/suse/setup/descr/packages.gz -a x86_64 \
     -n /srv/www/htdocs/SLE12/' % (os.environ["CLIENTNODE"], build_num)
@@ -132,13 +147,23 @@ def runXCDCHK(build_num):
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
-
-    cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/SATSOLVER.txt .'\
+    
+    
+    
+    cmd = 'ssh %s ls /tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/SATSOLVER.txt'\
     % (os.environ["CLIENTNODE"], build_num)
     rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        raise Exception, "Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)
+    if rc == 0:
+        cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/SATSOLVER.txt .'\
+        % (os.environ["CLIENTNODE"], build_num)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                              Error message: '%s'" % (cmd, stderr)
+    else:
+        log.info("No SATSOLVER was generated")
+        
+        
     
     cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/ChangeLog--%s.txt ChangeLog.txt'\
     % (os.environ["CLIENTNODE"], build_num, build_num)
@@ -148,4 +173,10 @@ def runXCDCHK(build_num):
                           Error message: '%s'" % (cmd, stderr)
     
 
+def removeOldxcdFiles():
+    cmd = "sudo rm SATSOLVER.txt ChangeLog.txt"
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        log.warning("Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr))
    

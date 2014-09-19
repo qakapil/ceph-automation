@@ -32,6 +32,8 @@ class TestSanity(basetest.Basetest):
             log.info('starting teardown for before_cleanup')
             cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
                                     'ceph')
+            general.removeOldxcdFiles()
+            
     
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
