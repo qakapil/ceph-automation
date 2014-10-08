@@ -41,6 +41,7 @@ class TestSanity(basetest.Basetest):
    
     
     def test00_AddISORepo(self):
+        general.installStartLighthttp(os.environ["CLIENTNODE"])
         general.mountISO(self.ctx['iso_build_num'])
         url = 'http://'+self.ctx['clientnode_ip']+'/SLE12'
         for node in self.ctx['allnodes']:
