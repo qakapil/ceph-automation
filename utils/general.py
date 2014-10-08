@@ -76,35 +76,22 @@ def mountISO(build_num):
 
     cmd = 'ssh %s sudo mount loki:/real-home/ %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        raise Exception, "Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)
    
     
     mount_dir = '/mounts/dist'
     cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        raise Exception, "Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)
 
     cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
 
     cmd = 'ssh %s sudo mount dist.suse.de:/dist %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        raise Exception, "Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)
-    
 
 
     mount_dir = '/srv/www/htdocs/SLE12/'
     cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        raise Exception, "Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)
     
     cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -112,10 +99,6 @@ def mountISO(build_num):
                           
     cmd = 'ssh %s sudo mount -o loop /mounts/dist/ibs/Devel:/Storage:/1.0:/Staging/images/iso/SUSE-Storage-1.0-DVD-x86_64-%s-Media1.iso %s' % (os.environ["CLIENTNODE"], build_num, mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        raise Exception, "Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)
-
 
 
 
