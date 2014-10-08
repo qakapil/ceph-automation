@@ -1,6 +1,7 @@
 import os, sys
 from launch import launch
 import logging
+import zypperutils
 
 log = logging.getLogger(__name__)
 
@@ -63,6 +64,41 @@ def getISOBuildNum(url):
 
 
 def mountISO(build_num):
+    mount_dir = '/suse'
+    cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+
+    cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+
+    cmd = 'ssh %s sudo mount loki:/real-home/ %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+   
+    
+    mount_dir = '/mounts/dist'
+    cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+
+    cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+
+    cmd = 'ssh %s sudo mount dist.suse.de:/dist %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+    
+
+
     mount_dir = '/srv/www/htdocs/SLE12/'
     cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -70,7 +106,7 @@ def mountISO(build_num):
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
     
-    cmd = 'ssh %s sudo umount %s' % (os.environ["CLIENTNODE"], mount_dir)
+    cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
     
                           
@@ -79,6 +115,10 @@ def mountISO(build_num):
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
+
+
+
+
                           
 def getCephDeployExpVersionISO():
     cmd = 'ssh %s ls /srv/www/htdocs/SLE12/suse/noarch/ | grep ceph-deploy'\
@@ -180,4 +220,11 @@ def removeOldxcdFiles():
     if rc != 0:
         log.warning("Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr))
-   
+  
+def installStartLighthttp(node):
+    zypperutils.installPkg('lighttpd', node)
+    cmd = 'ssh %s sudo /etc/init.d/lighttpd start' % (node)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        log.warning("Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)) 
