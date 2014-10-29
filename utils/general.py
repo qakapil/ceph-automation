@@ -58,7 +58,7 @@ def getISOBuildNum(url):
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
-    build_version = stdout.strip().split('/n')[0]
+    build_version = stdout.strip().split('\n')[0]
     log.info('ISO build version is - Build'+build_version)
     return 'Build'+build_version
 
