@@ -1,6 +1,6 @@
 workingdir: /home/jenkins/cephdeploy-cluster
 clientnode: teuthida-4
-clientnode_ip: 10.120.223.4
+clientnode_ip: 10.160.223.4
 allnodes:
 - teuthida-4
 - teuthida-2
