@@ -4,7 +4,7 @@ allnodes:
 - teuthida-2
 - teuthida-1
 master_fqdn:
-   teuthida-6.suse.de
+   teuthida-10.suse.de
 cluster:
    jenkins@teuthida-4.suse.de:
        roles:
