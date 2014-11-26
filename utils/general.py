@@ -210,4 +210,30 @@ def installStartLighthttp(node):
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.warning("Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)) 
+                          Error message: '%s'" % (cmd, stderr))
+
+
+
+
+
+
+def verifycleanup(listNodes):
+    for node in listNodes:
+        cmd = "ssh %s df | awk '{print $6}'" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+        if stdout.find("ceph/osd") != -1
+            raise Exception, "OSD was not unmounted. df ouput - "+str(stdout)
+
+
+        cmd = "ssh %s ls /var/lib/ceph/" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc == 0:
+            raise Exception, "/var/lib/ceph dir still exists on node %s" % node
+       
+        cmd = "ssh %s ls /etc/ceph" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc == 0:
+            raise Exception, "/etc/ceph dir still exists on node %s" % node 

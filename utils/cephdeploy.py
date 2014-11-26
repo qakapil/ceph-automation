@@ -1,4 +1,5 @@
 from launch import launch
+import general
 import zypperutils
 import logging, sys, os
 
@@ -162,6 +163,8 @@ def cleanupNodes(listNodes, reponame):
             zypperutils.zypperRefresh(node)
         except Exception as e:
             log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
+    #verify the cleanup on each node
+    general.verifycleanup(listNodes)
            
     
 def getExpectedVersion(url):
