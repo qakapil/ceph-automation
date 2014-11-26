@@ -224,7 +224,7 @@ def verifycleanup(listNodes):
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
-        if stdout.find("ceph/osd") != -1
+        if stdout.find("ceph/osd") != -1:
             raise Exception, "OSD was not unmounted. df ouput - "+str(stdout)
 
 
