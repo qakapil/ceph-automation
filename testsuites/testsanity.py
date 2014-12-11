@@ -35,7 +35,7 @@ class TestSanity(basetest.Basetest):
     
     def test01_AddRepo(self):
         url = self.config.get('env','repo_baseurl')
-        for node in cls.ctx['allnodes']:
+        for node in self.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
     
     
