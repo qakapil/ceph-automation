@@ -35,7 +35,8 @@ class TestSanity(basetest.Basetest):
     
     def test01_AddRepo(self):
         url = self.config.get('env','repo_baseurl')
-        zypperutils.addRepo('ceph', url, os.environ["CLIENTNODE"])
+        for node in cls.ctx['allnodes']:
+            zypperutils.addRepo('ceph', url, node)
     
     
     def test02_InstallCephDeploy(self):
@@ -48,10 +49,7 @@ class TestSanity(basetest.Basetest):
     
     
     def test04_InstallCeph(self):
-        cephdeploy.installNodes(self.ctx['allnodes'],
-                                self.config.get('env','repo_baseurl'),
-                                self.config.get('env','gpg_url'))
-        
+        cephdeploy.installNodes(self.ctx['allnodes']) 
     
     
     def test05_CreateInitialMons(self):
