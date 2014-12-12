@@ -148,7 +148,7 @@ def cleanupNodes(listNodes, reponame):
         try:
             zypperutils.removeAllPkgsFromRepo(reponame, node)
         except Exception as e:
-            log.warning("Error while removing packages "+str(sys.exc_info()[0]))
+            log.warning("Error while removing packages "+str(sys.exc_info()[1]))
         cmd = "ssh %s sudo zypper removerepo %s" % (node, reponame)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
@@ -161,14 +161,14 @@ def cleanupNodes(listNodes, reponame):
         try:
             zypperutils.removePkg('ceph-deploy', node)
         except Exception as e:
-            log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
+            log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[1]))
         for pkg in rmv_pkgs_list:
             zypperutils.removePkg_expectNotFound(pkg, node)
         '''
         try:
             zypperutils.zypperRefresh(node)
         except Exception as e:
-            log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
+            log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[1]))
     #verify the cleanup on each node
     general.verifycleanup(listNodes)
            
