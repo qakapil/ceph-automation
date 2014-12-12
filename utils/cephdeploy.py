@@ -127,6 +127,8 @@ def addAdminNodes(listNodes):
       
 
 def cleanupNodes(listNodes, reponame):
+    rmv_pkgs_list = ['ceph-deploy', 'python-Flask', 'python-itsdangerous', 'librbd1', \
+                     'librados2', 'python-radosgw-agent', 'libcephfs1']
     if len(listNodes) < 1:
         log.error("install nodes list not provided in the yaml file")
         raise Exception, "install nodes list not provided in the yaml file"
@@ -153,10 +155,14 @@ def cleanupNodes(listNodes, reponame):
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        '''
         try:
             zypperutils.removePkg('ceph-deploy', node)
         except Exception as e:
             log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
+        '''
+        for pkg in rmv_pkgs_list:
+            zypperutils.removePkg_expectNotFound(pkg, node)
         try:
             zypperutils.zypperRefresh(node)
         except Exception as e:

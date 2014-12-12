@@ -92,6 +92,12 @@ def removePkg(pkgName, node):
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
+def removePkg_expectNotFound(pkgName, node):
+    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet remove %s"  % (node, pkgName)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != (0 or 104):
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
 def getPkgParamValue(pkgname, paramname, node):
     cmd = "ssh %s zypper info %s" % (node, pkgname)
     rc,stdout,stderr = launch(cmd=cmd)
