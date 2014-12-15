@@ -4,7 +4,7 @@ from utils import cephdeploy
 from utils import monitoring
 from utils import operations
 import logging,time,re, os, sys
-#from nose import with_setup
+from nose.exc import SkipTest
 
 log = logging.getLogger(__name__)
 
@@ -29,6 +29,8 @@ class TestSanity(basetest.Basetest):
                                     'ceph')
     
     def setUp(self):
+        if os.environ.get("CLUSTER_FAILED") == "Yes":
+           raise SkipTest("ceph cluster was not active+clean") 
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
    
@@ -77,7 +79,6 @@ class TestSanity(basetest.Basetest):
     
                
     def test10_ValidateCephStatus(self):
-        sys.exit()
         time.sleep(10)
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
@@ -95,6 +96,7 @@ class TestSanity(basetest.Basetest):
                 active_clean = True
                 continue
             if (counter > 20):
+                os.environ["CLUSTER_FAILED"] = "Yes"
                 raise Exception, 'PGs did not reach active+clean state \
                                    after 5 mins'
             log.debug('waiting for 5 seconds for ceph status to update')
