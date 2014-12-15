@@ -3,7 +3,7 @@ from utils import zypperutils
 from utils import cephdeploy
 from utils import monitoring
 from utils import operations
-import logging,time,re, os
+import logging,time,re, os, sys
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
@@ -77,6 +77,7 @@ class TestSanity(basetest.Basetest):
     
                
     def test10_ValidateCephStatus(self):
+        sys.exit()
         time.sleep(10)
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
