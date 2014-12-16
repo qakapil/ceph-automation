@@ -63,7 +63,7 @@ def getISOBuildNum(url):
     return 'Build'+build_version
 
 
-def mountISO(build_num):
+def mountISO(build_num, staging=True):
     mount_dir = '/suse'
     cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -97,7 +97,10 @@ def mountISO(build_num):
     rc,stdout,stderr = launch(cmd=cmd)
     
                           
-    cmd = 'ssh %s sudo mount -o loop /mounts/dist/ibs/Devel:/Storage:/1.0:/Staging/images/iso/SUSE-Storage-1.0-DVD-x86_64-%s-Media1.iso %s' % (os.environ["CLIENTNODE"], build_num, mount_dir)
+    if staging == False:
+        cmd = 'ssh %s sudo mount -o loop /mounts/dist/ibs/Devel:/Storage:/1.0/images/iso/SUSE-Storage-1.0-DVD-x86_64-%s-Media1.iso %s' % (os.environ["CLIENTNODE"], build_num, mount_dir)
+    else:
+        cmd = 'ssh %s sudo mount -o loop /mounts/dist/ibs/Devel:/Storage:/1.0:/Staging/images/iso/SUSE-Storage-1.0-DVD-x86_64-%s-Media1.iso %s' % (os.environ["CLIENTNODE"], build_num, mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
 
 
