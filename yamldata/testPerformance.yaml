@@ -8,7 +8,9 @@ allnodes:
 - teuthida-2
 - teuthida-3
 - teuthida-4
+- teuthida-5
 - teuthida-6
+- teuthida-7
 - teuthida-8
 - teuthida-9
 - teuthida-10
@@ -68,6 +70,19 @@ osd_zap:
 - teuthida-4:sdk
 - teuthida-4:sdl
 - teuthida-4:sdn
+- teuthida-5:sda
+- teuthida-5:sdb
+- teuthida-5:sdc
+- teuthida-5:sdd
+- teuthida-5:sde
+- teuthida-5:sdf
+- teuthida-5:sdg
+- teuthida-5:sdh
+- teuthida-5:sdi
+- teuthida-5:sdj
+- teuthida-5:sdk
+- teuthida-5:sdl
+- teuthida-5:sdn
 - teuthida-6:sda
 - teuthida-6:sdb
 - teuthida-6:sdc
@@ -81,6 +96,19 @@ osd_zap:
 - teuthida-6:sdk
 - teuthida-6:sdl
 - teuthida-6:sdn
+- teuthida-7:sda
+- teuthida-7:sdb
+- teuthida-7:sdc
+- teuthida-7:sdd
+- teuthida-7:sde
+- teuthida-7:sdf
+- teuthida-7:sdg
+- teuthida-7:sdh
+- teuthida-7:sdi
+- teuthida-7:sdj
+- teuthida-7:sdk
+- teuthida-7:sdl
+- teuthida-7:sdn
 osd_prepare:
 - teuthida-1:sdb:/dev/sdn
 - teuthida-1:sdc:/dev/sdn
@@ -129,6 +157,18 @@ osd_prepare:
 - teuthida-4:sdj:/dev/sdn
 - teuthida-4:sdk:/dev/sdn
 - teuthida-4:sdl:/dev/sdn
+- teuthida-5:sda:/dev/sdn
+- teuthida-5:sdb:/dev/sdn
+- teuthida-5:sdc:/dev/sdn
+- teuthida-5:sdd:/dev/sdn
+- teuthida-5:sde:/dev/sdn
+- teuthida-5:sdf:/dev/sdn
+- teuthida-5:sdg:/dev/sdn
+- teuthida-5:sdh:/dev/sdn
+- teuthida-5:sdi:/dev/sdn
+- teuthida-5:sdj:/dev/sdn
+- teuthida-5:sdk:/dev/sdn
+- teuthida-5:sdl:/dev/sdn
 - teuthida-6:sda:/dev/sdn
 - teuthida-6:sdb:/dev/sdn
 - teuthida-6:sdc:/dev/sdn
@@ -141,6 +181,18 @@ osd_prepare:
 - teuthida-6:sdj:/dev/sdn
 - teuthida-6:sdk:/dev/sdn
 - teuthida-6:sdl:/dev/sdn
+- teuthida-7:sda:/dev/sdn
+- teuthida-7:sdb:/dev/sdn
+- teuthida-7:sdc:/dev/sdn
+- teuthida-7:sdd:/dev/sdn
+- teuthida-7:sde:/dev/sdn
+- teuthida-7:sdf:/dev/sdn
+- teuthida-7:sdg:/dev/sdn
+- teuthida-7:sdh:/dev/sdn
+- teuthida-7:sdi:/dev/sdn
+- teuthida-7:sdj:/dev/sdn
+- teuthida-7:sdk:/dev/sdn
+- teuthida-7:sdl:/dev/sdn
 osd_activate:
 - teuthida-1:sdb1:/dev/sdn1
 - teuthida-1:sdc1:/dev/sdn2
@@ -189,6 +241,18 @@ osd_activate:
 - teuthida-4:sdj1:/dev/sdn10
 - teuthida-4:sdk1:/dev/sdn11
 - teuthida-4:sdl1:/dev/sdn12
+- teuthida-5:sda1:/dev/sdn1
+- teuthida-5:sdb1:/dev/sdn2
+- teuthida-5:sdc1:/dev/sdn3
+- teuthida-5:sdd1:/dev/sdn4
+- teuthida-5:sde1:/dev/sdn5
+- teuthida-5:sdf1:/dev/sdn6
+- teuthida-5:sdg1:/dev/sdn7
+- teuthida-5:sdh1:/dev/sdn8
+- teuthida-5:sdi1:/dev/sdn9
+- teuthida-5:sdj1:/dev/sdn10
+- teuthida-5:sdk1:/dev/sdn11
+- teuthida-5:sdl1:/dev/sdn12
 - teuthida-6:sda1:/dev/sdn1
 - teuthida-6:sdb1:/dev/sdn2
 - teuthida-6:sdc1:/dev/sdn3
@@ -201,6 +265,19 @@ osd_activate:
 - teuthida-6:sdj1:/dev/sdn10
 - teuthida-6:sdk1:/dev/sdn11
 - teuthida-6:sdl1:/dev/sdn12
+- teuthida-7:sda1:/dev/sdn1
+- teuthida-7:sdb1:/dev/sdn2
+- teuthida-7:sdc1:/dev/sdn3
+- teuthida-7:sdd1:/dev/sdn4
+- teuthida-7:sde1:/dev/sdn5
+- teuthida-7:sdf1:/dev/sdn6
+- teuthida-7:sdg1:/dev/sdn7
+- teuthida-7:sdh1:/dev/sdn8
+- teuthida-7:sdi1:/dev/sdn9
+- teuthida-7:sdj1:/dev/sdn10
+- teuthida-7:sdk1:/dev/sdn11
+- teuthida-7:sdl1:/dev/sdn12
+
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
