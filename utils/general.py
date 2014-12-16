@@ -240,3 +240,32 @@ def verifycleanup(listNodes):
         rc,stdout,stderr = launch(cmd=cmd)
         if rc == 0:
             raise Exception, "/etc/ceph dir still exists on node %s" % node 
+
+
+def updateCephConf_NW(public_nw, cluster_nw):
+    cmd = 'scp %s:ceph.conf .'% (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                              Error message: '%s'" % (cmd, stderr)
+
+    f = file('ceph.conf','r')
+    data = f.read()
+    f.close()
+    data = data[:len(data)-2]
+    cluster_nw = 'cluster network = %s'%(cluster_nw)
+    public_nw = 'public network = %s'%(public_nw)
+    data = data+'\n'+cluster_nw+'\n'+public_nw+'\n'
+    f = file('ceph.conf','w')
+    f.write(data)
+    f.close()
+
+    cmd = 'scp ceph.conf %s:'% (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                              Error message: '%s'" % (cmd, stderr)
