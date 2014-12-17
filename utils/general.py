@@ -75,28 +75,49 @@ def mountISO(build_num, staging=True):
 
     cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))    
 
+ 
     cmd = 'ssh %s sudo mount loki:/real-home/ %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
-   
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
     
     mount_dir = '/mounts/dist'
     cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
 
     cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
 
     cmd = 'ssh %s sudo mount dist.suse.de:/dist %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
 
 
     mount_dir = '/srv/www/htdocs/SLE12/'
     cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
     
     cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
     
                           
     if staging == False:
@@ -106,6 +127,9 @@ def mountISO(build_num, staging=True):
     
     #cmd = 'ssh %s sudo mount -o loop /mounts/dist/ibs/SUSE:/SLE-12:/Update:/Products:/Cloud5/images/iso/SUSE-Storage-1.0-DVD-x86_64-%s-Media1.iso %s' % (os.environ["CLIENTNODE"], build_num, mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
 
 
 
