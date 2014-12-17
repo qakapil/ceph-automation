@@ -104,7 +104,7 @@ def mountISO(build_num, staging=True):
     else:
         cmd = 'ssh %s sudo mount -o loop /mounts/dist/ibs/Devel:/Storage:/1.0:/Staging/images/iso/SUSE-Storage-1.0-DVD-x86_64-%s-Media1.iso %s' % (os.environ["CLIENTNODE"], build_num, mount_dir)
     
-    cmd = 'ssh %s sudo mount -o loop /mounts/dist/ibs/SUSE:/SLE-12:/Update:/Products:/Cloud5/images/iso/SUSE-Storage-1.0-DVD-x86_64-%s-Media1.iso %s' % (os.environ["CLIENTNODE"], build_num, mount_dir)
+    #cmd = 'ssh %s sudo mount -o loop /mounts/dist/ibs/SUSE:/SLE-12:/Update:/Products:/Cloud5/images/iso/SUSE-Storage-1.0-DVD-x86_64-%s-Media1.iso %s' % (os.environ["CLIENTNODE"], build_num, mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
 
 
