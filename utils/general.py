@@ -346,7 +346,7 @@ def downloadISOAddRepo(url, media, reponame, node):
     iso_path = '/tmp/%s' % (iso_name)
     log.info('ISO path  is - '+iso_path)
 
-    iso_uri = 'iso:///?iso=%s'% (iso_name)
+    iso_uri = 'iso:///?iso=%s'% (iso_path)
     log.info('ISO uri  is - '+iso_uri)
 
     zypperutils.addRepo(reponame, iso_uri, node)
