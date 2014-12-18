@@ -329,7 +329,7 @@ def updateCephConf_NW(public_nw, cluster_nw):
 
 def downloadISOAddRepo(url, media, reponame, node):
     url = url.strip()
-    cmd = 'ssh %s get -q -O- %s | grep \'Storage.*Media\' | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
+    cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media\' | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
