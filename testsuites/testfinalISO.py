@@ -252,7 +252,7 @@ class TestSanity(basetest.Basetest):
          
     @classmethod
     def teardown_class(self):
-        general.printRPMVersionsISO(self.ctx['iso_build_num'])
+        #general.printRPMVersionsISO(self.ctx['iso_build_num'])
         after_cleanup = os.environ.get("AFTER_CLEANUP")
         if after_cleanup == None:
             log.info('skipping teardown for after_cleanup')
