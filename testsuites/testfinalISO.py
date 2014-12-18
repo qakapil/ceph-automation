@@ -61,7 +61,7 @@ class TestSanity(basetest.Basetest):
     
     
     def test04_InstallCeph_ISO(self):
-        cephdeploy.installNodes_ISO(self.ctx['allnodes'])
+        cephdeploy.installNodes(self.ctx['allnodes'])
         
     
     
