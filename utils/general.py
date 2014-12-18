@@ -178,13 +178,11 @@ def printRPMVersionsISO(iso_build_num):
     f.close()
 
 
-def runXCDCHK(build_num):
+def runXCDCHK(build_num, media_path=None, media='Media1'):
     
     cmd = 'ssh %s ls /tmp/xcd-auto/SUSE-Storage-1.0/%s/'\
     % (os.environ["CLIENTNODE"], build_num)
     rc,stdout,stderr = launch(cmd=cmd)
-    log.info('build_num value '+ str(build_num))
-    log.info('build_num type '+ str(type(build_num)))
     if rc == 0:
         log.warning("/tmp/xcd-auto/SUSE-Storage-1.0 '%s' removing it" % (build_num))
         cmd = 'ssh %s sudo rm -rf /tmp/xcd-auto/SUSE-Storage-1.0/%s/'\
@@ -194,10 +192,15 @@ def runXCDCHK(build_num):
             log.warning("Error while executing the command '%s'. \
             Error message: '%s'" % (cmd, stderr))
                           
-                          
-    cmd = 'ssh %s /suse/kukuk/bin/xcdchk -d /tmp/xcd-auto/ -p SUSE-Storage-1.0 \
+    if (media_path==None):
+        cmd = 'ssh %s /suse/kukuk/bin/xcdchk -d /tmp/xcd-auto/ -p SUSE-Storage-1.0 \
     -b %s -i -S -s /mounts/dist/install/SLP/SLE-12-Server-LATEST/x86_64/DVD1/suse/setup/descr/packages.gz -a x86_64 \
     -n /srv/www/htdocs/SLE12/' % (os.environ["CLIENTNODE"], build_num)
+    else:
+        cmd = 'ssh %s /suse/kukuk/bin/xcdchk -d /tmp/xcd-auto/ -p SUSE-Storage-1.0 \
+    -b %s -i -S -s /mounts/dist/install/SLP/SLE-12-Server-LATEST/x86_64/DVD1/suse/setup/descr/packages.gz -a x86_64 \
+    -n %s' % (os.environ["CLIENTNODE"], build_num, media_path)
+
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -209,19 +212,34 @@ def runXCDCHK(build_num):
     % (os.environ["CLIENTNODE"], build_num)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc == 0:
-        cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/SATSOLVER.txt .'\
-        % (os.environ["CLIENTNODE"], build_num)
+        cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/SATSOLVER.txt SATSOLVER-%s.txt'\
+        % (os.environ["CLIENTNODE"], build_num, media)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. \
                               Error message: '%s'" % (cmd, stderr)
     else:
         log.info("No SATSOLVER was generated")
+
+
+
+    cmd = 'ssh %s ls /tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/MISSING-SRPM.txt'\
+    % (os.environ["CLIENTNODE"], build_num)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/MISSING-SRPM.txt MISSING-SRPM-%s.txt'\
+        % (os.environ["CLIENTNODE"], build_num, media)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                              Error message: '%s'" % (cmd, stderr)
+    else:
+        log.info("No MISSING-SRPM was generated")
         
         
     
-    cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/ChangeLog--%s.txt ChangeLog.txt'\
-    % (os.environ["CLIENTNODE"], build_num, build_num)
+    cmd = 'scp %s:/tmp/xcd-auto/SUSE-Storage-1.0/%s/x86_64/ChangeLog--%s.txt ChangeLog-%s.txt'\
+    % (os.environ["CLIENTNODE"], build_num, build_num, media)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -229,7 +247,7 @@ def runXCDCHK(build_num):
     
 
 def removeOldxcdFiles():
-    cmd = "sudo rm SATSOLVER.txt ChangeLog.txt"
+    cmd = "sudo rm SATSOLVER* ChangeLog* MISSING-SRPM*"
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.warning("Error while executing the command '%s'. \
@@ -297,3 +315,46 @@ def updateCephConf_NW(public_nw, cluster_nw):
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. \
                               Error message: '%s'" % (cmd, stderr)
+
+
+def downloadISOAddRepo(url, media, reponame, node)
+    url = url.strip()
+    cmd = 'wget -q -O- %s | grep \'Storage.*Media\' | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (url)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+    builds = stdout.strip().split('\n')
+    build_version = builds[len(builds)-1]
+    iso_name = 'SUSE-'+build_version+'-'+media+'.iso'
+    log.info('ISO name  is - '+iso_name)
+    cmd = 'wget %s/%s -P /tmp' %(url, iso_name)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+    iso_path = '/tmp/%s' % (iso_name)
+    zypperutils.addRepo(reponame, iso_path, node)
+    return build_version
+
+
+
+def mountISO(iso_path, mount_dir):
+    cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+
+    cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
+
+    cmd = 'ssh %s sudo mount -o loop %s %s' % (os.environ["CLIENTNODE"], iso_path, mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))    
+
