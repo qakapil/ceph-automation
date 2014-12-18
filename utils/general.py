@@ -135,7 +135,7 @@ def mountISO(build_num, staging=True):
 
                           
 def getCephDeployExpVersionISO(media=None):
-    if media == None:
+    if media != None:
         cmd = 'ssh %s ls %s/suse/x86_64/ | grep ceph-deploy'\
     % (os.environ["CLIENTNODE"], media)
     else:
@@ -152,7 +152,7 @@ def getCephDeployExpVersionISO(media=None):
 
 
 def getCephExpVersionISO(media=None):
-    if media == None:
+    if media != None:
         cmd = 'ssh %s ls %s/suse/x86_64/ | grep ^ceph-0'\
     % (os.environ["CLIENTNODE"], media)
     else:
