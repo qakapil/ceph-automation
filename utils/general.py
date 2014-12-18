@@ -338,13 +338,25 @@ def downloadISOAddRepo(url, media, reponame, node):
     build_version = builds[len(builds)-1]
     iso_name = 'SUSE-'+build_version+'-'+media+'.iso'
     log.info('ISO name  is - '+iso_name)
+    
+    iso_path = '/tmp/%s' % (iso_name)
+    log.info('ISO path  is - '+iso_path)
+
+    cmd = 'ssh %s ls %s' %(node, iso_path)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        log.info("old iso found. Deleting...")
+        cmd = 'ssh %s sudo rm %s' %(node, iso_path)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr)
+
     cmd = 'ssh %s wget %s/%s -P /tmp' %(node, url, iso_name)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
-    iso_path = '/tmp/%s' % (iso_name)
-    log.info('ISO path  is - '+iso_path)
 
     iso_uri = 'iso:///?iso=%s'% (iso_path)
     log.info('ISO uri  is - '+iso_uri)
