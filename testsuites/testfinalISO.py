@@ -27,7 +27,7 @@ class TestSanity(basetest.Basetest):
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
             cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                    'ceph')
+                                    'ceph', 'ceph-debug')
         general.removeOldxcdFiles()
         url = os.environ.get("ISO_URL")
         for node in cls.ctx['allnodes']:
@@ -259,5 +259,5 @@ class TestSanity(basetest.Basetest):
             return
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
-                               'ceph')
+                               'ceph', 'ceph-debug')
         log.info('++++++++++++++Completed teardown_class++++++++++++')
