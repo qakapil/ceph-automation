@@ -317,7 +317,7 @@ def updateCephConf_NW(public_nw, cluster_nw):
                               Error message: '%s'" % (cmd, stderr)
 
 
-def downloadISOAddRepo(url, media, reponame, node)
+def downloadISOAddRepo(url, media, reponame, node):
     url = url.strip()
     cmd = 'wget -q -O- %s | grep \'Storage.*Media\' | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (url)
     rc,stdout,stderr = launch(cmd=cmd)
