@@ -25,7 +25,7 @@ class TestSanity(basetest.Basetest):
         #monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         
         cls.ctx['iso_build_num'] = general.getISOBuildNum(\
-                                   cls.config.get('env','iso_url'))
+                                   cls.config.get('env','iso_url_cloud'))
     
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
