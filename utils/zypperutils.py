@@ -100,10 +100,12 @@ def removePkg_expectNotFound(pkgName, node):
 
 def removeAllPkgsFromRepo(repoName, node):
     cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks rm $(zypper --disable-system-resolvables \
-           -s 0 packages -r %s | tail -n +4 | cut -d'|' -f3 | sort -u)"  % (node, repoName)
+    -s 0 packages -r %s | tail -n +4 | cut -d'|' -f3 | sort -u)"  % (node, repoName)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != (0):
-        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stdout)
+    else:
+        log.info("removed following packages - "+stdout)
 
 def getPkgParamValue(pkgname, paramname, node):
     cmd = "ssh %s zypper info %s" % (node, pkgname)
