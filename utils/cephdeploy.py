@@ -148,7 +148,7 @@ def cleanupNodes(listNodes, reponame):
         try:
             zypperutils.removeAllPkgsFromRepo(reponame, node)
         except Exception as e:
-            log.warning("Error while removing packages....")
+            log.warning("Error while removing packages...."+str(sys.exc_info()[1]))
         cmd = "ssh %s sudo zypper removerepo %s" % (node, reponame)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
