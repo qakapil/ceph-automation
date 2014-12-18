@@ -115,7 +115,7 @@ def addAdminNodes(listNodes):
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
       
 
-def cleanupNodes(listNodes, reponame):
+def cleanupNodes(listNodes, reponame, media2_repo=None):
     if len(listNodes) < 1:
         log.error("install nodes list not provided in the yaml file")
         raise Exception, "install nodes list not provided in the yaml file"
@@ -142,18 +142,16 @@ def cleanupNodes(listNodes, reponame):
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
-        cmd = "ssh %s sudo zypper refresh" % (node)
-        rc,stdout,stderr = launch(cmd=cmd)
-        if rc != 0:
-            log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
-        '''
-        try:
-            zypperutils.removePkg('ceph-deploy', node)
-        except Exception as e:
-            log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[1]))
-        for pkg in rmv_pkgs_list:
-            zypperutils.removePkg_expectNotFound(pkg, node)
-        '''
+        
+        if media2_repo != None:
+            try:
+                zypperutils.removeAllPkgsFromRepo(media2_repo, node)
+            except Exception as e:
+                log.warning("Error while removing packages...."+str(sys.exc_info()[1]))
+            cmd = "ssh %s sudo zypper removerepo %s" % (node, media2_repo)
+            rc,stdout,stderr = launch(cmd=cmd)
+            if rc != 0:
+                log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
         try:
             zypperutils.zypperRefresh(node)
         except Exception as e:
