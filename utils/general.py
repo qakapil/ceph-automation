@@ -344,7 +344,12 @@ def downloadISOAddRepo(url, media, reponame, node):
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
     iso_path = '/tmp/%s' % (iso_name)
-    zypperutils.addRepo(reponame, iso_path, node)
+    log.info('ISO path  is - '+iso_path)
+
+    iso_uri = 'iso:///?iso=%s'%s % (iso_name)
+    log.info('ISO uri  is - '+iso_uri)
+
+    zypperutils.addRepo(reponame, iso_uri, node)
     return build_version
 
 
