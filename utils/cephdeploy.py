@@ -145,6 +145,14 @@ def cleanupNodes(listNodes, reponame):
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
     
     for node in listNodes:
+        cmd = "ssh %s zypper lr" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        log.info("following repos are present "+str(stdout))
+
+        cmd = "ssh %s zypper lr ceph" % (node)
+        rc,stdout,stderr = launch(cmd=cmd) 
+        log.info("ceph repo details "+str(stdout)+str(stderr))
+
         try:
             zypperutils.removeAllPkgsFromRepo(reponame, node)
         except Exception as e:
