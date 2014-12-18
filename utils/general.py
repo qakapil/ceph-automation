@@ -134,9 +134,14 @@ def mountISO(build_num, staging=True):
 
 
                           
-def getCephDeployExpVersionISO():
-    cmd = 'ssh %s ls /srv/www/htdocs/SLE12/suse/noarch/ | grep ceph-deploy'\
+def getCephDeployExpVersionISO(media=None):
+     if media == None:
+        cmd = 'ssh %s ls %s/suse/x86_64/ | grep ceph-deploy'\
+    % (os.environ["CLIENTNODE"], media)
+    else:
+        cmd = 'ssh %s ls /srv/www/htdocs/SLE12/suse/x86_64/ | grep ceph-deploy'\
     % (os.environ["CLIENTNODE"])
+
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -146,9 +151,14 @@ def getCephDeployExpVersionISO():
     return cephdeploy_version
 
 
-def getCephExpVersionISO():
-    cmd = 'ssh %s ls /srv/www/htdocs/SLE12/suse/x86_64/ | grep ^ceph-0'\
+def getCephExpVersionISO(media=None):
+    if media == None:
+        cmd = 'ssh %s ls %s/suse/x86_64/ | grep ^ceph-0'\
+    % (os.environ["CLIENTNODE"], media)
+    else:
+        cmd = 'ssh %s ls /srv/www/htdocs/SLE12/suse/x86_64/ | grep ^ceph-0'\
     % (os.environ["CLIENTNODE"])
+    
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \

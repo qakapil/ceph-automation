@@ -158,7 +158,7 @@ class TestSanity(basetest.Basetest):
 
     
     def test13_ValidateCephDeployVersion(self):
-        expVersion = general.getCephDeployExpVersionISO()
+        expVersion = general.getCephDeployExpVersionISO('/tmp/media1')
         actVersion = cephdeploy.getActuaVersion()
         if actVersion not in expVersion:
             raise Exception, "expected '%s' and actual '%s' versions \
@@ -167,7 +167,7 @@ class TestSanity(basetest.Basetest):
     
     
     def test14_ValidateCephVersion(self):
-        expVersion = general.getCephExpVersionISO()
+        expVersion = general.getCephExpVersionISO('/tmp/media1')
         actVersion = monitoring.getActuaVersion()
         if actVersion not in expVersion:
             raise Exception, "expected '%s' and actual '%s' \
