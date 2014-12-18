@@ -339,7 +339,7 @@ def downloadISOAddRepo(url, media, reponame, node):
 
 
 
-def mountISO(iso_path, mount_dir):
+def mount_extISO(iso_path, mount_dir):
     cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
@@ -358,3 +358,25 @@ def mountISO(iso_path, mount_dir):
             log.warning("Error while executing the command '%s'. \
             Error message: '%s'" % (cmd, stderr))    
 
+
+
+    #also mount the /suse dir to run xcdchk from
+    mount_dir = '/suse'
+    cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+
+    cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))
+
+
+    cmd = 'ssh %s sudo mount loki:/real-home/ %s' % (os.environ["CLIENTNODE"], mount_dir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("Error while executing the command '%s'. \
+            Error message: '%s'" % (cmd, stderr))

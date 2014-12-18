@@ -37,8 +37,8 @@ class TestSanity(basetest.Basetest):
         media1_iso_name = 'SUSE-'+build_version+'-Media1.iso'
         media2_iso_name = 'SUSE-'+build_version+'-Media2.iso'
 
-        general.mountISO('/tmp/'+media1_iso_name, '/tmp/media1')
-        general.mountISO('/tmp/'+media2_iso_name, '/tmp/media2')
+        general.mount_extISO('/tmp/'+media1_iso_name, '/tmp/media1')
+        general.mount_extISO('/tmp/'+media2_iso_name, '/tmp/media2')
         
         general.runXCDCHK(media1_iso_name, '/tmp/'+media1_iso_name, 'Media1')
         general.runXCDCHK(media2_iso_name, '/tmp/'+media2_iso_name, 'Media2')
