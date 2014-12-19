@@ -332,7 +332,7 @@ def downloadISOAddRepo(url, media, reponame, node):
     uname = os.environ.get("WGET_UNAME")
     passwd = os.environ.get("WGET_PASS")
     if (uname or passwd) ==  None:
-        cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media\' \
+        cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media.*iso\<\/a\>\' \
         | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
     else:
       cmd = 'ssh %s wget --http-user=%s --http-password=%s -q -O- %s | grep \'Storage.*Media\' \
