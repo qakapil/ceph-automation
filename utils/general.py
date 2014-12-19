@@ -407,7 +407,7 @@ def mount_extISO(iso_path, mount_dir):
             Error message: '%s'" % (cmd, stderr)
 
     #create ~kukuk softlink
-    cmd = 'ssh %s ls ~kukuk %s' % (os.environ["CLIENTNODE"])
+    cmd = 'ssh %s ls ~kukuk' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
             log.warning("~kukuk not present. Creating...")
