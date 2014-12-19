@@ -382,10 +382,8 @@ def mount_extISO(iso_path, mount_dir):
     cmd = 'ssh %s sudo mount -o loop %s %s' % (os.environ["CLIENTNODE"], iso_path, mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
-            log.warning("Error while executing the command '%s'. \
-            Error message: '%s'" % (cmd, stderr))    
-
-
+        raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr) 
 
     #also mount the /suse dir to run xcdchk from
     mount_dir = '/suse'
@@ -406,4 +404,17 @@ def mount_extISO(iso_path, mount_dir):
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
             log.warning("Error while executing the command '%s'. \
-            Error message: '%s'" % (cmd, stderr))
+            Error message: '%s'" % (cmd, stderr)
+
+    #create ~kukuk softlink
+    cmd = 'ssh %s ls ~kukuk %s' % (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+            log.warning("~kukuk not present. Creating...")
+            cmd = 'ssh %s mkdir \~kukuk/ && ssh %s ln -s /suse/kukuk/bin/ \~kukuk/' % (os.environ["CLIENTNODE"],os.environ["CLIENTNODE"])
+            rc,stdout,stderr = launch(cmd=cmd)
+            if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+
+

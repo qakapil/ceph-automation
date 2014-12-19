@@ -40,8 +40,8 @@ class TestSanity(basetest.Basetest):
         general.mount_extISO('/tmp/'+media1_iso_name, '/tmp/media1')
         general.mount_extISO('/tmp/'+media2_iso_name, '/tmp/media2')
         
-        general.runXCDCHK(media1_iso_name, '/tmp/'+media1_iso_name, 'Media1')
-        general.runXCDCHK(media2_iso_name, '/tmp/'+media2_iso_name, 'Media2')
+        general.runXCDCHK(media1_iso_name, '/tmp/media1', 'Media1')
+        general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
     
     def setUp(self):
         if os.environ.get("CLUSTER_FAILED") == "Yes":
