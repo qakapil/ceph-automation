@@ -42,6 +42,8 @@ class TestSanity(basetest.Basetest):
         
         general.runXCDCHK(media1_iso_name, '/tmp/media1', 'Media1')
         general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
+
+        general.printISOurl(media1_iso_name, url)
     
     def setUp(self):
         if os.environ.get("CLUSTER_FAILED") == "Yes":

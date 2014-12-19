@@ -414,3 +414,15 @@ def mount_extISO(iso_path, mount_dir):
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. \
                   Error message: '%s'" % (cmd, stderr)
+
+
+
+
+def printISOurl(iso_name, url):
+    f = open('iso_versions.txt', 'w')
+    f.write('ISO URL is - '+url+'\n')
+    f.write('ISO build is  - '+iso_name+'\n')
+    cmd = 'ssh %s cat /etc/issue' % (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    f.write('Client node details - \n'+stdout.split('Welcome to')[1])
+    f.close()
