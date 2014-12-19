@@ -329,7 +329,14 @@ def updateCephConf_NW(public_nw, cluster_nw):
 
 def downloadISOAddRepo(url, media, reponame, node):
     url = url.strip()
-    cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media\' | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
+    uname = os.environ.get("WGET_UNAME")
+    passwd = os.environ.get("WGET_PASS")
+    if (uname or passwd) ==  None:
+        cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media\' \
+        | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
+    else:
+      cmd = 'ssh %s wget --http-user=%s --http-password=%s -q -O- %s | grep \'Storage.*Media\' \
+      | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, uname, passwd, url)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -352,7 +359,11 @@ def downloadISOAddRepo(url, media, reponame, node):
             raise Exception, "Error while executing the command '%s'. \
             Error message: '%s'" % (cmd, stderr)
 
-    cmd = 'ssh %s wget %s/%s -P /tmp' %(node, url, iso_name)
+    if (uname or passwd) ==  None:
+        cmd = 'ssh %s wget %s/%s -P /tmp' %(node, url, iso_name)
+    else:
+       cmd = 'ssh %s wget --http-user=%s --http-password=%s %s/%s -P \
+       /tmp' %(node, uname, passwd, url, iso_name)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
