@@ -392,29 +392,25 @@ def mount_extISO(iso_path, mount_dir):
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
-
+    
     cmd = 'ssh %s sudo umount -f %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
             log.warning("Error while executing the command '%s'. \
             Error message: '%s'" % (cmd, stderr))
-
-
+    
     cmd = 'ssh %s sudo mount loki:/real-home/ %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
             log.warning("Error while executing the command '%s'. \
-            Error message: '%s'" % (cmd, stderr)
-
-    #create ~kukuk softlink
+            Error message: '%s'" % (cmd, stderr))
+    
     cmd = 'ssh %s ls \~kukuk' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
-            log.warning("~kukuk not present. Creating...")
-            cmd = 'ssh %s mkdir \~kukuk/ && ssh %s ln -s /suse/kukuk/bin/ \~kukuk/' % (os.environ["CLIENTNODE"],os.environ["CLIENTNODE"])
-            rc,stdout,stderr = launch(cmd=cmd)
-            if rc != 0:
+        log.warning("~kukuk not present. Creating...")
+        cmd = 'ssh %s mkdir \~kukuk/ && ssh %s ln -s /suse/kukuk/bin/ \~kukuk/' % (os.environ["CLIENTNODE"],os.environ["CLIENTNODE"])
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
             raise Exception, "Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)
-
-
+                  Error message: '%s'" % (cmd, stderr)
