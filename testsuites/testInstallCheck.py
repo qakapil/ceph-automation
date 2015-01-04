@@ -48,7 +48,7 @@ class TestInstallCheck(basetest.Basetest):
         
         cls.base_reponame = base_reponame
         cls.node = node
-        cls.printData = {'iso_url':url, 'base_repo':base_url, 'iso_build':sMedia1}
+        cls.printData = {'iso_url':url, 'iso_build':sMedia1, 'baserepo':base_url}
         log.info('test data is '+str(cls.printData))
     
     def setUp(self):
