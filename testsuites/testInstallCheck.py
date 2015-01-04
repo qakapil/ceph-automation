@@ -12,6 +12,8 @@ class TestInstallCheck(basetest.Basetest):
 
     @classmethod
     def setup_class(cls):
+        filename = os.environ.get("CFG_FILE", "setup.cfg")
+        cls.fetchIniData(cls, filename)
         cls.setLogger(cls,'cephauto.log')
         node = os.environ["CLIENTNODE"]
         url = os.environ.get("ISO_URL")
