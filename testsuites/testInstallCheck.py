@@ -23,13 +23,13 @@ class TestInstallCheck(basetest.Basetest):
         
         if os.environ["BASE_REPONAME"]:
            base_reponame = os.environ["BASE_REPONAME"]
-        else
+        else:
            base_reponame = 'ibs-sle12'
 
         
         if os.environ["BASE_REPOURL"]:
            base_url = os.environ["BASE_REPOURL"]
-        else
+        else:
            base_url = 'http://dist.suse.de/ibs/SUSE:/SLE-12:/GA/standard/'
 
         zypperutils.addRepo(base_reponame, base_url, node)
