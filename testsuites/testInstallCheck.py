@@ -18,7 +18,7 @@ class TestInstallCheck(basetest.Basetest):
 
         if zypperutils.isRepoPresent('ceph', node):
            zypperutils.removeRepo('ceph', node)
-        if zypperutils.isRepoPresent('ceph-debug', node)
+        if zypperutils.isRepoPresent('ceph-debug', node):
            zypperutils.removeRepo('ceph-debug', node)
         
         if os.environ["BASE_REPONAME"]:
