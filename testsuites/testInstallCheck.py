@@ -76,6 +76,6 @@ class TestInstallCheck(basetest.Basetest):
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         f = open('jenkins_data.txt', 'w')
         for key, value in self.printData.iteritems():
-            f.write(key+' = '+value+'\n')
+            f.write(key+' = '+value+'\n\n')
         f.close()
         log.info('++++++++++++++Completed teardown_class++++++++++++')
