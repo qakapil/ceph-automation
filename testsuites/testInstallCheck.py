@@ -48,6 +48,7 @@ class TestInstallCheck(basetest.Basetest):
         
         cls.base_reponame = base_reponame
         cls.node = node
+        cls.printData = {'iso_url':url, 'base_repo':base_url, 'iso_build':sMedia1}
 
     
     def setUp(self):
@@ -57,9 +58,12 @@ class TestInstallCheck(basetest.Basetest):
     
     
     def testInstallCheck(self):
-        general.runInstallCheck(self.node, self.base_reponame, 'ceph')
-        general.runInstallCheck(self.node, self.base_reponame, 'ceph-debug')
-    
+        try:
+            general.runInstallCheck(self.node, self.base_reponame, 'ceph')
+            general.runInstallCheck(self.node, self.base_reponame, 'ceph-debug')
+        except  Exception as e:
+            self.printData['InstallCheck_error'] = str(sys.exc_info()[1])
+            raise Exception(str(sys.exc_info()[1]))
     
     
     def tearDown(self):
@@ -70,4 +74,7 @@ class TestInstallCheck(basetest.Basetest):
     @classmethod
     def teardown_class(self):
         log.info('++++++++++++++starting teardown_class+++++++++++++')
+        f = open('jenkins_data.txt', 'w')
+        for key, value in self.printData.iteritems():
+            f.write(key+' = '+value)
         log.info('++++++++++++++Completed teardown_class++++++++++++')
