@@ -444,3 +444,4 @@ def runInstallCheck(node, baserepo, targetrepo):
     if rc != 0:
         raise Exception, "InstallCheck Unsuccessfull. Error executing command '%s'. \
                   Error message: '%s'" % (cmd, stderr)
+    log.info('install check for repo %s against base repo %s was successfull' % (targetrepo, baserepo))
