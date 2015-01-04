@@ -42,9 +42,9 @@ class TestInstallCheck(basetest.Basetest):
             sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node)
        
         if os.environ.get("ISO2"):
-            sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph', node, os.environ.get("ISO2"))
+            sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node, os.environ.get("ISO2"))
         else:
-            sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph', node)
+            sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node)
         
         cls.base_reponame = base_reponame
         cls.node = node
