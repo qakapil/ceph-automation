@@ -437,3 +437,11 @@ def printISOurl(iso_name, url):
     rc,stdout,stderr = launch(cmd=cmd)
     f.write('Client node details - \n'+stdout.split('Welcome to')[1])
     f.close()
+
+def runInstallCheck(node, baserepo, targetrepo):
+    cmd = 'ssh %s installcheck x86_64  --withobsoletes /var/cache/zypp/solv/%s/solv 
+    --nocheck /var/cache/zypp/solv/%s/solv' % (node, targetrepo, baserepo)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "InstallCheck Unsuccessfull. Error executing command '%s'. \
+                  Error message: '%s'" % (cmd, stderr)
