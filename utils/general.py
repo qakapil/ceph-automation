@@ -327,23 +327,25 @@ def updateCephConf_NW(public_nw, cluster_nw):
                               Error message: '%s'" % (cmd, stderr)
 
 
-def downloadISOAddRepo(url, media, reponame, node):
+def downloadISOAddRepo(url, media, reponame, node, iso_name=None):
     url = url.strip()
     uname = os.environ.get("WGET_UNAME")
     passwd = os.environ.get("WGET_PASS")
-    if (uname or passwd) ==  None:
-        cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media.\' \
-        | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
-    else:
-      cmd = 'ssh %s wget --http-user=%s --http-password=%s -q -O- %s | grep \'Storage.*Media\' \
-      | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, uname, passwd, url)
-    rc,stdout,stderr = launch(cmd=cmd)
-    if rc != 0:
-        raise Exception, "Error while executing the command '%s'. \
-                          Error message: '%s'" % (cmd, stderr)
-    builds = stdout.strip().split('\n')
-    build_version = builds[len(builds)-1]
-    iso_name = 'SUSE-'+build_version+'-'+media+'.iso'
+    if iso_name == None:
+        if (uname or passwd) ==  None:
+            cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media.\' \
+            | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
+        else:
+          cmd = 'ssh %s wget --http-user=%s --http-password=%s -q -O- %s | grep \'Storage.*Media\' \
+          | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, uname, passwd, url)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                              Error message: '%s'" % (cmd, stderr)
+        builds = stdout.strip().split('\n')
+        build_version = builds[len(builds)-1]
+        iso_name = 'SUSE-'+build_version+'-'+media+'.iso'
+
     log.info('ISO name  is - '+iso_name)
     
     iso_path = '/tmp/%s' % (iso_name)
