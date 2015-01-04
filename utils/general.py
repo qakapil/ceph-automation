@@ -328,6 +328,7 @@ def updateCephConf_NW(public_nw, cluster_nw):
 
 
 def downloadISOAddRepo(url, media, reponame, node, iso_name=None):
+    build_version=None
     url = url.strip()
     uname = os.environ.get("WGET_UNAME")
     passwd = os.environ.get("WGET_PASS")
