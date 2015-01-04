@@ -15,7 +15,7 @@ class TestInstallCheck(basetest.Basetest):
         filename = os.environ.get("CFG_FILE", "setup.cfg")
         cls.fetchIniData(cls, filename)
         cls.setLogger(cls,'cephauto.log')
-        node = os.environ["CLIENTNODE"]
+        node = os.environ.get("CLIENTNODE")
         url = os.environ.get("ISO_URL")
 
         if zypperutils.isRepoPresent('ceph', node):
@@ -23,14 +23,14 @@ class TestInstallCheck(basetest.Basetest):
         if zypperutils.isRepoPresent('ceph-debug', node):
            zypperutils.removeRepo('ceph-debug', node)
         
-        if os.environ["BASE_REPONAME"]:
-           base_reponame = os.environ["BASE_REPONAME"]
+        if os.environ.get("BASE_REPONAME"):
+           base_reponame = os.environ.get("BASE_REPONAME")
         else:
            base_reponame = 'ibs-sle12'
 
         
-        if os.environ["BASE_REPOURL"]:
-           base_url = os.environ["BASE_REPOURL"]
+        if os.environ.get("BASE_REPOURL"):
+           base_url = os.environ.get("BASE_REPOURL")
         else:
            base_url = 'http://dist.suse.de/ibs/SUSE:/SLE-12:/GA/standard/'
 
