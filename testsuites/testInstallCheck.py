@@ -62,8 +62,8 @@ class TestInstallCheck(basetest.Basetest):
             general.runInstallCheck(self.node, self.base_reponame, 'ceph')
             general.runInstallCheck(self.node, self.base_reponame, 'ceph-debug')
         except  Exception as e:
-            self.printData['InstallCheck_error'] = str(sys.exc_info()[1])
-            raise Exception(str(sys.exc_info()[1]))
+            self.printData['InstallCheck_error'] = str(e)
+            raise Exception(str(e))
     
     
     def tearDown(self):
