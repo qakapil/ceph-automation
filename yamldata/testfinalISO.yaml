@@ -15,7 +15,6 @@ osd_zap:
 - teuthida-2:sdb
 - teuthida-1:sdb
 - teuthida-2:sdc
-- teuthida-2:sdn
 - teuthida-1:sdc
 - teuthida-1:sdn
 - teuthida-4:sdd
@@ -24,7 +23,7 @@ osd_prepare:
 - teuthida-4:sdb
 - teuthida-2:sdb
 - teuthida-1:sdb
-- teuthida-2:sdc:/dev/sdn
+- teuthida-2:sdc
 - teuthida-1:sdc:/dev/sdn
 - teuthida-4:sdd:/dev/sdn
 osd_activate:

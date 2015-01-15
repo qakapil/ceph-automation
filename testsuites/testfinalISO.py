@@ -30,12 +30,21 @@ class TestSanity(basetest.Basetest):
                                     'ceph', 'ceph-debug')
         general.removeOldxcdFiles()
         url = os.environ.get("ISO_URL")
-        for node in cls.ctx['allnodes']:
-            sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node)
-            sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node)
 
-        media1_iso_name = 'SUSE-'+sMedia1+'-Media1.iso'
-        media2_iso_name = 'SUSE-'+sMedia2+'-Media2.iso'
+        for node in cls.ctx['allnodes']:
+            if os.environ.get("ISO1"):
+                sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node, os.environ.get("ISO1"))
+                media1_iso_name = os.environ.get("ISO1")
+            else:
+                sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node)
+                media1_iso_name = 'SUSE-'+sMedia1+'-Media1.iso'
+            if os.environ.get("ISO2"):
+                sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node, os.environ.get("ISO2"))
+                media2_iso_name = os.environ.get("ISO2")
+            else:
+                sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node)
+                media2_iso_name = 'SUSE-'+sMedia2+'-Media2.iso'
+
 
         general.mount_extISO('/tmp/'+media1_iso_name, '/tmp/media1')
         general.mount_extISO('/tmp/'+media2_iso_name, '/tmp/media2')
