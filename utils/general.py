@@ -53,7 +53,8 @@ def removerpm(rpmname):
     
 def getISOBuildNum(url):
     url = url.strip()
-    cmd = 'wget -q -O- %s | grep Media1 | grep Storage | sed -e "s|.*Build\\(.*\\)-Media1.*|\\1|"' % (url)
+    cmd = 'wget -q -O- %s | grep Media1 | grep Storage | grep -v -i  Internal \
+    | sed -e "s|.*Build\\(.*\\)-Media1.*|\\1|"' % (url)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
@@ -335,10 +336,10 @@ def downloadISOAddRepo(url, media, reponame, node, iso_name=None):
     if iso_name == None:
         if (uname or passwd) ==  None:
             cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media.\' \
-            | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
+            | grep -v -i  Internal | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
         else:
-          cmd = 'ssh %s wget --http-user=%s --http-password=%s -q -O- %s | grep \'Storage.*Media\' \
-          | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, uname, passwd, url)
+            cmd = 'ssh %s wget --http-user=%s --http-password=%s -q -O- %s | grep \'Storage.*Media\' \
+            | grep -v -i  Internal | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, uname, passwd, url)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. \
