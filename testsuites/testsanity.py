@@ -3,7 +3,7 @@ from utils import zypperutils
 from utils import cephdeploy
 from utils import monitoring
 from utils import operations
-from utils import rgw
+from utils import rgw_tasks
 import logging,time,re, os, sys
 from nose.exc import SkipTest
 
@@ -239,11 +239,11 @@ class TestSanity(basetest.Basetest):
 
     def test27_RGWS3Tests(self):
         for rgw in self.ctx['rgws']:
-            rgw.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
+            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
         for rgw in self.ctx['rgws']:
-            rgw.verifyRGWList(rgw['rgw-name'])
-        rgw.prepareS3Conf(self.ctx['rgws'][0])
-        rgw.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],\
+            rgw_tasks.verifyRGWList(rgw['rgw-name'])
+        rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
+        rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],\
                               self.ctx['rgws'][0]['rgw-name'])
 
 
