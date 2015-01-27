@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, time
 from launch import launch
 import logging
 from ConfigParser import SafeConfigParser
@@ -14,12 +14,12 @@ def create_rgw(rgw_host, rgw_name):
         log.error("error while creating rgw %s on %s " % (rgw_name, rgw_host))
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     log.info("created rgw %s on %s " % (rgw_name, rgw_host))
-
+    time.sleep(20)
     cmd = "curl %s.suse.de"% (rgw_host)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    anonymus_op = '<?xml version="1.0" encoding="UTF-8"?><ListAllMyBucketsResult\
+    anonymus_op = '<?xml version="1.0" encoding="UTF-8"?><ListAllMyBucketsResult \
 xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Owner><ID>anonymous</ID>\
 <DisplayName></DisplayName></Owner><Buckets></Buckets></ListAllMyBucketsResult>'
     assert (stdout.strip()==anonymus_op), "gateway did not give proper response"
