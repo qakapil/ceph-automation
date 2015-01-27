@@ -67,7 +67,7 @@ def createS3TestsUsers(rgw_node, rgw_name):
     for i in range (len(s3main_list)):
         s3main_data[s3main_list[i][0]] = s3main_list[i][1]
 
-    s3main_usercreate_cmd = 'sudo radosgw-admin -n {client_key} user create --uid={user_id} --display-name="{display_name}" \
+    s3main_usercreate_cmd = 'sudo radosgw-admin -n {client_key} user create --uid={user_id} --display-name=\"{display_name}\" \
 --email={email} --access_key={access_key} --secret={secret_key} --key-type s3'.format(**s3main_data)
    
     cmd = "ssh %s %s" % (rgw_node, s3main_usercreate_cmd)
@@ -82,7 +82,7 @@ def createS3TestsUsers(rgw_node, rgw_name):
     for i in range (len(s3alt_list)):
         s3alt_data[s3alt_list[i][0]] = s3alt_list[i][1]
 
-    s3alt_usercreate_cmd = 'sudo radosgw-admin -n {client_key} user create --uid={user_id} --display-name="{display_name}" \
+    s3alt_usercreate_cmd = 'sudo radosgw-admin -n {client_key} user create --uid={user_id} --display-name=\"{display_name}\" \
 --email={email} --access_key={access_key} --secret={secret_key} --key-type s3'.format(**s3alt_data)
    
     cmd = "ssh %s %s" % (rgw_node, s3alt_usercreate_cmd)
