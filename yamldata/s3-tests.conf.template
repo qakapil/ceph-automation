@@ -7,12 +7,12 @@ bucket prefix = test-client.0-{{random}}-
 [s3 alt]
 user_id = bar.client.0
 email = bar.client.0+test@test.test
-display_name = Mr. bar.client.0
+display_name = Mr.bar.client.0
 access_key = RJYAGRBRBSDLODVRPKXR
 secret_key = S/VbBIYk6salhWSuYMGOljkaS+jvfF99AFM+3QWHFKCK8IV4cRLXmw==
 [s3 main]
 user_id = foo.client.0
 email = foo.client.0+test@test.test
-display_name = Mr. foo.client.0
+display_name = Mr.foo.client.0
 access_key = XSIOOTLWOGOWRWZMRKZZ
 secret_key = Z2I0mqviLh1VWp4lEN8o0Hg0qr+LDZiTusZp/Vg0sc+RUcSK7jxPPQ==
