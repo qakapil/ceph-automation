@@ -241,7 +241,7 @@ class TestSanity(basetest.Basetest):
         for rgw in self.ctx['rgws']:
             rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
         for rgw in self.ctx['rgws']:
-            rgw_tasks.verifyRGWList(rgw['rgw-name'])
+            rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
         rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
         rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],\
                               self.ctx['rgws'][0]['rgw-name'])

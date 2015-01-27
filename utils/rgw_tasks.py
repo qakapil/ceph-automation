@@ -32,15 +32,15 @@ def deleteOldRgwData(rgw_host):
     cmd = "ssh %s sudo rm -rf /var/run/ceph-radosgw" % (rgw_host)
     rc,stdout,stderr = launch(cmd=cmd)
 
-def verifyRGWList(rgw_name):
+def verifyRGWList(rgw_host, rgw_name):
     cmd = "ssh %s ceph-deploy rgw list" % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.error("error while getting rgw list")
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     log.info("rgw list output %s" % stdout.strip())
-    rgw_list = stdout.split('/n')[3 : ]
-    assert (rgw_name in rgw_list), "gateway name was not found in rgw list"
+    rgw_list = stdout.strip()
+    assert (rgw_host+':'+rgw_name in rgw_list), "gateway name was not found in rgw list"
 
 
 def prepareS3Conf(rgw_data):
@@ -67,13 +67,13 @@ def createS3TestsUsers(rgw_node, rgw_name):
     for i in range (len(s3main_list)):
         s3main_data[s3main_list[i][0]] = s3main_list[i][1]
 
-    s3main_usercreate_cmd = "sudo radosgw-admin -n {client_key} user create {user_id} --display-name={display_name} \
+    s3main_usercreate_cmd = "sudo radosgw-admin -n {client_key} user create --uid={user_id} --display-name={display_name} \
 --email={email} --access_key={access_key} --secret={secret_key} --key-type s3".format(**s3main_data)
    
     cmd = "ssh %s %s" % (rgw_node, s3main_usercreate_cmd)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
-        raise Exception, "Error while creating s3 main user'. Error message: '%s'" % (cmd, stderr)
+        raise Exception, "Error while creating s3 main user'. Error message: '%s'" % (stderr)
 
 
     s3alt_list = config.items('s3 alt')[3:]
@@ -82,11 +82,11 @@ def createS3TestsUsers(rgw_node, rgw_name):
     for i in range (len(s3alt_list)):
         s3alt_data[s3alt_list[i][0]] = s3alt_list[i][1]
 
-    s3alt_usercreate_cmd = "sudo radosgw-admin -n {client_key} user create {user_id} --display-name={display_name} \
+    s3alt_usercreate_cmd = "sudo radosgw-admin -n {client_key} user create --uid={user_id} --display-name={display_name} \
 --email={email} --access_key={access_key} --secret={secret_key} --key-type s3".format(**s3alt_data)
    
     cmd = "ssh %s %s" % (rgw_node, s3alt_usercreate_cmd)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
-        raise Exception, "Error while creating s3 alt user'. Error message: '%s'" % (cmd, stderr)
+        raise Exception, "Error while creating s3 alt user'. Error message: '%s'" % (stderr)
 
