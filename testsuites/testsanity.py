@@ -3,6 +3,7 @@ from utils import zypperutils
 from utils import cephdeploy
 from utils import monitoring
 from utils import operations
+from utils import rgw
 import logging,time,re, os, sys
 from nose.exc import SkipTest
 
@@ -235,7 +236,18 @@ class TestSanity(basetest.Basetest):
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
     
-    
+
+    def test27_RGWS3Tests(self):
+        for rgw in self.ctx['rgws']:
+            rgw.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
+        for rgw in self.ctx['rgws']:
+            rgw.verifyRGWList(rgw['rgw-name'])
+        rgw.prepareS3Conf(self.ctx['rgws'][0])
+        rgw.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],\
+                              self.ctx['rgws'][0]['rgw-name'])
+
+
+ 
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         
