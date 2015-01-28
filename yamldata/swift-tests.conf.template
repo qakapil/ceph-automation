@@ -1,0 +1,15 @@
+[func_test]
+auth_port = {rgw-port}
+auth_prefix = /auth/
+auth_ssl = no
+account = foo.client.0
+username = foo
+email = foo.client.0+test@test.test
+display_name = Mr.foo.client.0 foo
+password = myw9+hB9POJ9t5YHitUYr+I9nlnV141JUKOHlmnUYC/1yXMEphFrkQ==
+account2 = bar.client.0
+username2 = bar
+email2 = bar.client.0+test@test.test
+display_name2 = Mr.bar.client.0 bar
+password2 = Rp0ATe1Dcy/0KcrUxoyevSNiU+OwpFXNPriCvxplciolw0MeffP/ug==
+auth_host = {rgw-host}.suse.de

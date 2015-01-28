@@ -58,6 +58,22 @@ def prepareS3Conf(rgw_data):
     fw.close()
 
 
+
+
+def prepareSwiftConf(rgw_data):
+    fr = open('yamldata/swift-tests.conf.template','r')
+    data = fr.read()
+    fr.close()
+    data = data.format(**rgw_data)
+    cmd = "rm -rf swifttests ; mkdir swifttests"
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+    fw = open('swifttests/swift-tests.conf','w')
+    fw.write(data)
+    fw.close()
+
+
 def createS3TestsUsers(rgw_node, rgw_name):
     config = SafeConfigParser()
     config.read('s3tests/s3-tests.conf') 
@@ -91,6 +107,37 @@ def createS3TestsUsers(rgw_node, rgw_name):
         raise Exception, "Error while creating s3 alt user'. Error message: '%s'" % (stderr)
 
 
+
+
+
+def createSwiftTestsUsers(rgw_node, rgw_name):
+    config = SafeConfigParser()
+    config.read('swifttests/swift-tests.conf')
+    swift_list = config.items('func_test')
+    swift_data = {}
+    swift_data['client_key'] = "client.radosgw.%s" % (rgw_name)
+    for i in range (len(swift_list)):
+        swift_data[swift_list[i][0]] = swift_list[i][1]
+
+    swift_acc1_cmd = 'sudo radosgw-admin -n {client_key} user create --subuser={account}:{username} --display-name=\"{display_name}\" \
+--email={email} --secret={password} --key-type swift'.format(**swift_data)
+
+    cmd = "ssh %s %s" % (rgw_node, swift_acc1_cmd)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while creating swift account1 user'. Error message: '%s'" % (stderr)
+
+
+    swift_acc2_cmd = 'sudo radosgw-admin -n {client_key} user create --subuser={account2}:{username2} --display-name=\"{display_name2}\" \
+--email={email2} --secret={password2} --key-type swift'.format(**swift_data)
+
+    cmd = "ssh %s %s" % (rgw_node, swift_acc2_cmd)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception, "Error while creating swift account2 user'. Error message: '%s'" % (stderr)
+
+
+
 def executeS3Tests():
     try:
         cmd = "rm /tmp/s3-tests.conf || true"
@@ -122,3 +169,42 @@ def executeS3Tests():
         cmd = "rm -rf s3tests && rm /tmp/s3-tests.conf"
         rc,stdout,stderr = launch(cmd=cmd)
 
+
+
+
+
+
+
+
+
+def executeSwiftTests():
+    try:
+        cmd = "rm /tmp/swift-tests.conf || true"
+        rc,stdout,stderr = launch(cmd=cmd)
+  
+        cmd = "cp swifttests/swift-tests.conf /tmp/swift-tests.conf"
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+        cmd = "git clone -b firefly-original https://github.com/SUSE/swift.git swifttests/cloned"
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+        cmd = "cd swifttests/cloned && ./bootstrap"
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+
+        cmd = "SWIFT_TEST_CONFIG_FILE=/tmp/swift-tests.conf swifttests/cloned/virtualenv/bin/nosetests\
+        -w swifttests/cloned/test/functional -v -a '!fails_on_rgw'"
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+        log.info(stderr.strip())
+    finally:
+        log.info("cleaning up swifttests dir ..")
+        cmd = "rm -rf swifttests && rm /tmp/swift-tests.conf"
+        rc,stdout,stderr = launch(cmd=cmd)

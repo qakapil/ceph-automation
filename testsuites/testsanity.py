@@ -236,17 +236,28 @@ class TestSanity(basetest.Basetest):
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
     
-
-    def test27_RGWS3Tests(self):
+    def test27_CreateRGW(self):
         for rgw in self.ctx['rgws']:
             rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
-        rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
-        rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],\
-                              self.ctx['rgws'][0]['rgw-name'])
-        rgw_tasks.executeS3Tests()
 
+
+    '''
+    def test28_S3Tests(self):
+        rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
+        rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
+                              self.ctx['rgws'][0]['rgw-name'],
+                              self.ctx['rgws'][0]['rgw-port'])
+        rgw_tasks.executeS3Tests()
+    '''
+
+   def test29_SwiftTests(self):
+        rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
+        rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
+                              self.ctx['rgws'][0]['rgw-name'],
+                              self.ctx['rgws'][0]['rgw-port'])
+        rgw_tasks.executeSwiftTests()
 
  
     def tearDown(self):
