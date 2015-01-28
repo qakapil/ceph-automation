@@ -174,9 +174,6 @@ def executeS3Tests():
 
 
 
-
-
-
 def executeSwiftTests():
     try:
         cmd = "rm /tmp/swift-tests.conf || true"
@@ -187,7 +184,7 @@ def executeSwiftTests():
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
-        cmd = "git clone -b firefly-original https://github.com/SUSE/swift.git swifttests/cloned"
+        cmd = "git clone https://github.com/SUSE/swift.git swifttests/cloned"
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
