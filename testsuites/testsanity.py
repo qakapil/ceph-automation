@@ -251,7 +251,7 @@ class TestSanity(basetest.Basetest):
         rgw_tasks.executeS3Tests()
     '''
 
-   def test29_SwiftTests(self):
+    def test29_SwiftTests(self):
         rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
