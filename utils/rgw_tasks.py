@@ -116,7 +116,7 @@ def executeS3Tests():
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-
+        log.info(stderr.strip())
     finally:
         log.info("cleaning up s3tests dir ..") 
         cmd = "rm -rf s3tests && rm /tmp/s3-tests.conf"
