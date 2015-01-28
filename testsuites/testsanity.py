@@ -247,16 +247,14 @@ class TestSanity(basetest.Basetest):
     def test28_S3Tests(self):
         rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
         rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
-                              self.ctx['rgws'][0]['rgw-name'],
-                              self.ctx['rgws'][0]['rgw-port'])
+                              self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeS3Tests()
     '''
 
    def test29_SwiftTests(self):
         rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
-                              self.ctx['rgws'][0]['rgw-name'],
-                              self.ctx['rgws'][0]['rgw-port'])
+                              self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeSwiftTests()
 
  
