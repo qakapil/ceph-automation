@@ -90,3 +90,35 @@ def createS3TestsUsers(rgw_node, rgw_name):
     if rc != 0:
         raise Exception, "Error while creating s3 alt user'. Error message: '%s'" % (stderr)
 
+
+def executeS3Tests():
+    try:
+        cmd = "rm /tmp/s3-tests.conf || true"
+        rc,stdout,stderr = launch(cmd=cmd)
+  
+        cmd = "cp s3tests/s3-tests.conf /tmp/s3-tests.conf"
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+        cmd = "git clone -b firefly-original https://github.com/SUSE/s3-tests.git s3tests/cloned"
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+        cmd = "cd s3tests/cloned && ./bootstrap"
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+
+        cmd = "S3TEST_CONF=/tmp/s3-tests.conf s3tests/cloned/virtualenv/bin/nosetests -w s3tests/cloned/ -v -a '!fails_on_rgw'"
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+    finally:
+        log.info("cleaning up s3tests dir ..") 
+        cmd = "rm -rf s3tests && rm /tmp/s3-tests.conf"
+        rc,stdout,stderr = launch(cmd=cmd)
+
