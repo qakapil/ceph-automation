@@ -21,7 +21,7 @@ class TestSanity(basetest.Basetest):
             yamlfile = 'yamldata/%s.yaml' % (yamlfile)
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls,'cephauto.log')
-        os.environ["CLIENTNODE"] = cls.ctx['clientnode']
+        os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
@@ -254,7 +254,27 @@ class TestSanity(basetest.Basetest):
     def test26_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
-    
+
+
+    def test27_CreateRGW(self):
+        for rgw in self.ctx['rgws']:
+            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
+        for rgw in self.ctx['rgws']:
+            rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
+
+
+    def test28_S3Tests(self):
+        rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
+        rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
+                              self.ctx['rgws'][0]['rgw-name'])
+        rgw_tasks.executeS3Tests()
+
+    def test29_SwiftTests(self):
+        rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
+        rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
+                              self.ctx['rgws'][0]['rgw-name'])
+        rgw_tasks.executeSwiftTests()
+
     
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)

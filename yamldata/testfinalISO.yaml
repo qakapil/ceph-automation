@@ -1,7 +1,9 @@
 workingdir: /home/jenkins/cephdeploy-cluster
-clientnode: teuthida-10
+clientnode:
+- teuthida-10
 clientnode_ip: 10.160.223.10
 allnodes:
+- teuthida-8
 - teuthida-10
 - teuthida-4
 - teuthida-2
@@ -44,3 +46,5 @@ createpools:
 - {poolname: test-pool-1, pg-num: 64, size: 2}
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
+rgws:
+- {rgw-host: teuthida-8, rgw-name: gateway1, rgw-port: 80}
