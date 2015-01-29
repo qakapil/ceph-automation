@@ -1,5 +1,6 @@
 from utils import basetest
 from utils import zypperutils
+from utils import rgw_tasks
 from utils import cephdeploy
 from utils import monitoring
 from utils import operations
