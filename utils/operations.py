@@ -165,10 +165,21 @@ def restartCeph(node):
     Error message: %s" % (cmd, stderr)
 
 def restartRadosGW(node):
-    cmd = "ssh %s sudo /etc/init.d/ceph-radosgw restart" % (node)
+    cmd = "ssh %s sudo systemctl list-units --type service  | grep ceph-radosgw | grep -v failed" % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
+
+    all_services = stdout.split("\n")
+    list_services = []
+    for service in all_services:
+        list_services.append(service.split(" ")[0])
+    for i in range(len(list_services)-1):
+        cmd = "ssh %s sudo systemctl restart %s" % (node, list_services[i])
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert (rc == 0), "Error while executing the command %s.\
+        Error message: %s" % (cmd, stderr)
+
 
 def validateLibRbdTests():
         cmd = "cat librbd_tests.py | ssh %s python" % (os.environ["CLIENTNODE"])
