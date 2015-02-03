@@ -174,6 +174,8 @@ def restartRadosGW(node):
     list_services = []
     for service in all_services:
         list_services.append(service.split(" ")[0])
+
+    assert (len(list_services) > 1), "no systemd service found for radosgw"
     for i in range(len(list_services)-1):
         cmd = "ssh %s sudo systemctl restart %s" % (node, list_services[i])
         rc,stdout,stderr = launch(cmd=cmd)
