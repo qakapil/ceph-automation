@@ -140,6 +140,8 @@ class TestSanity(basetest.Basetest):
         
     
     def test12_Validatelibrbd(self):
+        operations.validateLibRbdTests()
+        '''
         from utils import librbd_tasks
         for image in self.ctx['librbd_images']:
             cluster = librbd_tasks.createCluster('/etc/ceph/ceph.conf')
@@ -168,7 +170,7 @@ class TestSanity(basetest.Basetest):
             librbd_tasks.removeImage(pool_ctx, image['imagename'])
             log.info("removed the image")
             librbd_tasks.close_cluster(cluster, pool_ctx)
-        
+        '''
     
     def test13_ValidateDefaultOSDtree(self):
         str_osd_tree = monitoring.getOSDtree()
