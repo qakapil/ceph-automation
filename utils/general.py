@@ -455,12 +455,12 @@ def runfioJobs(**fio_dict):
     cmd = "ssh {node} rbd create {rbd_img_name} --size {size}".format(**fio_dict)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), "failed to create image {rbd_img_name} on node {node}".format(**fio_dict)+"\n"+stderr
-    cmd = "ssh {node} rm -rf perfjobs; mkdir -p perfjobs/fiojobs".format(**fio_dict)
+    cmd = "ssh {node} rm -rf perfjobs; ssh {node} mkdir -p perfjobs/fiojobs".format(**fio_dict)
     rc,stdout,stderr = launch(cmd=cmd)
     cmd = "scp perfjobs/fio_template.fio {node}:perfjobs/fiojobs".format(**fio_dict)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
-    cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BS={bs} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
+    cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BLOCKSIZE={bs} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
     log.info("starting fio test on node {node}".format(**fio_dict))
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr

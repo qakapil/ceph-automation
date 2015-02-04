@@ -6,16 +6,17 @@
 # NOTE: Make sure you have either a RBD named 'fio_test' or change                                                                                                                            
 #       the rbdname parameter.                                                                                                                                                                
 ######################################################################                                                                                                                        
-[global]                                                                                                                                                                                      
-logging                                                                                                                                                                                      
-write_iops_log=write_iops_log                                                                                                                                                                
-write_bw_log=write_bw_log                                                                                                                                                                    
-write_lat_log=write_lat_log                                                                                                                                                                  
-ioengine=rbd                                                                                                                                                                                  
-clientname=admin                                                                                                                                                                              
-pool=rbd                                                                                                                                                                                      
+[global]
+#logging                                                                                                                                                                                      
+write_iops_log=write_iops_log
+write_bw_log=write_bw_log
+write_lat_log=write_lat_log
+ioengine=rbd
+clientname=admin
+pool=rbd
 
 [rbd]
 iodepth=${IODEPTH}
-rbdname=${RBDNAME}                                                                                                                                                                            rw=${RW}                                                                                                                                                                             
+rbdname=${RBDNAME}
+rw=${RW}
 bs=${BLOCKSIZE}
