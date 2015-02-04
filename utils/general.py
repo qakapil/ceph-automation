@@ -449,3 +449,22 @@ def runInstallCheck(node, baserepo, targetrepo):
         raise Exception, "InstallCheck Unsuccessfull. Error executing command '%s'. \
                   \nError message: \n '%s' \n '%s' " % (cmd, stdout, stderr)
     log.info('install check for repo %s against base repo %s was successfull' % (targetrepo, baserepo))
+
+
+def runfioJobs(**fio_dict):
+    cmd = "ssh {node} rbd create {rbd_img_name} --size {size}".format(**fio_dict)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), "failed to create image {rbd_img_name} on node {node}".format(**fio_dict)+"\n"+stderr
+    cmd = "ssh {node} rm -rf perfjobs; mkdir -p perfjobs/fiojobs".format(**fio_dict)
+    rc,stdout,stderr = launch(cmd=cmd)
+    cmd = "scp perfjobs/fio_template.fio {node}:perfjobs/fiojobs".format(**fio_dict)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr
+    cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BS={bs} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
+    log.info("starting fio test on node {node}".format(**fio_dict)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr
+    log.info("fio test output on node {node}".format(**fio_dict)+"\n"+stdout
+    
+    
+
