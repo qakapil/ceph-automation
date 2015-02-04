@@ -461,10 +461,13 @@ def runfioJobs(**fio_dict):
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
     cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BS={bs} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
-    log.info("starting fio test on node {node}".format(**fio_dict)
+    log.info("starting fio test on node {node}".format(**fio_dict))
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr
-    log.info("fio test output on node {node}".format(**fio_dict)+"\n"+stdout
+    log.info("fio test output on node {node}".format(**fio_dict)+"\n"+stdout)
     
     
-
+def installPkgFromurl(node, url):
+    cmd = "ssh %s sudo rpm -i %s" % (node, url)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), "failed to install package %s on node %s" % (url, node) + "\n"+stderr
