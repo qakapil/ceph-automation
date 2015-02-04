@@ -8,9 +8,9 @@
 ######################################################################                                                                                                                        
 [global]
 #logging                                                                                                                                                                                      
-write_iops_log=write_iops_log
-write_bw_log=write_bw_log
-write_lat_log=write_lat_log
+write_iops_log=perfjobs/fiojobs/logs/write_iops_log
+write_bw_log=perfjobs/fiojobs/logs/write_bw_log
+write_lat_log=perfjobs/fiojobs/logs/write_lat_log
 ioengine=rbd
 clientname=admin
 pool=rbd

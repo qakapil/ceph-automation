@@ -88,7 +88,7 @@ class TestSanity(basetest.Basetest):
     def test09_AdminNodes(self):
         cephdeploy.addAdminNodes(self.ctx['clientnode'])
         for node in self.ctx['clientnode']:
-            installPkgFromurl(node, 
+            general.installPkgFromurl(node, 
             "http://download.suse.de/ibs/Devel:/Storage:/1.0/SLE_12/x86_64/fio-2.2.5-1.1.x86_64.rpm")
     
                
