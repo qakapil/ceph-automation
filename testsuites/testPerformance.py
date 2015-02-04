@@ -4,7 +4,8 @@ from utils import cephdeploy
 from utils import monitoring
 from utils import operations
 from utils import general
-import logging,time,re, os
+from threading import Thread
+import logging,time,re, os, threading
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
@@ -86,7 +87,9 @@ class TestSanity(basetest.Basetest):
     
     def test09_AdminNodes(self):
         cephdeploy.addAdminNodes(self.ctx['clientnode'])
-    
+        for node in self.ctx['clientnode']:
+            installPkgFromurl(node, 
+            "http://download.suse.de/ibs/Devel:/Storage:/1.0/SLE_12/x86_64/fio-2.2.5-1.1.x86_64.rpm")
     
                
     def test10_ValidateCephStatus(self):
@@ -120,6 +123,17 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.info('cluster health is OK and PGs are active+clean') 
     
+    
+    def test11_fioPerformanceTests(self):
+        job_list = []
+        for fio_job in self.ctx['fio_jobs']:
+            job_list.append(Thread(target=general.runfioJobs, kwargs=fio_job))
+        for job in job_list:
+            job.start()
+        for thread in threading.enumerate():
+            if thread is not threading.currentThread():
+                thread.join()
+
 
     
     def tearDown(self):
