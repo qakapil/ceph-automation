@@ -11,6 +11,9 @@
 write_iops_log=perfjobs/fiojobs/logs/write_iops_log
 write_bw_log=perfjobs/fiojobs/logs/write_bw_log
 write_lat_log=perfjobs/fiojobs/logs/write_lat_log
+read_iops_log=perfjobs/fiojobs/logs/read_iops_log
+read_bw_log=perfjobs/fiojobs/logs/read_bw_log
+read_lat_log=perfjobs/fiojobs/logs/read_lat_log
 ioengine=rbd
 clientname=admin
 pool=rbd

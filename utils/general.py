@@ -464,7 +464,7 @@ def runfioJobs(**fio_dict):
     log.info("starting fio test on node {node}".format(**fio_dict))
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr
-    node = {node}.format(**fio_dict)
+    node = "{node}".format(**fio_dict)
     cmd = "ssh %s echo %s > perfjobs/fiojobs/logs/results.log" % (node, stdout)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
