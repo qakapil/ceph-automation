@@ -465,7 +465,7 @@ def runfioJobs(**fio_dict):
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr
     node = "{node}".format(**fio_dict)
-    cmd = "ssh %s echo %s > perfjobs/fiojobs/logs/results.log" % (node, stdout)
+    cmd = 'echo "%s" > results.log && scp %s_results.log %s:perfjobs/fiojobs/logs/ && rm %s_results.log' % (str(stdout), node, node)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
     log.info("fio test output on node {node}".format(**fio_dict)+"\n"+stdout)
