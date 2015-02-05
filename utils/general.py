@@ -470,6 +470,13 @@ def runfioJobs(LE, **fio_dict):
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
         log.info("fio test output on node {node}".format(**fio_dict)+"\n"+stdout)
+        log.info("generating graphs using gio2gnuplot")
+        cmd = "ssh node 'cd perfjobs/fiojobs/logs && fio2gnuplot -p '*_bw*' -g'" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), stderr
+        cmd = "ssh node 'cd perfjobs/fiojobs/logs && fio2gnuplot -p '*_iops*' -g'" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), stderr
     except:
         LE.excList.append(sys.exc_info()[1])
         raise sys.exc_info()[0], sys.exc_info()[1]
