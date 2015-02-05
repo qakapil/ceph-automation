@@ -469,7 +469,7 @@ def runfioJobs(LE, **fio_dict):
         cmd = 'echo "%s" > %s_results.log && scp %s_results.log %s:perfjobs/fiojobs/logs/ && rm %s_results.log' % (str(stdout),node,node,node,node)
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
-        log.info("fio test output on node {node}".format(**fio_dict)+"\n"+stdout)
+        #log.debug("fio test output on node {node}".format(**fio_dict)+"\n"+stdout)
         log.info("generating graphs using gio2gnuplot")
         cmd = "ssh %s 'cd perfjobs/fiojobs/logs && fio2gnuplot -p '*_bw*' -g'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)

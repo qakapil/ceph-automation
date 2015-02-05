@@ -127,7 +127,8 @@ class TestSanity(basetest.Basetest):
     def test11_fioPerformanceTests(self):
         log.info('storing pre-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=True)
-
+        
+        log.info('starting fio jobs')
         LE = general.ListExceptions() #creating this object to track exceptions in child threads 
         job_list = []
         for fio_job in self.ctx['fio_jobs']:
@@ -139,6 +140,8 @@ class TestSanity(basetest.Basetest):
                 thread.join()
         assert(len(LE.excList) < 1), LE.excList
 
+        log.info('finished fio jobs')
+        
         log.info('storing post-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=False)
 
