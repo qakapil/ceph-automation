@@ -123,8 +123,11 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.info('cluster health is OK and PGs are active+clean') 
     
-    
+     
     def test11_fioPerformanceTests(self):
+        log.info('storing pre-run cluster info')
+        general.storeClusterInfo('clusterinfo',before_run=True)
+
         LE = general.ListExceptions() #creating this object to track exceptions in child threads 
         job_list = []
         for fio_job in self.ctx['fio_jobs']:
@@ -135,6 +138,9 @@ class TestSanity(basetest.Basetest):
             if thread is not threading.currentThread():
                 thread.join()
         assert(len(LE.excList) < 1), LE.excList
+
+        log.info('storing post-run cluster info')
+        general.storeClusterInfo('clusterinfo',before_run=False)
 
 
     

@@ -488,6 +488,36 @@ def installPkgFromurl(node, url):
     assert(rc == 0), "failed to install package %s on node %s" % (url, node) + "\n"+stderr
 
 
+def storeClusterInfo(wdir,before_run=False):
+    filename = "afterrun.log"
+    if before_run:
+        cmd = "rm -rf %s; mkdir %s" % (wdir, wdir)
+        rc,stdout,stderr = launch(cmd=cmd)
+        filename = "beforerun.log"
+
+    filepath = "%s/%s" % (wdir, filename)
+
+    cmd = 'ssh %s ceph -s &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr
+
+    cmd = 'ssh %s rados df &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr
+
+    cmd = 'ssh %s ceph mon_status &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr
+
+    cmd = 'ssh %s ceph osd tree &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr
+
+    cmd = 'ssh %s ceph osd crush dump &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr
+
+
 
 class ListExceptions:
     excList = []
