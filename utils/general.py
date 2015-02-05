@@ -471,7 +471,7 @@ def runfioJobs(LE, **fio_dict):
         assert(rc == 0), stderr
         log.info("fio test output on node {node}".format(**fio_dict)+"\n"+stdout)
     except:
-        LE.exceptionList.append(sys.exc_info()[1])
+        LE.excList.append(sys.exc_info()[1])
         raise sys.exc_info()[0], sys.exc_info()[1]
     
     
