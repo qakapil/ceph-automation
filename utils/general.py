@@ -453,7 +453,7 @@ def runInstallCheck(node, baserepo, targetrepo):
 
 def runfioJobs(LE, **fio_dict):
     try:
-        cmd = "ssh {node} rbd create {rbd_img_name} --size {size}".format(**fio_dict)
+        cmd = "ssh {node123} rbd create {rbd_img_name} --size {size}".format(**fio_dict)
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), "failed to create image {rbd_img_name} on node {node}".format(**fio_dict)+"\n"+stderr
         cmd = "ssh {node} rm -rf perfjobs; ssh {node} mkdir -p perfjobs/fiojobs/logs".format(**fio_dict)
