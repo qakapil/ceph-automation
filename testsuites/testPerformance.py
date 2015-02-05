@@ -125,14 +125,16 @@ class TestSanity(basetest.Basetest):
     
     
     def test11_fioPerformanceTests(self):
+        LE = general.ListExceptions() #creating this object to track exceptions in child threads 
         job_list = []
         for fio_job in self.ctx['fio_jobs']:
-            job_list.append(Thread(target=general.runfioJobs, kwargs=fio_job))
+            job_list.append(Thread(target=general.runfioJobs, args=(LE,), kwargs=fio_job))
         for job in job_list:
             job.start()
         for thread in threading.enumerate():
             if thread is not threading.currentThread():
                 thread.join()
+        assert(len(TE.exceptionList) < 1), TE.exceptionList
 
 
     

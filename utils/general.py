@@ -451,27 +451,36 @@ def runInstallCheck(node, baserepo, targetrepo):
     log.info('install check for repo %s against base repo %s was successfull' % (targetrepo, baserepo))
 
 
-def runfioJobs(**fio_dict):
-    cmd = "ssh {node} rbd create {rbd_img_name} --size {size}".format(**fio_dict)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert(rc == 0), "failed to create image {rbd_img_name} on node {node}".format(**fio_dict)+"\n"+stderr
-    cmd = "ssh {node} rm -rf perfjobs; ssh {node} mkdir -p perfjobs/fiojobs/logs".format(**fio_dict)
-    rc,stdout,stderr = launch(cmd=cmd)
-    cmd = "scp perfjobs/fio_template.fio {node}:perfjobs/fiojobs".format(**fio_dict)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert(rc == 0), stderr
-    cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BLOCKSIZE={bs} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
-    log.info("starting fio test on node {node}".format(**fio_dict))
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr
-    node = "{node}".format(**fio_dict)
-    cmd = 'echo "%s" > %s_results.log && scp %s_results.log %s:perfjobs/fiojobs/logs/ && rm %s_results.log' % (str(stdout),node,node,node,node)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert(rc == 0), stderr
-    log.info("fio test output on node {node}".format(**fio_dict)+"\n"+stdout)
+def runfioJobs(LE, **fio_dict):
+    try:
+        cmd = "ssh {node} rbd create {rbd_img_name} --size {size}".format(**fio_dict)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), "failed to create image {rbd_img_name} on node {node}".format(**fio_dict)+"\n"+stderr
+        cmd = "ssh {node} rm -rf perfjobs; ssh {node} mkdir -p perfjobs/fiojobs/logs".format(**fio_dict)
+        rc,stdout,stderr = launch(cmd=cmd)
+        cmd = "scp perfjobs/fio_template.fio {node}:perfjobs/fiojobs".format(**fio_dict)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), stderr
+        cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BLOCKSIZE={bs} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
+        log.info("starting fio test on node {node}".format(**fio_dict))
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr
+        node = "{node}".format(**fio_dict)
+        cmd = 'echo "%s" > %s_results.log && scp %s_results.log %s:perfjobs/fiojobs/logs/ && rm %s_results.log' % (str(stdout),node,node,node,node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), stderr
+        log.info("fio test output on node {node}".format(**fio_dict)+"\n"+stdout)
+    except:
+        LE.exceptionList.append(sys.exc_info()[1])
+        raise sys.exc_info()[0], sys.exc_info()[1]
     
     
 def installPkgFromurl(node, url):
     cmd = "ssh %s sudo rpm -i %s" % (node, url)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), "failed to install package %s on node %s" % (url, node) + "\n"+stderr
+
+
+
+class ListExceptions:
+    excList = []
