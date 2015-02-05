@@ -497,23 +497,23 @@ def storeClusterInfo(wdir,before_run=False):
 
     filepath = "%s/%s" % (wdir, filename)
 
-    cmd = 'ssh %s ceph -s &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    cmd = "ssh %s ceph -s &>> %s;echo $'\n\n' &>> %s" % (os.environ["CLIENTNODE"], filepath, filepath)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
 
-    cmd = 'ssh %s rados df &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    cmd = "ssh %s rados df &>> %s;echo $'\n\n' &>> %s" % (os.environ["CLIENTNODE"], filepath, filepath)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
 
-    cmd = 'ssh %s ceph mon_status &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    cmd = "ssh %s ceph mon_status &>> %s;echo $'\n\n' &>> %s" % (os.environ["CLIENTNODE"], filepath, filepath)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
 
-    cmd = 'ssh %s ceph osd tree &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    cmd = "ssh %s ceph osd tree &>> %s;echo $'\n\n' &>> %s" % (os.environ["CLIENTNODE"], filepath, filepath)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
 
-    cmd = 'ssh %s ceph osd crush dump &>> %s' % (os.environ["CLIENTNODE"], filepath)
+    cmd = "ssh %s ceph osd crush dump &>> %s;echo $'\n\n' &>> %s" % (os.environ["CLIENTNODE"], filepath, filepath)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
 
