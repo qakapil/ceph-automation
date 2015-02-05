@@ -134,7 +134,7 @@ class TestSanity(basetest.Basetest):
         for thread in threading.enumerate():
             if thread is not threading.currentThread():
                 thread.join()
-        assert(len(LE.excList) < 1), TE.exceptionList
+        assert(len(LE.excList) < 1), LE.excList
 
 
     
