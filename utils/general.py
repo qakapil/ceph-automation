@@ -330,7 +330,7 @@ def perNodeCleanUp(listNodes, reponame):
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
      
-        verifycleanup(listNodes)
+    verifycleanup(listNodes)
 
 
 
