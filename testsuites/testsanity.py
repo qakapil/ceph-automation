@@ -3,7 +3,8 @@ from utils import zypperutils
 from utils import cephdeploy
 from utils import monitoring
 from utils import operations
-from utils import rgw_tasks
+from utils import general
+frsssssm utils import rgw_tasks
 import logging,time,re, os, sys
 from nose.exc import SkipTest
 
@@ -26,8 +27,9 @@ class TestSanity(basetest.Basetest):
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
-            cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                    'ceph')
+            #cephdeploy.cleanupNodes(cls.ctx['allnodes'], 'ceph')
+            general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
+
     
     def setUp(self):
         if os.environ.get("CLUSTER_FAILED") == "Yes":

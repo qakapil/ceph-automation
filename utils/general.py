@@ -299,6 +299,43 @@ def verifycleanup(listNodes):
             raise Exception, "/etc/ceph dir still exists on node %s" % node 
 
 
+
+
+def perNodeCleanUp(listNodes, reponame):
+    for node in listNodes:
+        try:
+            zypperutils.removeAllPkgsFromRepo(reponame, node)
+        except Exception as e:
+            log.warning("Error while removing packages...."+str(sys.exc_info()[1]))
+        cmd = "ssh %s df | awk '{print $6}'" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                          Error message: '%s'" % (cmd, stderr)
+
+        mounts = stdout.split("\n")
+        for mount in mounts:
+            if mount.strip().find("ceph/osd") != -1:
+                cmd = "ssh %s sudo umount -f %s" % (node, mount)
+                rc,stdout,stderr = launch(cmd=cmd)
+                assert(rc == 0), "could not umount %s on %s" % (mount,node)
+
+        cmd = "ssh %s if test -d /etc/ceph; then rm -rf /etc/ceph; fi" % (node, mount)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), "could not remove /etc/ceph"
+        cmd = "ssh %s if test -d /var/lib/ceph; then rm -rf /var/lib/ceph; fi" % (node, mount)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), "could not remove /var/lib/ceph"
+        cmd = "ssh %s if test -d /var/run/ceph; then rm -rf /var/run/ceph; fi" % (node, mount)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), "could not remove /var/run/ceph"
+     
+        verifycleanup(listNodes)
+
+
+
+
+
 def updateCephConf_NW(public_nw, cluster_nw):
     cmd = 'scp %s:ceph.conf .'% (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
