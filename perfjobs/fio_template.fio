@@ -20,3 +20,5 @@ iodepth=${IODEPTH}
 rbdname=${RBDNAME}
 rw=${RW}
 bs=${BLOCKSIZE}
+runtime=${RUNTIME}
+time_based
