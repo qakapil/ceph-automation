@@ -526,7 +526,7 @@ def storeClusterInfo(wdir,before_run=False):
 def scpDir(host, srcDir, destDir):
     cmd = "scp -r %s:%s %s" % (host, srcDir, destDir)
     rc,stdout,stderr = launch(cmd=cmd)
-    assert(rc == 0), stderr)
+    assert(rc == 0), stderr
 
 class ListExceptions:
     excList = []
