@@ -80,6 +80,7 @@ class TestSanity(basetest.Basetest):
             return
         cephdeploy.osdZap(self.ctx['osd_zap'])
     
+
     
     def test07_PrepareOSDs(self):
         cephdeploy.osdPrepare(self.ctx['osd_prepare'])
@@ -89,10 +90,11 @@ class TestSanity(basetest.Basetest):
     def test09_AdminNodes(self):
         cephdeploy.addAdminNodes(self.ctx['clientnode'])
         for node in self.ctx['clientnode']:
-            general.installPkgFromurl(node, 
-            "http://download.suse.de/ibs/Devel:/Storage:/1.0/SLE_12/x86_64/fio-2.2.5-1.1.x86_64.rpm")
+            zypperutils.installPkg('ceph-deploy', node)
+            #general.installPkgFromurl(node, 
+            #"http://download.suse.de/ibs/Devel:/Storage:/1.0/SLE_12/x86_64/fio-2.2.5-1.1.x86_64.rpm")
     
-               
+             
     def test10_ValidateCephStatus(self):
         time.sleep(10)
         fsid = monitoring.getFSID()
@@ -158,7 +160,10 @@ class TestSanity(basetest.Basetest):
             os.makedirs(nodedir)
             general.scpDir(fio_job['node'], 'perfjobs/fiojobs', nodedir)
          
-        
+
+        f = open('report_url.txt', 'w')
+        f.write('Performance Results: '+archpath+'\n')
+        f.close()
 
 
     
