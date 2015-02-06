@@ -24,6 +24,12 @@ class TestSanity(basetest.Basetest):
         cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
+
+        url = cls.config.get('env','repo_baseurl')
+        for node in cls.ctx['allnodes']:
+            zypperutils.addRepo('ceph', url, node)
+
+
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
