@@ -160,9 +160,9 @@ class TestSanity(basetest.Basetest):
             os.makedirs(nodedir)
             general.scpDir(fio_job['node'], 'perfjobs/fiojobs', nodedir)
          
-
+        link = 'http://deacon.arch.suse.de/perf-data/perf-data/'+archdir
         f = open('report_url.txt', 'w')
-        f.write('Performance Results: '+archpath+'\n')
+        f.write('Performance Results: '+link+'\n')
         f.close()
 
 
