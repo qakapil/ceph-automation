@@ -320,15 +320,15 @@ def perNodeCleanUp(listNodes, reponame):
                 rc,stdout,stderr = launch(cmd=cmd)
                 assert(rc == 0), "could not umount %s on %s" % (mount,node)
 
-        cmd = "ssh %s if test -d /etc/ceph; then rm -rf /etc/ceph; fi" % (node)
+        cmd = "ssh %s 'if test -d /etc/ceph; then sudo rm -rf /etc/ceph; fi'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
-        assert(rc == 0), "could not remove /etc/ceph"
-        cmd = "ssh %s if test -d /var/lib/ceph; then rm -rf /var/lib/ceph; fi" % (node)
+        assert(rc == 0), stderr
+        cmd = "ssh %s 'if test -d /var/lib/ceph; then sudo rm -rf /var/lib/ceph; fi'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
-        assert(rc == 0), "could not remove /var/lib/ceph"
-        cmd = "ssh %s if test -d /var/run/ceph; then rm -rf /var/run/ceph; fi" % (node)
+        assert(rc == 0), stderr
+        cmd = "ssh %s 'if test -d /var/run/ceph; then sudo rm -rf /var/run/ceph; fi'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
-        assert(rc == 0), "could not remove /var/run/ceph"
+        assert(rc == 0), stderr
      
         verifycleanup(listNodes)
 
