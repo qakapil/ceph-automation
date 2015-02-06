@@ -5,7 +5,8 @@ from utils import monitoring
 from utils import operations
 from utils import general
 from threading import Thread
-import logging,time,re, os, threading
+import logging,time,re, os, threading, shutil
+from datetime import datetime
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
@@ -144,6 +145,20 @@ class TestSanity(basetest.Basetest):
         
         log.info('storing post-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=False)
+
+        i = datetime.now()
+        archdir = i.strftime('%Y/%m/%d %H:%M:%S')
+        archdir = archdir.replace("/","-").replace(" ","-").replace(":","-")
+        archpath = os.path.join("/srv/www/htdocs/teuth-logs/perf-data/perf-data",archdir)
+        clusterinfopath = os.path.join(archpath,"clusterinfo")
+        shutil.copytree("clusterinfo", clusterinfopath)
+        
+        for fio_job in self.ctx['fio_jobs']:
+            nodedir = clusterinfopath = os.path.join(archpath,'client-'+fio_job['node'])
+            os.makedirs(nodedir)
+            general.scpDir(fio_job['node'], 'perfjobs/fiojobs', nodedir)
+         
+        
 
 
     

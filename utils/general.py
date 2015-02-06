@@ -517,7 +517,16 @@ def storeClusterInfo(wdir,before_run=False):
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
 
+    cmd = "scp %s:/etc/ceph/ceph.conf %s" % (os.environ["CLIENTNODE"], wdir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr)
 
+
+
+def scpDir(host, srcDir, destDir):
+    cmd = "scp -r %s:%s %s" % (host, srcDir, destDir)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr)
 
 class ListExceptions:
     excList = []
