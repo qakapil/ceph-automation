@@ -519,7 +519,7 @@ def storeClusterInfo(wdir,before_run=False):
 
     cmd = "scp %s:/etc/ceph/ceph.conf %s" % (os.environ["CLIENTNODE"], wdir)
     rc,stdout,stderr = launch(cmd=cmd)
-    assert(rc == 0), stderr)
+    assert(rc == 0), stderr
 
 
 
