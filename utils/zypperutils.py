@@ -104,8 +104,7 @@ def removeAllPkgsFromRepo(repoName, node):
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != (0):
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stdout)
-    else:
-        log.info("removed following packages - "+stdout)
+    #log.debug("removed following packages - "+stdout)
 
 def getPkgParamValue(pkgname, paramname, node):
     cmd = "ssh %s zypper info %s" % (node, pkgname)

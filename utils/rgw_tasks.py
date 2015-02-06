@@ -159,7 +159,7 @@ def executeS3Tests():
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
-        cmd = "S3TEST_CONF=/tmp/s3-tests.conf s3tests/cloned/virtualenv/bin/nosetests -w s3tests/cloned/ -v -a '!fails_on_rgw'"
+        cmd = "S3TEST_CONF=/tmp/s3-tests.conf s3tests/cloned/virtualenv/bin/nosetests -w s3tests/cloned/ -a '!fails_on_rgw'"
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
@@ -196,7 +196,7 @@ def executeSwiftTests():
 
 
         cmd = "SWIFT_TEST_CONFIG_FILE=/tmp/swift-tests.conf swifttests/cloned/virtualenv/bin/nosetests\
-        -w swifttests/cloned/test/functional -v -a '!fails_on_rgw'"
+        -w swifttests/cloned/test/functional -a '!fails_on_rgw'"
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
