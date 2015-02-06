@@ -26,6 +26,14 @@ class TestSanity(basetest.Basetest):
         
         cls.ctx['iso_build_num'] = general.getISOBuildNum(\
                                    cls.config.get('env','iso_url'))
+
+
+        general.installStartLighthttp(os.environ["CLIENTNODE"])
+        general.mountISO(cls.ctx['iso_build_num'])
+        url = 'http://'+cls.ctx['clientnode_ip']+'/SLE12'
+        for node in cls.ctx['allnodes']:
+            zypperutils.addRepo('ceph', url, node)
+
     
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
@@ -41,14 +49,16 @@ class TestSanity(basetest.Basetest):
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
    
-    
+    '''
     def test00_AddISORepo(self):
         general.installStartLighthttp(os.environ["CLIENTNODE"])
         general.mountISO(self.ctx['iso_build_num'])
         url = 'http://'+self.ctx['clientnode_ip']+'/SLE12'
         for node in self.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
-    
+    '''
+
+
     def test01_xcdchk(self):
         general.runXCDCHK(self.ctx['iso_build_num'])
     

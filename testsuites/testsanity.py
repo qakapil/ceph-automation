@@ -43,12 +43,12 @@ class TestSanity(basetest.Basetest):
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
    
-    
+    ''' 
     def test01_AddRepo(self):
         url = self.config.get('env','repo_baseurl')
         for node in self.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
-    
+    '''
     
     def test02_InstallCephDeploy(self):
         zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
