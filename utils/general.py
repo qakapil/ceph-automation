@@ -461,7 +461,7 @@ def runfioJobs(LE, **fio_dict):
         cmd = "scp perfjobs/fio_template.fio {node}:perfjobs/fiojobs".format(**fio_dict)
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
-        cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BLOCKSIZE={bs} RUNTIME={runtime}fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
+        cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BLOCKSIZE={bs} RUNTIME={runtime} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
         log.info("starting fio test on node {node}".format(**fio_dict))
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr
