@@ -158,6 +158,8 @@ class TestSanity(basetest.Basetest):
                 thread.join(max_runtime)
 
         log.info('finished fio jobs')
+        log.debug('running threads '+str(threading.enumerate()))
+        
         if len(threading.enumerate()) > 1:
             LE.excList.append(threading.enumerate()[1:])
         log.info('storing post-run cluster info')
