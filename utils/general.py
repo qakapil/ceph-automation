@@ -569,6 +569,7 @@ def storeClusterInfo(wdir,before_run=False):
 
 def storeCephStatus(wdir,maxtime):
     filename = "runtime.log"
+    filepath = "%s/%s" % (wdir, filename)
     delay = 60
     count = maxtime/delay
     for i in range(count):
