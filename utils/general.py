@@ -570,7 +570,7 @@ def storeClusterInfo(wdir,before_run=False):
 def storeCephStatus(wdir,maxtime):
     filename = "runtime.log"
     delay = 60
-    count maxtime/delay
+    count = maxtime/delay
     for i in range(count):
         cmd = "ssh %s ceph -s &>> %s;echo $'\n\n' &>> %s" % (os.environ["CLIENTNODE"], filepath, filepath)
         rc,stdout,stderr = launch(cmd=cmd)
