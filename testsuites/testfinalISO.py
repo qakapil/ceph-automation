@@ -24,11 +24,6 @@ class TestSanity(basetest.Basetest):
         cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         
-        before_cleanup = os.environ.get("BEFORE_CLEANUP")
-        if before_cleanup != None:
-            log.info('starting teardown for before_cleanup')
-            cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                    'ceph', 'ceph-debug')
         general.removeOldxcdFiles()
         url = os.environ.get("ISO_URL")
 
@@ -52,6 +47,12 @@ class TestSanity(basetest.Basetest):
         
         general.runXCDCHK(media1_iso_name, '/tmp/media1', 'Media1')
         general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
+
+        before_cleanup = os.environ.get("BEFORE_CLEANUP")
+        if before_cleanup != None:
+            log.info('starting teardown for before_cleanup')
+            #cephdeploy.cleanupNodes(cls.ctx['allnodes'],'ceph', 'ceph-debug')
+            general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
 
         general.printISOurl(media1_iso_name, url)
     

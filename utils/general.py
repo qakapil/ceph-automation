@@ -331,6 +331,7 @@ def perNodeCleanUp(listNodes, reponame):
         assert(rc == 0), stderr
         cmd = "ssh %s rm ceph.*" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), stderr
      
     verifycleanup(listNodes)
 
