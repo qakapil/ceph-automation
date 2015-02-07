@@ -38,8 +38,8 @@ class TestSanity(basetest.Basetest):
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
-            cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                    'ceph')
+            #cephdeploy.cleanupNodes(cls.ctx['allnodes'],'ceph')
+            general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
             general.removeOldxcdFiles()
             
     
