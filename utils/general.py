@@ -329,7 +329,7 @@ def perNodeCleanUp(listNodes, reponame):
         cmd = "ssh %s 'if test -d /var/run/ceph; then sudo rm -rf /var/run/ceph; fi'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
-        cmd = "ssh %s rm ceph.*" % (node)
+        cmd = "ssh %s 'rm ceph*'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
      
     verifycleanup(listNodes)
