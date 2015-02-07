@@ -29,11 +29,19 @@ class TestSanity(basetest.Basetest):
         cls.ctx['iso_build_num'] = general.getISOBuildNum(\
                                    cls.config.get('env','iso_url_stable'))
     
+
+        general.installStartLighthttp(os.environ["CLIENTNODE"])
+        general.mountISO(cls.ctx['iso_build_num'], staging=False)
+        url = 'http://'+cls.ctx['clientnode_ip']+'/SLE12'
+        for node in cls.ctx['allnodes']:
+            zypperutils.addRepo('ceph', url, node)
+
+
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
-            cephdeploy.cleanupNodes(cls.ctx['allnodes'], 
-                                    'ceph')
+            #cephdeploy.cleanupNodes(cls.ctx['allnodes'], 'ceph')
+            general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
             general.removeOldxcdFiles()
             
     
@@ -134,17 +142,24 @@ class TestSanity(basetest.Basetest):
         log.info('starting fio jobs')
         LE = general.ListExceptions() #creating this object to track exceptions in child threads 
         job_list = []
+        runtime_list = []
         for fio_job in self.ctx['fio_jobs']:
             job_list.append(Thread(target=general.runfioJobs, args=(LE,), kwargs=fio_job))
+            runtime_list.append(int(fio_job['runtime']))
+        max_runtime = max(runtime_list)+100
         for job in job_list:
             job.start()
+
+        t = Thread(target=general.storeCephStatus, args=('clusterinfo',max_runtime-100,))
+        t.start()
+
         for thread in threading.enumerate():
             if thread is not threading.currentThread():
-                thread.join()
-        assert(len(LE.excList) < 1), LE.excList
+                thread.join(max_runtime)
 
         log.info('finished fio jobs')
-        
+        if len(threading.enumerate()) > 1:
+            LE.excList.append(threading.enumerate()[1:])
         log.info('storing post-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=False)
 
@@ -164,6 +179,8 @@ class TestSanity(basetest.Basetest):
         f = open('report_url.txt', 'w')
         f.write('Performance Results: '+link+'\n')
         f.close()
+        
+        assert(len(LE.excList) < 1), LE.excList
 
 
     

@@ -481,6 +481,8 @@ def printISOurl(iso_name, url):
     f.write('Client node details - \n'+stdout.split('Welcome to')[1])
     f.close()
 
+
+
 def runInstallCheck(node, baserepo, targetrepo):
     cmd = 'ssh %s installcheck x86_64  --withobsoletes /var/cache/zypp/solv/%s/solv --nocheck /var/cache/zypp/solv/%s/solv' % (node, targetrepo, baserepo)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -488,6 +490,7 @@ def runInstallCheck(node, baserepo, targetrepo):
         raise Exception, "InstallCheck Unsuccessfull. Error executing command '%s'. \
                   \nError message: \n '%s' \n '%s' " % (cmd, stdout, stderr)
     log.info('install check for repo %s against base repo %s was successfull' % (targetrepo, baserepo))
+
 
 
 def runfioJobs(LE, **fio_dict):
@@ -519,12 +522,14 @@ def runfioJobs(LE, **fio_dict):
     except:
         LE.excList.append(sys.exc_info()[1])
         raise sys.exc_info()[0], sys.exc_info()[1]
+
     
     
 def installPkgFromurl(node, url):
     cmd = "ssh %s sudo rpm -i %s" % (node, url)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), "failed to install package %s on node %s" % (url, node) + "\n"+stderr
+
 
 
 def storeClusterInfo(wdir,before_run=False):
@@ -562,10 +567,30 @@ def storeClusterInfo(wdir,before_run=False):
 
 
 
+def storeCephStatus(wdir,maxtime):
+    filename = "runtime.log"
+    delay = 60
+    count maxtime/delay
+    for i in range(count):
+        cmd = "ssh %s ceph -s &>> %s;echo $'\n\n' &>> %s" % (os.environ["CLIENTNODE"], filepath, filepath)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), stderr
+
+        cmd = "ssh %s rados df &>> %s;echo $'\n\n' &>> %s" % (os.environ["CLIENTNODE"], filepath, filepath)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert(rc == 0), stderr
+
+        time.sleep(delay)
+
+        
+
+
 def scpDir(host, srcDir, destDir):
     cmd = "scp -r %s:%s %s" % (host, srcDir, destDir)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
+
+
 
 class ListExceptions:
     excList = []
