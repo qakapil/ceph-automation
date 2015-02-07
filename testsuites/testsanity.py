@@ -280,6 +280,7 @@ class TestSanity(basetest.Basetest):
             log.info('skipping teardown for after_cleanup')
             return
         log.info('++++++++++++++starting teardown_class+++++++++++++')
-        cephdeploy.cleanupNodes(self.ctx['allnodes'], 
-                               'ceph')
+        #cephdeploy.cleanupNodes(self.ctx['allnodes'], 
+                               #'ceph')
+        general.perNodeCleanUp(self.ctx['allnodes'], 'ceph')
         log.info('++++++++++++++Completed teardown_class++++++++++++')
