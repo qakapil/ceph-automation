@@ -281,5 +281,5 @@ class TestSanity(basetest.Basetest):
             return
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
-                               #'ceph')
+                               'ceph')
         log.info('++++++++++++++Completed teardown_class++++++++++++')
