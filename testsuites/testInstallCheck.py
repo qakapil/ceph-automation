@@ -23,16 +23,8 @@ class TestInstallCheck(basetest.Basetest):
         if zypperutils.isRepoPresent('ceph-debug', node):
            zypperutils.removeRepo('ceph-debug', node)
         
-        if os.environ.get("BASE_REPONAME"):
-           base_reponame = os.environ.get("BASE_REPONAME")
-        else:
-           base_reponame = 'ibs-sle12'
-
-        
-        if os.environ.get("BASE_REPOURL"):
-           base_url = os.environ.get("BASE_REPOURL")
-        else:
-           base_url = 'http://dist.suse.de/ibs/SUSE:/SLE-12:/GA/standard/'
+        base_reponame = os.environ.get("BASE_REPONAME","ibs-sle12")
+        base_url = os.environ.get("BASE_REPOURL", "http://dist.suse.de/ibs/SUSE:/SLE-12:/GA/standard/")
 
         zypperutils.addRepo(base_reponame, base_url, node)
         

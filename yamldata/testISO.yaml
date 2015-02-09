@@ -33,3 +33,5 @@ createpools:
 - {poolname: test-pool-1, pg-num: 64, size: 2}
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
+rgws:
+- {rgw-host: teuthida-1, rgw-name: gateway1, rgw-port: 80}

@@ -1,5 +1,6 @@
 from utils import basetest
 from utils import zypperutils
+from utils import rgw_tasks
 from utils import cephdeploy
 from utils import monitoring
 from utils import operations
@@ -21,27 +22,39 @@ class TestSanity(basetest.Basetest):
             yamlfile = 'yamldata/%s.yaml' % (yamlfile)
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls,'cephauto.log')
-        os.environ["CLIENTNODE"] = cls.ctx['clientnode']
-        #monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
+        os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         
-        cls.ctx['iso_build_num'] = general.getISOBuildNum(\
-                                   cls.config.get('env','iso_url'))
+        general.removeOldxcdFiles()
+        url = os.environ.get("ISO_URL")
 
-
-        general.installStartLighthttp(os.environ["CLIENTNODE"])
-        general.mountISO(cls.ctx['iso_build_num'])
-        url = 'http://'+cls.ctx['clientnode_ip']+'/SLE12'
         for node in cls.ctx['allnodes']:
-            zypperutils.addRepo('ceph', url, node)
+            if os.environ.get("ISO1"):
+                sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node, os.environ.get("ISO1"))
+                media1_iso_name = os.environ.get("ISO1")
+            else:
+                sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node)
+                media1_iso_name = 'SUSE-'+sMedia1+'-Media1.iso'
+            if os.environ.get("ISO2"):
+                sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node, os.environ.get("ISO2"))
+                media2_iso_name = os.environ.get("ISO2")
+            else:
+                sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node)
+                media2_iso_name = 'SUSE-'+sMedia2+'-Media2.iso'
 
-    
+
+        general.mount_extISO('/tmp/'+media1_iso_name, '/tmp/media1')
+        general.mount_extISO('/tmp/'+media2_iso_name, '/tmp/media2')
+        
+        general.runXCDCHK(media1_iso_name, '/tmp/media1', 'Media1')
+        general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
+
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
-            #cephdeploy.cleanupNodes(cls.ctx['allnodes'],'ceph')
+            #cephdeploy.cleanupNodes(cls.ctx['allnodes'],'ceph', 'ceph-debug')
             general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
-            general.removeOldxcdFiles()
-            
+
+        general.printISOurl(media1_iso_name, url)
     
     def setUp(self):
         if os.environ.get("CLUSTER_FAILED") == "Yes":
@@ -49,18 +62,6 @@ class TestSanity(basetest.Basetest):
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
    
-    '''
-    def test00_AddISORepo(self):
-        general.installStartLighthttp(os.environ["CLIENTNODE"])
-        general.mountISO(self.ctx['iso_build_num'])
-        url = 'http://'+self.ctx['clientnode_ip']+'/SLE12'
-        for node in self.ctx['allnodes']:
-            zypperutils.addRepo('ceph', url, node)
-    '''
-
-
-    def test01_xcdchk(self):
-        general.runXCDCHK(self.ctx['iso_build_num'])
     
     
     def test02_InstallCephDeploy(self):
@@ -170,7 +171,7 @@ class TestSanity(basetest.Basetest):
 
     
     def test13_ValidateCephDeployVersion(self):
-        expVersion = general.getCephDeployExpVersionISO()
+        expVersion = general.getCephDeployExpVersionISO('/tmp/media1')
         actVersion = cephdeploy.getActuaVersion()
         if actVersion not in expVersion:
             raise Exception, "expected '%s' and actual '%s' versions \
@@ -179,7 +180,7 @@ class TestSanity(basetest.Basetest):
     
     
     def test14_ValidateCephVersion(self):
-        expVersion = general.getCephExpVersionISO()
+        expVersion = general.getCephExpVersionISO('/tmp/media1')
         actVersion = monitoring.getActuaVersion()
         if actVersion not in expVersion:
             raise Exception, "expected '%s' and actual '%s' \
@@ -255,7 +256,27 @@ class TestSanity(basetest.Basetest):
     def test26_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
-    
+
+
+    def test27_CreateRGW(self):
+        for rgw in self.ctx['rgws']:
+            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
+        for rgw in self.ctx['rgws']:
+            rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
+
+
+    def test28_S3Tests(self):
+        rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
+        rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
+                              self.ctx['rgws'][0]['rgw-name'])
+        rgw_tasks.executeS3Tests()
+
+    def test29_SwiftTests(self):
+        rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
+        rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
+                              self.ctx['rgws'][0]['rgw-name'])
+        rgw_tasks.executeSwiftTests()
+
     
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
@@ -264,12 +285,12 @@ class TestSanity(basetest.Basetest):
          
     @classmethod
     def teardown_class(self):
-        general.printRPMVersionsISO(self.ctx['iso_build_num'])
+        #general.printRPMVersionsISO(self.ctx['iso_build_num'])
         after_cleanup = os.environ.get("AFTER_CLEANUP")
         if after_cleanup == None:
             log.info('skipping teardown for after_cleanup')
             return
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
-                               'ceph')
+                               'ceph', 'ceph-debug')
         log.info('++++++++++++++Completed teardown_class++++++++++++')
