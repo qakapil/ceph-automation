@@ -1,12 +1,11 @@
 from utils import basetest
 from utils import zypperutils
+from utils import rgw_tasks
 from utils import cephdeploy
 from utils import monitoring
 from utils import operations
 from utils import general
-from threading import Thread
-import logging,time,re, os, threading, shutil
-from datetime import datetime
+import logging,time,re, os
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
@@ -24,26 +23,38 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
-        #monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
         
-        cls.ctx['iso_build_num'] = general.getISOBuildNum(\
-                                   cls.config.get('env','iso_url_stable'))
-    
+        general.removeOldxcdFiles()
+        url = os.environ.get("ISO_URL")
 
-        general.installStartLighthttp(os.environ["CLIENTNODE"])
-        general.mountISO(cls.ctx['iso_build_num'], staging=False)
-        url = 'http://'+cls.ctx['clientnode_ip']+'/SLE12'
         for node in cls.ctx['allnodes']:
-            zypperutils.addRepo('ceph', url, node)
+            if os.environ.get("ISO1"):
+                sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node, os.environ.get("ISO1"))
+                media1_iso_name = os.environ.get("ISO1")
+            else:
+                sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node)
+                media1_iso_name = 'SUSE-'+sMedia1+'-Media1.iso'
+            if os.environ.get("ISO2"):
+                sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node, os.environ.get("ISO2"))
+                media2_iso_name = os.environ.get("ISO2")
+            else:
+                sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node)
+                media2_iso_name = 'SUSE-'+sMedia2+'-Media2.iso'
 
+
+        general.mount_extISO('/tmp/'+media1_iso_name, '/tmp/media1')
+        general.mount_extISO('/tmp/'+media2_iso_name, '/tmp/media2')
+        
+        general.runXCDCHK(media1_iso_name, '/tmp/media1', 'Media1')
+        general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
 
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
-            #cephdeploy.cleanupNodes(cls.ctx['allnodes'], 'ceph')
+            #cephdeploy.cleanupNodes(cls.ctx['allnodes'],'ceph', 'ceph-debug')
             general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
-            general.removeOldxcdFiles()
-            
+
+        general.printISOurl(media1_iso_name, url)
     
     def setUp(self):
         if os.environ.get("CLUSTER_FAILED") == "Yes":
@@ -51,16 +62,6 @@ class TestSanity(basetest.Basetest):
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
    
-    '''
-    def test00_AddISORepo(self):
-        general.installStartLighthttp(os.environ["CLIENTNODE"])
-        general.mountISO(self.ctx['iso_build_num'], staging=False)
-        url = 'http://'+self.ctx['clientnode_ip']+'/SLE12'
-        for node in self.ctx['allnodes']:
-            zypperutils.addRepo('ceph', url, node)
-    '''
-    def test01_xcdchk(self):
-        general.runXCDCHK(self.ctx['iso_build_num'])
     
     
     def test02_InstallCephDeploy(self):
@@ -69,7 +70,7 @@ class TestSanity(basetest.Basetest):
     
     def test03_DeclareInitialMons(self):
         cephdeploy.declareInitialMons(self.ctx['initmons'])
-        general.updateCephConf_NW(self.ctx['public_nw'], self.ctx['cluster_nw'])
+    
     
     
     def test04_InstallCeph_ISO(self):
@@ -88,7 +89,6 @@ class TestSanity(basetest.Basetest):
             return
         cephdeploy.osdZap(self.ctx['osd_zap'])
     
-
     
     def test07_PrepareOSDs(self):
         cephdeploy.osdPrepare(self.ctx['osd_prepare'])
@@ -101,8 +101,9 @@ class TestSanity(basetest.Basetest):
             zypperutils.installPkg('fio', node)
             #general.installPkgFromurl(node, 
             #"http://download.suse.de/ibs/Devel:/Storage:/1.0/SLE_12/x86_64/fio-2.2.5-1.1.x86_64.rpm")
+ 
     
-             
+               
     def test10_ValidateCephStatus(self):
         time.sleep(10)
         fsid = monitoring.getFSID()
@@ -134,11 +135,13 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.info('cluster health is OK and PGs are active+clean') 
     
-     
-    def test11_fioPerformanceTests(self):
+
+   
+
+   def test11_fioPerformanceTests(self):
         log.info('storing pre-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=True)
-        
+
         log.info('starting fio jobs')
         LE = general.ListExceptions() #creating this object to track exceptions in child threads 
         job_list = []
@@ -159,7 +162,7 @@ class TestSanity(basetest.Basetest):
 
         log.info('finished fio jobs')
         log.debug('running threads '+str(threading.enumerate()))
-        
+
         if len(threading.enumerate()) > 1:
             LE.excList.append(threading.enumerate()[1:])
         log.info('storing post-run cluster info')
@@ -171,18 +174,22 @@ class TestSanity(basetest.Basetest):
         archpath = os.path.join("/srv/www/htdocs/teuth-logs/perf-data/perf-data",archdir)
         clusterinfopath = os.path.join(archpath,"clusterinfo")
         shutil.copytree("clusterinfo", clusterinfopath)
-        
+
         for fio_job in self.ctx['fio_jobs']:
             nodedir = clusterinfopath = os.path.join(archpath,'client-'+fio_job['node'])
             os.makedirs(nodedir)
             general.scpDir(fio_job['node'], 'perfjobs/fiojobs', nodedir)
-         
+
         link = 'http://deacon.arch.suse.de/perf-data/perf-data/'+archdir
         f = open('report_url.txt', 'w')
         f.write('Performance Results: '+link+'\n')
         f.close()
-        
+
         assert(len(LE.excList) < 1), LE.excList
+    
+
+
+
 
 
     
@@ -193,12 +200,12 @@ class TestSanity(basetest.Basetest):
          
     @classmethod
     def teardown_class(self):
-        general.printRPMVersionsISO(self.ctx['iso_build_num'])
+        #general.printRPMVersionsISO(self.ctx['iso_build_num'])
         after_cleanup = os.environ.get("AFTER_CLEANUP")
         if after_cleanup == None:
             log.info('skipping teardown for after_cleanup')
             return
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
-                               'ceph')
+                               'ceph', 'ceph-debug')
         log.info('++++++++++++++Completed teardown_class++++++++++++')
