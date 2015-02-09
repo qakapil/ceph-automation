@@ -2,7 +2,7 @@ import os, sys
 from launch import launch
 import logging
 import zypperutils
-
+import time
 log = logging.getLogger(__name__)
 
 def createDirOLD(dirPath):
