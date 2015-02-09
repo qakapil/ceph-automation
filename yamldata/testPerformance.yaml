@@ -8,25 +8,25 @@ clientnode:
 - teuthida-9
 allnodes:
 - teuthida-1
-- teuthida-3
+- teuthida-2
 - teuthida-4
 - teuthida-8
 - teuthida-9
 - teuthida-10
 initmons:
 - teuthida-1
-- teuthida-3
+- teuthida-2
 - teuthida-4
 osd_zap:
 - teuthida-1:sdb
-- teuthida-3:sdb
+- teuthida-2:sdb
 - teuthida-4:sdb
 - teuthida-1:sdn
-- teuthida-3:sdn
+- teuthida-2:sdn
 - teuthida-4:sdn
 osd_prepare:
 - teuthida-1:sdb:/dev/sdn
-- teuthida-3:sdb:/dev/sdn
+- teuthida-2:sdb:/dev/sdn
 - teuthida-4:sdb:/dev/sdn
 default_pgs: 192
 fio_jobs:
