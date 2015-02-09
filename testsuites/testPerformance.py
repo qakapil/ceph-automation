@@ -138,7 +138,7 @@ class TestSanity(basetest.Basetest):
 
    
 
-   def test11_fioPerformanceTests(self):
+    def test11_fioPerformanceTests(self):
         log.info('storing pre-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=True)
 
