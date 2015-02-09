@@ -73,6 +73,7 @@ class TestSanity(basetest.Basetest):
     
     def test03_DeclareInitialMons(self):
         cephdeploy.declareInitialMons(self.ctx['initmons'])
+        general.updateCephConf_NW(self.ctx['public_nw'], self.ctx['cluster_nw'])
     
     
     
