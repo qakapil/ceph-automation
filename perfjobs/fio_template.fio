@@ -21,4 +21,5 @@ rbdname=${RBDNAME}
 rw=${RW}
 bs=${BLOCKSIZE}
 runtime=${RUNTIME}
+numjobs=${NUMJOBS}
 time_based
