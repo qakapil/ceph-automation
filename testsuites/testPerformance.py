@@ -26,7 +26,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
-        
+        ''' 
         general.removeOldxcdFiles()
         url = os.environ.get("ISO_URL")
 
@@ -139,7 +139,7 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.info('cluster health is OK and PGs are active+clean') 
     
-
+    '''
    
 
     def test11_fioPerformanceTests(self):
