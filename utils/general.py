@@ -508,7 +508,7 @@ def findDupPackages(node, baserepo, targetrepo):
     list_targetrepo = filter(lambda a: a != '', list_targetrepo)
     list_targetrepo = filter(lambda a: a != '|', list_targetrepo)
 
-    assert((set(list_baserepo) & set(list_targetrepo)) == 0), "duplicate packages found "+str(set(list_baserepo) & set(list_targetrepo))
+    assert(len(set(list_baserepo) & set(list_targetrepo)) == 0), "duplicate packages found "+str(set(list_baserepo) & set(list_targetrepo))
 
 
 def runfioJobs(LE, **fio_dict):
