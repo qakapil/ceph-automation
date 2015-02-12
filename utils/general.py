@@ -493,6 +493,24 @@ def runInstallCheck(node, baserepo, targetrepo):
 
 
 
+def findDupPackages(node, baserepo, targetrepo):
+    cmd = "ssh %s zypper se -r %s | awk '{print $2}'" % (node, baserepo)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr
+    list_baserepo = stdout.split("\n")
+    list_baserepo = filter(lambda a: a != '', list_baserepo)
+    list_baserepo = filter(lambda a: a != '|', list_baserepo)
+    
+    cmd = "ssh %s zypper se -r %s | awk '{print $2}'" % (node, targetrepo)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert(rc == 0), stderr
+    list_targetrepo = stdout.split("\n")
+    list_targetrepo = filter(lambda a: a != '', list_targetrepo)
+    list_targetrepo = filter(lambda a: a != '|', list_targetrepo)
+
+    assert((set(l_ceph) & set(l_SLE12)) == 0), "duplicate packages found "+str(set(l_ceph) & set(l_SLE12))
+
+
 def runfioJobs(LE, **fio_dict):
     try:
         cmd = "ssh {node} rbd create {rbd_img_name} --size {size}".format(**fio_dict)
