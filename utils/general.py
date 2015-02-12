@@ -497,14 +497,14 @@ def findDupPackages(node, baserepo, targetrepo):
     cmd = "ssh %s zypper se -r %s | awk '{print $2}'" % (node, baserepo)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
-    list_baserepo = stdout.split("\n")
+    list_baserepo = stdout.split("\n")[2:]
     list_baserepo = filter(lambda a: a != '', list_baserepo)
     list_baserepo = filter(lambda a: a != '|', list_baserepo)
     
     cmd = "ssh %s zypper se -r %s | awk '{print $2}'" % (node, targetrepo)
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
-    list_targetrepo = stdout.split("\n")
+    list_targetrepo = stdout.split("\n")[2:]
     list_targetrepo = filter(lambda a: a != '', list_targetrepo)
     list_targetrepo = filter(lambda a: a != '|', list_targetrepo)
 
