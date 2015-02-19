@@ -530,7 +530,7 @@ RUNTIME={runtime} NUMJOBS={numjobs} fio perfjobs/fiojobs/fio_template.fio".forma
         cmd = 'echo "%s" > %s_results.log && scp %s_results.log %s:perfjobs/fiojobs/logs/ && rm %s_results.log' % (str(stdout),node,node,node,node)
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
-        #log.debug("fio test output on node {node}".format(**fio_dict)+"\n"+stdout)
+        '''
         log.info("generating graphs using gio2gnuplot")
         cmd = "ssh %s 'cd perfjobs/fiojobs/logs && fio2gnuplot -p '*_bw*' -g'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
@@ -538,6 +538,7 @@ RUNTIME={runtime} NUMJOBS={numjobs} fio perfjobs/fiojobs/fio_template.fio".forma
         cmd = "ssh %s 'cd perfjobs/fiojobs/logs && fio2gnuplot -p '*_iops*' -g'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
+        '''
     except:
         LE.excList.append(sys.exc_info()[1])
         raise sys.exc_info()[0], sys.exc_info()[1]

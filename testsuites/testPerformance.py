@@ -26,7 +26,6 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
-        ''' 
         general.removeOldxcdFiles()
         url = os.environ.get("ISO_URL")
 
@@ -106,9 +105,10 @@ class TestSanity(basetest.Basetest):
             #general.installPkgFromurl(node, 
             #"http://download.suse.de/ibs/Devel:/Storage:/1.0/SLE_12/x86_64/fio-2.2.5-1.1.x86_64.rpm")
  
-    
+    def test10_ModifyPGNUM(self):
+        operations.setPGNUM(self.ctx['set_pg_num'])  
                
-    def test10_ValidateCephStatus(self):
+    def test11_ValidateCephStatus(self):
         time.sleep(10)
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
@@ -139,10 +139,9 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.info('cluster health is OK and PGs are active+clean') 
     
-    '''
    
 
-    def test11_fioPerformanceTests(self):
+    def test12_fioPerformanceTests(self):
         log.info('storing pre-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=True)
 

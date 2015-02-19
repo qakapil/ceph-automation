@@ -1,6 +1,6 @@
 from launch import launch
 import logging
-import os
+import os, time
 
 log = logging.getLogger(__name__)
 
@@ -200,4 +200,26 @@ def validateLibRbdTests():
             log.info(output)
         assert (rc == 0), "Error while executing the command %s.\
         Error message: %s" % (cmd, stderr)
-    
+   
+
+def setPGNUM(pg_num):
+    total_pgs = 0
+    cmd = "ssh %s rados lspools" % (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.Error message: %s" % (cmd, stderr)
+    pools = stdout.split("\n")
+    for pool in pools:
+        cmd = "ssh %s ceph osd pool set %s pg_num %s" % (os.environ["CLIENTNODE"],pool.strip(),pg_num)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert (rc == 0), "Error while executing the command %s.Error message: %s" % (cmd, stderr)
+        total_pgs = total_pgs + int(pg_num)
+    time.sleep(15)
+    for pool in pools:
+        cmd = "ssh %s ceph osd pool set %s pgp_num %s" % (os.environ["CLIENTNODE"],pool.strip(),pg_num)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert (rc == 0), "Error while executing the command %s.Error message: %s" % (cmd, stderr)
+    actual_pgs = monitoring.getTotalPGs()
+    assert (int(actual_pgs) == int(total_pgs)), "All PGs were not created"
+
+
+
