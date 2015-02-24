@@ -12,4 +12,4 @@ username2 = rob
 email2 = rob.client.0+test@test.test
 display_name2 = Mr.rob.client.0 rob
 password2 = Rp0ATe1Dcy/0KcrUxoyevSNiU+OwpFXNPriCvxplciolw0MeffP/ug==
-auth_host = {rgw-host}.suse.de
+auth_host = {rgw-host}

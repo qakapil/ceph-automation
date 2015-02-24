@@ -1,7 +1,7 @@
 [DEFAULT]
 is_secure = no
 port = {rgw-port}
-host = {rgw-host}.suse.de
+host = {rgw-host}
 [fixtures]
 bucket prefix = test-client.0-{{random}}-
 [s3 alt]
