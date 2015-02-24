@@ -15,7 +15,7 @@ def create_rgw(rgw_host, rgw_name):
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     log.info("created rgw %s on %s " % (rgw_name, rgw_host))
     time.sleep(20)
-    cmd = "curl %s.suse.de"% (rgw_host)
+    cmd = "curl %s"% (rgw_host)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
