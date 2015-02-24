@@ -7,6 +7,7 @@ allnodes:
 - host-44-0-1-252
 - host-44-0-1-251
 - host-44-0-1-249
+- host-44-0-1-248
 initmons:
 - host-44-0-1-252
 - host-44-0-1-251
@@ -35,4 +36,4 @@ createpools:
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
 rgws:
-- {rgw-host: host-44-0-1-252, rgw-name: gateway1, rgw-port: 80}
+- {rgw-host: host-44-0-1-248, rgw-name: gateway1, rgw-port: 80}
