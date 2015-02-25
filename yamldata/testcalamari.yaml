@@ -1,24 +1,24 @@
 allnodes:
-- teuthida-10
-- teuthida-4
-- teuthida-2
-- teuthida-1
-clientnode_ip: 10.160.223.10
+- host-44-0-1-247
+- host-44-0-1-252
+- host-44-0-1-251
+- host-44-0-1-249
+clientnode_ip: 44.0.1.247
 master_fqdn:
-   teuthida-6.suse.de
+   host-44-0-1-250
 cluster:
-   jenkins@teuthida-4.suse.de:
+   jenkins@host-44-0-1-252:
        roles:
        - osd.0
-       - mon.teuthida-4
-   jenkins@teuthida-2.suse.de:
+       - mon.host-44-0-1-252
+   jenkins@host-44-0-1-251:
        roles:
        - osd.1
-       - mon.teuthida-2
-   jenkins@teuthida-1.suse.de:
+       - mon.host-44-0-1-251
+   jenkins@host-44-0-1-249:
        roles:
        - osd.2
-       - mon.teuthida-1
-   jenkins@teuthida-10.suse.de:
+       - mon.host-44-0-1-249
+   jenkins@host-44-0-1-249:
        roles:
        - client.0
