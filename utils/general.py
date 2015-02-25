@@ -395,7 +395,7 @@ def downloadISOAddRepo(url, media, reponame, node, iso_name=None):
 
     cmd = 'ssh %s rm /tmp/SUSE-Enterprise-Storage-*iso' %(node)
     rc,stdout,stderr = launch(cmd=cmd)
-    assert(rc==0), stderr
+    #assert(rc==0), stderr
 
 
     cmd = 'ssh %s ls %s' %(node, iso_path)
