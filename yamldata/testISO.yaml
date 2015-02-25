@@ -1,27 +1,29 @@
 workingdir: /home/jenkins/cephdeploy-cluster
 clientnode:
-- teuthida-10
+- host-44-0-1-247
+clientnode_ip: 44.0.1.247
 allnodes:
-- teuthida-10
-- teuthida-4
-- teuthida-2
-- teuthida-1
+- host-44-0-1-247
+- host-44-0-1-252
+- host-44-0-1-251
+- host-44-0-1-249
+- host-44-0-1-248
 initmons:
-- teuthida-4
-- teuthida-2
-- teuthida-1
+- host-44-0-1-252
+- host-44-0-1-251
+- host-44-0-1-249
 osd_zap:
-- teuthida-4:sdb
-- teuthida-2:sdb
-- teuthida-1:sdb
+- host-44-0-1-252:vdb
+- host-44-0-1-251:vdb
+- host-44-0-1-249:vdb
 osd_prepare:
-- teuthida-4:sdb
-- teuthida-2:sdb
-- teuthida-1:sdb
+- host-44-0-1-252:vdb
+- host-44-0-1-251:vdb
+- host-44-0-1-249:vdb
 osd_activate:
-- teuthida-4:sdb1
-- teuthida-2:sdb1
-- teuthida-1:sdb1
+- host-44-0-1-252:vdb1
+- host-44-0-1-251:vdb1
+- host-44-0-1-249:vdb1
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
@@ -34,4 +36,4 @@ createpools:
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
 rgws:
-- {rgw-host: teuthida-1, rgw-name: gateway1, rgw-port: 80}
+- {rgw-host: host-44-0-1-248, rgw-name: gateway1, rgw-port: 80}
