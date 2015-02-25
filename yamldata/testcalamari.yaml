@@ -19,6 +19,6 @@ cluster:
        roles:
        - osd.2
        - mon.host-44-0-1-249
-   jenkins@host-44-0-1-252.openstack.local.p2.cloud.suse.de:
+   jenkins@host-44-0-1-248.openstack.local.p2.cloud.suse.de:
        roles:
        - client.0

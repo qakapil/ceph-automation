@@ -1,6 +1,7 @@
 workingdir: /home/jenkins/cephdeploy-cluster
 clientnode:
 - host-44-0-1-247
+- host-44-0-1-248
 clientnode_ip: 44.0.1.247
 allnodes:
 - host-44-0-1-247
