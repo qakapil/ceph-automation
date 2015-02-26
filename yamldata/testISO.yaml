@@ -1,14 +1,12 @@
 workingdir: /home/jenkins/cephdeploy-cluster
 clientnode:
-- host-44-0-1-247
 - host-44-0-1-248
-clientnode_ip: 44.0.1.247
+clientnode_ip: 44.0.1.248
 allnodes:
-- host-44-0-1-247
+- host-44-0-1-248
 - host-44-0-2-13
 - host-44-0-2-14
 - host-44-0-2-15
-- host-44-0-1-248
 initmons:
 - host-44-0-2-13
 - host-44-0-2-14
