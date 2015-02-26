@@ -4,25 +4,25 @@ clientnode:
 clientnode_ip: 44.0.1.248
 allnodes:
 - host-44-0-1-248
-- host-44-0-1-252
-- host-44-0-1-251
-- host-44-0-1-249
+- host-44-0-2-13
+- host-44-0-2-14
+- host-44-0-2-15
 initmons:
-- host-44-0-1-252
-- host-44-0-1-251
-- host-44-0-1-249
+- host-44-0-2-13
+- host-44-0-2-14
+- host-44-0-2-15
 osd_zap:
-- host-44-0-1-252:vdb
-- host-44-0-1-251:vdb
-- host-44-0-1-249:vdb
+- host-44-0-2-13:vdb
+- host-44-0-2-14:vdb
+- host-44-0-2-15:vdb
 osd_prepare:
-- host-44-0-1-252:vdb
-- host-44-0-1-251:vdb
-- host-44-0-1-249:vdb
+- host-44-0-2-13:vdb
+- host-44-0-2-14:vdb
+- host-44-0-2-15:vdb
 osd_activate:
-- host-44-0-1-252:vdb1
-- host-44-0-1-251:vdb1
-- host-44-0-1-249:vdb1
+- host-44-0-2-13:vdb1
+- host-44-0-2-14:vdb1
+- host-44-0-2-15:vdb1
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
