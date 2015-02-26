@@ -1,24 +1,24 @@
 allnodes:
 - host-44-0-1-247
-- host-44-0-1-252
-- host-44-0-1-251
-- host-44-0-1-249
-clientnode_ip: 44.0.1.247
+- host-44-0-2-13
+- host-44-0-2-14
+- host-44-0-2-15
+clientnode_ip: 44.0.1.248
 master_fqdn:
    host-44-0-1-250.openstack.local.p2.cloud.suse.de
 cluster:
-   jenkins@host-44-0-1-252.openstack.local.p2.cloud.suse.de:
+   jenkins@host-44-0-2-13.openstack.local.p2.cloud.suse.de:
        roles:
        - osd.0
-       - mon.host-44-0-1-252
-   jenkins@host-44-0-1-251.openstack.local.p2.cloud.suse.de:
+       - mon.host-44-0-2-13
+   jenkins@host-44-0-2-14.openstack.local.p2.cloud.suse.de:
        roles:
        - osd.1
-       - mon.host-44-0-1-251
-   jenkins@host-44-0-1-249.openstack.local.p2.cloud.suse.de:
+       - mon.host-44-0-2-14
+   jenkins@host-44-0-2-15.openstack.local.p2.cloud.suse.de:
        roles:
        - osd.2
-       - mon.host-44-0-1-249
+       - mon.host-44-0-2-15
    jenkins@host-44-0-1-248.openstack.local.p2.cloud.suse.de:
        roles:
        - client.0
