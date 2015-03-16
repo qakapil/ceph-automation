@@ -120,7 +120,7 @@ def createSwiftTestsUsers(rgw_node, rgw_name):
         swift_data[swift_list[i][0]] = swift_list[i][1]
 
     swift_acc1_cmd = 'sudo radosgw-admin -n {client_key} user create --subuser={account}:{username} --display-name=\"{display_name}\" \
---email={email} --secret={password} --key-type swift'.format(**swift_data)
+--email={email} --secret={password} --key-type swift --access=full'.format(**swift_data)
 
     cmd = "ssh %s %s" % (rgw_node, swift_acc1_cmd)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -129,7 +129,7 @@ def createSwiftTestsUsers(rgw_node, rgw_name):
 
 
     swift_acc2_cmd = 'sudo radosgw-admin -n {client_key} user create --subuser={account2}:{username2} --display-name=\"{display_name2}\" \
---email={email2} --secret={password2} --key-type swift'.format(**swift_data)
+--email={email2} --secret={password2} --key-type swift --access=full'.format(**swift_data)
 
     cmd = "ssh %s %s" % (rgw_node, swift_acc2_cmd)
     rc,stdout,stderr = launch(cmd=cmd)
