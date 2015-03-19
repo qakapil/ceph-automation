@@ -182,6 +182,10 @@ class TestSanity(basetest.Basetest):
         for image in self.ctx['images']:
             operations.createRBDImage(image)
     
+    def test_16_1_ResizeImages(self):
+        for image in self.ctx['images']:
+            operations.resizeRBDImage(image)
+
     def test17_RemoveImages(self):
         for image in self.ctx['images']:
             operations.rbdRemovePoolImage(image)

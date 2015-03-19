@@ -22,6 +22,15 @@ def createRBDImage(dictImg):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
 
+def resizeRBDImage(dictImg):
+    name = dictImg.get('name', None)
+    size = dictImg.get('size', None)
+    name = dictImg.get('pool', 'rbd')
+    imglist = rbdGetPoolImages(pool)
+    cmd = "ssh %s rbd resize --image %s --size %s" %(os.environ["CLIENTNODE"],name,size)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
 
 def rbdGetPoolImages(poolname):
     cmd = "ssh %s rbd -p %s ls" % (os.environ["CLIENTNODE"],poolname)
