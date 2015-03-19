@@ -25,7 +25,7 @@ def createRBDImage(dictImg):
 def resizeRBDImage(dictImg):
     name = dictImg.get('name', None)
     size = dictImg.get('size', None)
-    name = dictImg.get('pool', 'rbd')
+    pool = dictImg.get('pool', 'rbd')
     imglist = rbdGetPoolImages(pool)
     cmd = "ssh %s rbd resize --image %s --size %s" %(os.environ["CLIENTNODE"],name,size)
     rc,stdout,stderr = launch(cmd=cmd)
