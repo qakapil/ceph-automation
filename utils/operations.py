@@ -27,7 +27,7 @@ def resizeRBDImage(dictImg):
     size = dictImg.get('size', None)
     pool = dictImg.get('pool', 'rbd')
     imglist = rbdGetPoolImages(pool)
-    cmd = "ssh %s rbd resize --image %s --size %s" %(os.environ["CLIENTNODE"],name,size)
+    cmd = "ssh %s rbd -p %s resize --image=%s --size=%s" %(os.environ["CLIENTNODE"],pool,name,size)
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
