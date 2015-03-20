@@ -227,6 +227,7 @@ class TestSanity(basetest.Basetest):
     def test21_3_ChangePoolReplica(self):
         for pool in self.ctx['createpools']:
             operations.changePoolReplica(pool)
+            time.sleep(5)
             operations.validatePool({'poolname': 'test-pool-1', 'pg-num': 64, 'size': 3})
 
     def test23_DeletePools(self):
@@ -245,7 +246,7 @@ class TestSanity(basetest.Basetest):
         indx = osd_tree[0].index('weight')
         for i in range(len(osd_tree)-1):
             value = osd_tree[i][indx].strip()
-            assert('0' != value),"the weight of the\
+            assert('0' != value), "the weight of the\
             osd was zero \n"+str_osd_tree
 
     

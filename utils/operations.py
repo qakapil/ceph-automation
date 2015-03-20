@@ -237,6 +237,7 @@ def setPGNUM(pg_num):
         rc,stdout,stderr = launch(cmd=cmd)
         assert (rc == 0), "Error while executing the command %s.Error message: %s" % (cmd, stderr)
     actual_pgs = monitoring.getTotalPGs()
+    #from utils import monitoring
     assert (int(actual_pgs) == int(total_pgs)), "All PGs were not created"
 
 
