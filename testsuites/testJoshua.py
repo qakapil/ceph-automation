@@ -50,9 +50,9 @@ class TestSanity(basetest.Basetest):
             zypperutils.addRepo('ceph', url, node)
     '''
     
-    def test02_InstallCephDeploy(self):
-        zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
-    
+    # def test02_InstallCephDeploy(self):
+    #     zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
+    #
     
     def test03_DeclareInitialMons(self):
         cephdeploy.declareInitialMons(self.ctx['initmons'])
@@ -230,52 +230,52 @@ class TestSanity(basetest.Basetest):
             time.sleep(5)
             operations.validatePool({'poolname': 'test-pool-1', 'pg-num': 64, 'size': 3})
 
-    def test23_DeletePools(self):
-        for pool in self.ctx['createpools']:
-            operations.deletePool(pool)
-    
-    def test24_Validatelibrbd(self):
-        operations.validateLibRbdTests()
-        
-    
-    def test25_ValidateDefaultOSDtree(self):
-        str_osd_tree = monitoring.getOSDtree()
-        osd_tree = str_osd_tree.split('\n')
-        for i in range(len(osd_tree)-1):
-            osd_tree[i] = osd_tree[i].split('\t')
-        indx = osd_tree[0].index('weight')
-        for i in range(len(osd_tree)-1):
-            value = osd_tree[i][indx].strip()
-            assert('0' != value), "the weight of the\
-            osd was zero \n"+str_osd_tree
+    # def test23_DeletePools(self):
+    #     for pool in self.ctx['createpools']:
+    #         operations.deletePool(pool)
+    #
+    # def test24_Validatelibrbd(self):
+    #     operations.validateLibRbdTests()
+    #
+    #
+    # def test25_ValidateDefaultOSDtree(self):
+    #     str_osd_tree = monitoring.getOSDtree()
+    #     osd_tree = str_osd_tree.split('\n')
+    #     for i in range(len(osd_tree)-1):
+    #         osd_tree[i] = osd_tree[i].split('\t')
+    #     indx = osd_tree[0].index('weight')
+    #     for i in range(len(osd_tree)-1):
+    #         value = osd_tree[i][indx].strip()
+    #         assert('0' != value), "the weight of the\
+    #         osd was zero \n"+str_osd_tree
+    #
+    #
+    # def test26_InvalidDiskOSDPrepare(self):
+    #     rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
+    #     assert (rc == 1), "OSD Prepare for invalid disk did not fail"
+    #
+    # def test27_CreateRGW(self):
+    #     for rgw in self.ctx['rgws']:
+    #         rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
+    #     for rgw in self.ctx['rgws']:
+    #         rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
+    #
+    # def test28_restartRadosGW(self):
+    #     for rgw in self.ctx['rgws']:
+    #         operations.restartRadosGW(rgw['rgw-host'])
+    #
 
-    
-    def test26_InvalidDiskOSDPrepare(self): 
-        rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
-        assert (rc == 1), "OSD Prepare for invalid disk did not fail"
-    
-    def test27_CreateRGW(self):
-        for rgw in self.ctx['rgws']:
-            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
-        for rgw in self.ctx['rgws']:
-            rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
+    # def test29_S3Tests(self):
+    #     rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
+    #     rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
+    #                           self.ctx['rgws'][0]['rgw-name'])
+    #     rgw_tasks.executeS3Tests()
 
-    def test28_restartRadosGW(self):
-        for rgw in self.ctx['rgws']:
-            operations.restartRadosGW(rgw['rgw-host'])
-
-
-    def test29_S3Tests(self):
-        rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
-        rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
-                              self.ctx['rgws'][0]['rgw-name'])
-        rgw_tasks.executeS3Tests()
-
-    def test30_SwiftTests(self):
-        rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
-        rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
-                              self.ctx['rgws'][0]['rgw-name'])
-        rgw_tasks.executeSwiftTests()
+    # def test30_SwiftTests(self):
+    #     rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
+    #     rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
+    #                           self.ctx['rgws'][0]['rgw-name'])
+    #     rgw_tasks.executeSwiftTests()
 
  
     def tearDown(self):
