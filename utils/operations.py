@@ -135,7 +135,7 @@ def changePoolReplica(dictPool):
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    log.info("changed the pool - %s " % (poolname))
+    log.info("changed the pool - %s to replica size %s" % (poolname, size))
 
 
 def validatePool(dictPool):

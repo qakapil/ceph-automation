@@ -226,7 +226,7 @@ class TestSanity(basetest.Basetest):
 
     def test21_3_ChangePoolReplica(self):
         for pool in self.ctx['createpools']:
-            operations.changePoolReplica(pool)
+            operations.changePoolReplica({'poolname': 'test-pool-1', 'pg-num': 64, 'size': 3})
             time.sleep(5)
             operations.validatePool({'poolname': 'test-pool-1', 'pg-num': 64, 'size': 3})
 
