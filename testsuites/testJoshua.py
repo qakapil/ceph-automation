@@ -50,9 +50,9 @@ class TestSanity(basetest.Basetest):
             zypperutils.addRepo('ceph', url, node)
     '''
     
-    # def test02_InstallCephDeploy(self):
-    #     zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
-    #
+    def test02_InstallCephDeploy(self):
+        zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
+
     
     def test03_DeclareInitialMons(self):
         cephdeploy.declareInitialMons(self.ctx['initmons'])
