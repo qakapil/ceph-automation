@@ -178,11 +178,11 @@ class TestSanity(basetest.Basetest):
         assert ('0 data,1 metadata,2 rbd,' in def_pools),"The default \
         pools were %s" % def_pools
      
-    def test16_CreateImages(self):
+    def test16_1_CreateImages(self):
         for image in self.ctx['images']:
             operations.createRBDImage(image)
     
-    def test16_1_ResizeImages(self):
+    def test16_2_ResizeImages(self):
         for image in self.ctx['images']:
             operations.resizeRBDImage(image)
 
