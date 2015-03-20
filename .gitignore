@@ -2,6 +2,7 @@
 /.pydevproject
 /.project
 *.log
+.idea/
 nosetests.xml
 rpm_versions.txt
 setup.cfg

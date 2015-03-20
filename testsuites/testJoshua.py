@@ -77,16 +77,16 @@ class TestSanity(basetest.Basetest):
     
     def test07_PrepareOSDs(self):
         cephdeploy.osdPrepare(self.ctx['osd_prepare'])
-    
+
+
     def test08_ActivateOSDs(self):
         cephdeploy.osdActivate(self.ctx['osd_activate'])
-    
-    
+
+
     def test09_AdminNodes(self):
         cephdeploy.addAdminNodes(self.ctx['clientnode'])
-    
-    
-               
+
+
     def test10_ValidateCephStatus(self):
         time.sleep(10)
         fsid = monitoring.getFSID()
@@ -216,14 +216,19 @@ class TestSanity(basetest.Basetest):
     
     
        
-    def test21_CreatePools(self):
+    def test21_1_CreatePools(self):
         for pool in self.ctx['createpools']:
             operations.createPool(pool)
-        
-    def test22_ValidatePools(self):
+
+    def test21_2_ValidatePools(self):
         for pool in self.ctx['createpools']:
             operations.validatePool(pool)
-    
+
+    def test21_3_ChangePoolReplica(self):
+        for pool in self.ctx['createpools']:
+            operations.changePoolReplica(pool)
+            operations.validatePool({'poolname': 'test-pool-1', 'pg-num': 64, 'size': 3})
+
     def test23_DeletePools(self):
         for pool in self.ctx['createpools']:
             operations.deletePool(pool)

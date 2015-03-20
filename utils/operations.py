@@ -24,7 +24,7 @@ def createRBDImage(dictImg):
 
 def resizeRBDImage(dictImg):
     name = dictImg.get('name', None)
-    size = dictImg.get('size', None)
+    size = dictImg.get('size', 1250)
     pool = dictImg.get('pool', 'rbd')
     imglist = rbdGetPoolImages(pool)
     cmd = "ssh %s rbd -p %s resize --image=%s --size=%s" %(os.environ["CLIENTNODE"],pool,name,size)
@@ -127,6 +127,15 @@ def createPool(dictPool):
         Error message: %s" % (cmd, stderr)
     log.info("created the pool - %s " % (poolname))
 
+
+def changePoolReplica(dictPool):
+    poolname = dictPool.get('poolname', None)
+    size = dictPool.get('size', None)
+    cmd = "ssh %s ceph osd pool set %s size %s" % (os.environ["CLIENTNODE"], poolname, size)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    log.info("changed the pool - %s " % (poolname))
 
 
 def validatePool(dictPool):
