@@ -10,44 +10,6 @@ def restartCluster():
     pass
 
 
-def createRBDImage(dictImg):
-    name = dictImg.get('name', None)
-    size = dictImg.get('size', None)
-    pool = dictImg.get('pool', 'rbd')
-    imglist = rbdGetPoolImages(pool)
-    if name in imglist:
-        rbdRemovePoolImage(dictImg)
-    cmd = "ssh %s rbd create %s --size %s --pool %s" % (os.environ["CLIENTNODE"],name,size,pool)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert (rc == 0), "Error while executing the command %s.\
-    Error message: %s" % (cmd, stderr)
-
-def resizeRBDImage(dictImg):
-    name = dictImg.get('name', None)
-    size = dictImg.get('size', 1250)
-    pool = dictImg.get('pool', 'rbd')
-    imglist = rbdGetPoolImages(pool)
-    cmd = "ssh %s rbd -p %s resize --image=%s --size=%s" %(os.environ["CLIENTNODE"],pool,name,size)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert (rc == 0), "Error while executing the command %s.\
-    Error message: %s" % (cmd, stderr)
-
-def rbdGetPoolImages(poolname):
-    cmd = "ssh %s rbd -p %s ls" % (os.environ["CLIENTNODE"],poolname)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert (rc == 0), "Error while executing the command %s.\
-    Error message: %s" % (cmd, stderr)
-    return stdout.strip().split('\n')
-
-def rbdRemovePoolImage(dictImg):
-    imgname = dictImg.get('name', None)
-    poolname = dictImg.get('pool', 'rbd')
-    cmd = "ssh %s rbd -p %s rm %s" % (os.environ["CLIENTNODE"],poolname,imgname)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert (rc == 0), "Error while executing the command %s.\
-    Error message: %s" % (cmd, stderr)
-    
-
 def createValidateObject(dictObject):
     name = dictObject.get('objname', None)
     filename = dictObject.get('objname', None)+'.txt'

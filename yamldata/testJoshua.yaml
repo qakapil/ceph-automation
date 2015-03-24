@@ -33,6 +33,8 @@ radosobjects:
 createpools:
 - {poolname: test-pool-1, pg-num: 64, size: 2}
 librbd_images:
-- {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
+- {poolname: rbd, imagename: librbdimg, size_mb: 300}
+snapshots:
+- { poolname: rbd, snapname: snap, imagename: librbdimg}
 rgws:
 - {rgw-host: host-44-0-0-232, rgw-name: gateway1, rgw-port: 80}

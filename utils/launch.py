@@ -35,7 +35,7 @@ def launch(**kwargs):
     stderr = ''
     while handleprocess:
         counter += 1
-        cout,cerr = process.communicate()
+        cout, cerr = process.communicate()
         stdout += cout
         stderr += cerr
         process.poll()
@@ -49,6 +49,4 @@ def launch(**kwargs):
             processRc = -9
             break
         time.sleep(1)
-    return (processRc,stdout,stderr)
-        
-        
+    return (processRc, stdout, stderr)
