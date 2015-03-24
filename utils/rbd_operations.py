@@ -23,7 +23,6 @@ def resizeRBDImage(dictImg):
     name = dictImg.get('name', None)
     size = dictImg.get('size', 1250)
     pool = dictImg.get('pool', 'rbd')
-    imglist = rbdGetPoolImages(pool)
     cmd = "ssh %s rbd -p %s resize --image=%s --size=%s" %(os.environ["CLIENTNODE"], pool, name, size)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -109,6 +108,7 @@ def list_snapshots(dictSnapshot):
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
+    return stdout
 
 
 def rollback_snapshot(dictSnapshot):
@@ -141,30 +141,37 @@ def remove_snapshot(dictSnapshot):
     Error message: %s" % (cmd, stderr)
 
 
-def validate_snapshot(dictSnapshot):
+def validate_snapshot_presence(dictSnapshot, expected_presence=True):
     poolname = dictSnapshot.get('poolname', None)
     snapname = dictSnapshot.get('snapname', None)
     imagename = dictSnapshot.get('imagename', None)
-    cmd = "ssh %s rbd -p %s snap ls %s" %(os.environ["CLIENTNODE"], poolname, imagename)
+    cmd = "ssh %s rbd -p %s snap ls %s --format json" %(os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    cmd_json = "ssh %s rbd -p %s snap ls %s --format json" % (os.environ["CLIENTNODE"], poolname, imagename)
-    # should have no diff right now .. then write some changes
+    all_snaps = []
+    for snap in cmd:
+        # only if snap is present # check python docs
+        all_snaps.append(snap['name'])
+    if expected_presence:
+        assert (snapname in all_snaps), "Error the snapshot %s you supposed to have is not present" % (snapname)
+    else:
+        assert (snapname not in all_snaps), "Error the snapshot %s you supposed to have is not present" % (snapname)
+
+def validate_snapshot_diff(dictSnapshot, expected_difference=False):
+    poolname = dictSnapshot.get('poolname', None)
+    snapname = dictSnapshot.get('snapname', None)
+    imagename = dictSnapshot.get('imagename', None)
+    cmd = "ssh %s rbd -p %s snap ls %s --format -json" %(os.environ["CLIENTNODE"], poolname, imagename)
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
     diff = "ssh %s rbd -p %s diff %s --from-snap %s --format json" % (os.environ["CLIENTNODE"], poolname, imagename, poolname)
-    assert (diff == {}), "No differences in image: %s and snapshot: %s" % (imagename, snapname)
-    # diff again .. should be changes !
-    act_name = cmd_json['name']
-    act_size = cmd_json['size']
-    act_order = cmd_json['order']
+    if expected_difference:
+        assert (diff != []), "Error. No differences between image: %s and snapshot: %s" % (imagename, snapname)
+    else:
+        assert (diff == []), "Error. Differences between image: %s and snapshot: %s" % (imagename, snapname)
 
-    assert ()
-
-    # get better validation
-
-
-def resize_snapshot(dictSnapshot):
-    pass
 
 def copy, move.. etc
 

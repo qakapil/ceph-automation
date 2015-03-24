@@ -51,12 +51,17 @@ def test_image(self):
 
 def test_snapshot(self):
     create_snapshot(self)
-    validate_snapshot(self)
-    clone_snapshot(self)
-    apply_snapshot(self)
-    list_snapshot(self)
+    validate_snapshot_presence(self, True)
+    validate_snapshot_diff(self, False)
+    make_changes_to_image(self)
+    validate_snapshot_diff(self, True)
+    rollback_snapshot(self)
+    validate_snapshot_diff(self, False)
+    create_snapshot(self)
+    validate_snapshot_presence(self)
+    # validate_snapshot_diff(self, False) but not all.. how to prevent ? give single params instead of the whole dict? bad!
     purge_snapshot(self)
-    validate_list?
+    validate_snapshot_presence(self, False)
     pass
 
 def test_qemu(self):
@@ -93,17 +98,6 @@ def validate_images(self):
     for image in self.ctx['images']:
         rbd_operations.validate_image_size(image)
 
-def map_images(self):
-    for image in self.ctx['images']:
-        rbd_operations.mapImage(image)
-
-def show_mapped_images(self):
-    for image in self.ctx['images']:
-        rbd_operations.showmapped_images(image)
-
-def unmap_images(self):
-    for image in self.ctx['images']:
-        rbd_operations.unmap_images(image)
 
 # Snapshots
 
@@ -121,9 +115,31 @@ def purge_snapshot(self):
     for snapshot in self.ctx['snapshot']:
         rbd_operations.create_snapshot(snapshot)
 
-def validate_snapshot(self):
+def validate_snapshot_presence(self):
     for snapshot in self.ctx['snapshot']:
         rbd_operations.validate_snapshot(snapshot)
+
+def validate_snapshot_diff(self, expected_difference):
+    for snapshot in self.ctx['snapshot']:
+        rbd_operations.validate_snapshot_diff(snapshot, expected_difference)
+
+
+# Qemu
+
+
+# Mapping
+
+def map_images(self):
+    for image in self.ctx['images']:
+        rbd_operations.mapImage(image)
+
+def show_mapped_images(self):
+    for image in self.ctx['images']:
+        rbd_operations.showmapped_images(image)
+
+def unmap_images(self):
+    for image in self.ctx['images']:
+        rbd_operations.unmap_images(image)
 
 
 
