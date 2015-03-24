@@ -23,7 +23,7 @@ def resizeRBDImage(dictImg):
     name = dictImg.get('name', None)
     size = dictImg.get('size', 1250)
     pool = dictImg.get('pool', 'rbd')
-    cmd = "ssh %s rbd -p %s resize --image=%s --size=%s" %(os.environ["CLIENTNODE"], pool, name, size)
+    cmd = "ssh %s rbd -p %s resize --image=%s --size=%s" % (os.environ["CLIENTNODE"], pool, name, size)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -36,18 +36,32 @@ def rbdGetPoolImages(poolname):
     return stdout.strip().split('\n')
 
 def validate_image_size(dictImage):
+    # rewrite it with json output
     poolname = dictImage.get('poolname', None)
     imagename = dictImage.get('imagename', None)
     size = dictImage.get('size_mb', None)
-    cmd = "ssh %s rbd -p %s --image %s info"  % (os.environ["CLIENTNODE"], poolname, imagename)
+    cmd = "ssh %s rbd -p %s --image %s info" % (os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    new_size = "ssh %s rbd -p %s --image %s info | sed -n '2p'" % (os.environ["CLIENTNODE"], poolname, imagename)
-    act_size_in_mb = new_size.split(' ')[1]
-    # rewrite it with json output
-    assert(str(size) in str(act_size_in_mb)), "new size for image %s was %s" % (imagename, new_size)
+    act_size_in_mb = (cmd['size']/1024/1024)
+    assert(str(size) in str(act_size_in_mb)), "Error. Size for image %s was %s MB" % (imagename, act_size_in_mb)
     log.info("validated image - %s in pool %s " % (imagename, poolname))
+
+def validate_image_presence(dictImage, expected_presence=True):
+    poolname = dictImage.get('poolname', None)
+    imagename = dictImage.get('imagename', None)
+    cmd = "ssh %s rbd -p %s ls --format json" % (os.environ["CLIENTNODE"], poolname)
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    all_images = []
+    for image in cmd:
+        all_images.append(image)
+    if expected_presence:
+        assert (imagename in all_images), "Error, Image %s was not present" % imagename
+    else:
+        assert (imagename not in all_images), "Error. Image Should have not been in %s" % poolname
 
 
 def rbdRemovePoolImage(dictImg):
@@ -151,11 +165,12 @@ def validate_snapshot_presence(dictSnapshot, expected_presence=True):
     Error message: %s" % (cmd, stderr)
     all_snaps = []
     for snap in cmd:
-        # only if snap is present # check python docs
-        all_snaps.append(snap['name'])
+        if snap in locals():
+            all_snaps.append(snap['name'])
     if expected_presence:
         assert (snapname in all_snaps), "Error the snapshot %s you supposed to have is not present" % (snapname)
     else:
+        # wrong?
         assert (snapname not in all_snaps), "Error the snapshot %s you supposed to have is not present" % (snapname)
 
 def validate_snapshot_diff(dictSnapshot, expected_difference=False):
@@ -173,7 +188,14 @@ def validate_snapshot_diff(dictSnapshot, expected_difference=False):
         assert (diff == []), "Error. Differences between image: %s and snapshot: %s" % (imagename, snapname)
 
 
-def copy, move.. etc
+
+
+def benchmarking():
+    pass
+
+def copymoveetc():
+    pass
+
 
 def lock_snapshot(dictSnapshot):
     pass

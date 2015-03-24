@@ -42,27 +42,25 @@ def setUp(self):
 
 def test_image(self):
     create_images(self)
-    validate_images(self)
+    validate_images_size(self)
+    validate_images_presence(self, True)
     resize_images(self)
-    validate_images(self)
+    validate_images_size(self) #with resized values
     remove_images(self)
-    validate_images(self)
+    validate_images_presence(self, False)
 
 
 def test_snapshot(self):
     create_snapshot(self)
     validate_snapshot_presence(self, True)
     validate_snapshot_diff(self, False)
-    make_changes_to_image(self)
+    # change the image somehow
+    # right now the only way is to map, mkfs, mount, touch, diff!
     validate_snapshot_diff(self, True)
     rollback_snapshot(self)
     validate_snapshot_diff(self, False)
-    create_snapshot(self)
-    validate_snapshot_presence(self)
-    # validate_snapshot_diff(self, False) but not all.. how to prevent ? give single params instead of the whole dict? bad!
     purge_snapshot(self)
     validate_snapshot_presence(self, False)
-    pass
 
 def test_qemu(self):
     qemu_img_create(self)
@@ -71,7 +69,6 @@ def test_qemu(self):
     qemu_img_validate(self)
     qemu_img_convert(self)
     qemu_img_validate
-    pass
 
 def test_map_image(self):
     create_image(self)
@@ -86,24 +83,28 @@ def create_images(self):
     for image in self.ctx['images']:
         rbd_operations.createRBDImage(image)
 
+
 def resize_images(self):
     for image in self.ctx['images']:
         rbd_operations.resizeRBDImage(image)
+
 
 def remove_images(self):
     for image in self.ctx['images']:
         rbd_operations.rbdRemovePoolImage(image)
 
-def validate_images(self):
+
+def validate_images_presence(self, expected_presence):
+    for image in self.ctx['images']:
+        rbd_operations.validate_image_presence(image, expected_presence)
+
+
+def validate_images_size(self):
     for image in self.ctx['images']:
         rbd_operations.validate_image_size(image)
 
 
 # Snapshots
-
-def rollback_snapshot(self):
-    for snapshot in self.ctx['snapshot']:
-        rbd_operations.rollback_snapshot(snapshot)
 
 
 def create_snapshot(self):
@@ -111,13 +112,20 @@ def create_snapshot(self):
         rbd_operations.create_snapshot(snapshot)
 
 
+def rollback_snapshot(self):
+    for snapshot in self.ctx['snapshot']:
+        rbd_operations.rollback_snapshot(snapshot)
+
+
 def purge_snapshot(self):
     for snapshot in self.ctx['snapshot']:
-        rbd_operations.create_snapshot(snapshot)
+        rbd_operations.purge_snapshot(snapshot)
 
-def validate_snapshot_presence(self):
+
+def validate_snapshot_presence(self, expected_presence):
     for snapshot in self.ctx['snapshot']:
-        rbd_operations.validate_snapshot(snapshot)
+        rbd_operations.validate_snapshot_presence(snapshot, expected_presence)
+
 
 def validate_snapshot_diff(self, expected_difference):
     for snapshot in self.ctx['snapshot']:
@@ -125,6 +133,9 @@ def validate_snapshot_diff(self, expected_difference):
 
 
 # Qemu
+
+
+
 
 
 # Mapping
