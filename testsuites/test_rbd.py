@@ -68,7 +68,7 @@ def test_qemu(self):
     resize_qemu_image(self)
     validate_qemu_image_size(self)
     convert_qemu_image(self)
-    qemu_img_validate
+    validate_qemu_image_format(self)
 
 def test_map_image(self):
     create_image(self)
@@ -124,9 +124,6 @@ def toggle_discard_trim():
 
 def qemu_nbd():
     pass
-
-
-
 
 
 # Image Operations

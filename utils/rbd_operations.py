@@ -91,7 +91,13 @@ def showmapped_images(dictImage):
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing command %s. \
     Error message: %s" % (cmd, stderr)
-    return stdout.strip().split('\n')
+    mapped_images = []
+    for imagename in cmd:
+        # nested loop TODO
+        mapped_images.append(cmd['name'])
+
+
+
 
 
 def unmap_images(dictImage):
@@ -257,7 +263,7 @@ def validate_qemu_image_format(dictImage, expected_format='qcow2'):
     imagename = dictImage.get('imagename', None)
     cmd = "ssh %s qemu-image info rbd:%s/%s | sed -n '2p'" %\
           (os.environ["CLIENTNODE"], poolname, imagename)
-    actual_format = cmd.split(':')[-1]
+    actual_format = cmd.split(':')[-1].strip()
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
@@ -265,10 +271,16 @@ def validate_qemu_image_format(dictImage, expected_format='qcow2'):
                                                % (expected_format, actual_format)
 
 
+
+#Misc
+
 def benchmarking():
     pass
 
-def copymoveetc():
+
+# snapshots TODO
+
+def copy_move_etc():
     pass
 
 
@@ -286,11 +298,3 @@ def protect_snapshot(dictSnapshot):
 
 def clone_snapshot(dictSnapshot):
     pass
-
-# DIFF!
-
-
-
-
-
-
