@@ -190,6 +190,81 @@ def validate_snapshot_diff(dictSnapshot, expected_difference=False):
 
 
 
+# Qemu
+
+#1st ensure qemu is installed properly
+# qemu-tools
+
+def create_qemu_image(dictImage, format='raw'):
+    poolname = dictImage.get('poolname', None)
+    imagename = dictImage.get('imagename', None)
+    size = dictImage.get('size', None)
+    cmd = "ssh %s qemu-image create -f %s rbd:%s/%s %s" % \
+          (os.environ["CLIENTNODE"], format, poolname, imagename, size)
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    log.info('created qemu image %s') % imagename
+
+
+def convert_qemu_image(dictImage, from_format='raw', to_format='qcow2'):
+    poolname = dictImage.get('poolname', None)
+    imagename = dictImage.get('imagename', None)
+    size = dictImage.get('size', None)
+    physical_image = []  # TODO
+    cmd = "ssh %s qemu-image convert -f %s -O %s %s rbd:%s/%s" % \
+          (os.environ["CLIENTNODE"], from_format, to_format, physical_image, poolname, imagename)
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    log.info('converted the qemu image %s from % to %') % (imagename, from_format, to_format)
+
+def resize_qemu_image(dictImage, new_size=2000):
+    poolname = dictImage.get('poolname', None)
+    imagename = dictImage.get('imagename', None)
+    size = dictImage.get('size', None)
+    cmd = "ssh %s qemu-image resize rbd:%s/%s %s" % \
+          (os.environ["CLIENTNODE"], poolname, imagename, size)
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s. \
+    Error message: %s" % (cmd, stderr)
+    log.info('Resized the qemu image %s from % to %') % (imagename, size, new_size)
+
+def validate_qemu_image_size(dictImage):
+    poolname = dictImage.get('poolname', None)
+    imagename = dictImage.get('imagename', None)
+    size = dictImage.get('size', None)
+    cmd = "ssh %s qemu-image info rbd:%s/%s | sed -n '3p'" % (os.environ["CLIENTNODE"], poolname, imagename)
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s. \
+    Error message: %s" % (cmd, stderr)
+    act_size = cmd.split(' ')[2]
+    assert (size != act_size), "Error. Size did not changed. Expected size: %s Actual Size: %s " % \
+                               (size, act_size)
+
+
+def validate_qemu_image_presence(dictImage):
+    poolname = dictImage.get('poolname', None)
+    imagename = dictImage.get('imagename', None)
+    cmd = "ssh %s qemu-image info rbd:%s/%s" % (os.environ["CLIENTNODE"], poolname, imagename)
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+
+
+def validate_qemu_image_format(dictImage, expected_format='qcow2'):
+    poolname = dictImage.get('poolname', None)
+    imagename = dictImage.get('imagename', None)
+    cmd = "ssh %s qemu-image info rbd:%s/%s | sed -n '2p'" %\
+          (os.environ["CLIENTNODE"], poolname, imagename)
+    actual_format = cmd.split(':')[-1]
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    assert (actual_format == expected_format), "Error. Expected format %s but found %s"\
+                                               % (expected_format, actual_format)
+
+
 def benchmarking():
     pass
 

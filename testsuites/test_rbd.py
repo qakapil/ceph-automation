@@ -63,11 +63,11 @@ def test_snapshot(self):
     validate_snapshot_presence(self, False)
 
 def test_qemu(self):
-    qemu_img_create(self)
-    qemu_img_validate(self)
-    qemu_img_resize(self)
-    qemu_img_validate(self)
-    qemu_img_convert(self)
+    create_qemu_image(self)
+    validate_qemu_image_presence(self)
+    resize_qemu_image(self)
+    validate_qemu_image_size(self)
+    convert_qemu_image(self)
     qemu_img_validate
 
 def test_map_image(self):
@@ -78,7 +78,59 @@ def test_map_image(self):
     unmap(self)
 
 
+# Qemu
+
+def create_qemu_image():
+    for image in ctx['images']:
+        rbd_operations.create_qemu_image(image)
+
+def validate_qemu_image_size():
+    for image in ctx['images']:
+        rbd_operations.validate_qemu_image_size(image)
+
+def validate_qemu_image_presence():
+    for image in ctx['image']:
+        rbd_operations.validate_qemu_image_presence(image)
+
+def validate_qemu_image_format():
+    for image in ctx['image']:
+        # Optional parameters are: format_to_expect
+        # Default value = qcow2
+        rbd_operations.validate_qemu_image_format(image)
+
+def convert_qemu_image():
+    for image in ctx['image']:
+        # Optional parameters are: from_image_format, to_image_format
+        # Default values are:
+        # from_image_format = raw
+        # to_image_format = qcow2
+        rbd_operations.convert_qemu_image(image)
+
+
+def resize_qemu_image():
+    for image in ctx['image']:
+        # Optional parameters are: size
+        # Default value = 2000
+        rbd_operations.resize_qemu_image(image)
+
+
+def toggle_chaching():
+    pass
+
+
+def toggle_discard_trim():
+    pass
+
+
+def qemu_nbd():
+    pass
+
+
+
+
+
 # Image Operations
+
 def create_images(self):
     for image in self.ctx['images']:
         rbd_operations.createRBDImage(image)
@@ -130,12 +182,6 @@ def validate_snapshot_presence(self, expected_presence):
 def validate_snapshot_diff(self, expected_difference):
     for snapshot in self.ctx['snapshot']:
         rbd_operations.validate_snapshot_diff(snapshot, expected_difference)
-
-
-# Qemu
-
-
-
 
 
 # Mapping
