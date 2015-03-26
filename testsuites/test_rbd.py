@@ -71,11 +71,12 @@ def test_qemu(self):
     validate_qemu_image_format(self)
 
 def test_map_image(self):
-    create_image(self)
-    validate_image(self)
-    map_image(self)
-    show_mapped(self)
-    unmap(self)
+    create_images(self)
+    # different image name here! Randomize imagenames! Randomize everything for max test coverage!
+    validate_images_presence(self)
+    map_images(self)
+    show_mapped_images(self)
+    unmap_images(self)
 
 
 # Qemu
@@ -114,7 +115,7 @@ def resize_qemu_image():
         rbd_operations.resize_qemu_image(image)
 
 
-def toggle_chaching():
+def toggle_caching():
     pass
 
 
@@ -194,7 +195,6 @@ def show_mapped_images(self):
 def unmap_images(self):
     for image in self.ctx['images']:
         rbd_operations.unmap_images(image)
-
 
 
 def tearDown(self):
