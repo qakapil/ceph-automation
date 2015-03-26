@@ -2,6 +2,7 @@ from utils import basetest
 from utils import zypperutils
 from utils import monitoring
 from utils import general
+from utils import baseconfig
 from utils import rbd_operations
 import logging,time,re, os, sys
 from nose.exc import SkipTest
@@ -10,28 +11,22 @@ from nose.exc import SkipTest
 log = logging.getLogger(__name__)
 
 
-def load_config(cls):
-    filename = os.environ.get("CFG_FILE", "setup.cfg")
-    cls.fetchIniData(cls, filename)
-    yamlfile = os.environ.get("YAMLDATA_FILE")
-    if yamlfile == None:
-        yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
-        yamlfile = 'yamldata/%s.yaml' % (yamlfile)
-    cls.fetchTestYamlData(cls,yamlfile)
-    cls.setLogger(cls,'cephauto.log')
-    os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
-    monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
+filename = os.environ.get("CFG_FILE", "setup.cfg")
+cfg_data = baseconfig.fetchIniData(filename)
 
-    url = cls.config.get('env','repo_baseurl')
-    for node in cls.ctx['allnodes']:
-        zypperutils.addRepo('ceph', url, node)
+yamlfile = os.environ.get("YAMLDATA_FILE")
+if yamlfile == None:
+    yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
+    yamlfile = 'yamldata/%s.yaml' % (yamlfile)
+yaml_data = baseconfig.fetchTestYamlData(yamlfile)
+
+baseconfig.setLogger('cephauto.log')
+os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
+
+monitoring.printRPMVersions(cfg_data.get('env','repo_baseurl'))
+url = cfg_data.get('env','repo_baseurl')
 
 
-    before_cleanup = os.environ.get("BEFORE_CLEANUP")
-    if before_cleanup != None:
-        log.info('starting teardown for before_cleanup')
-        #cephdeploy.cleanupNodes(cls.ctx['allnodes'], 'ceph')
-        general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
 
 def setUp(self):
     ?run_prerequisits?
