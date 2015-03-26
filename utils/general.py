@@ -3,6 +3,7 @@ from launch import launch
 import logging
 import zypperutils
 import time
+import json
 log = logging.getLogger(__name__)
 
 def createDirOLD(dirPath):
@@ -612,6 +613,11 @@ def scpDir(host, srcDir, destDir):
     rc,stdout,stderr = launch(cmd=cmd)
     assert(rc == 0), stderr
 
+
+def convStringToJson(string):
+    op = json.loads(string)
+    assert(type(op) == type({})), "string could not be converted to json doct"
+    return op
 
 
 class ListExceptions:
