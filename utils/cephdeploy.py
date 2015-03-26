@@ -189,7 +189,3 @@ def prepareInvalidOSD(listOSDs):
     cmd = 'ssh %s ceph-deploy osd prepare %s:%s' % (os.environ["CLIENTNODE"], node, invaliddrive)
     rc,stdout,stderr = launch(cmd=cmd)
     return rc
-    
-    
-    
-        
