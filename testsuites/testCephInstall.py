@@ -46,7 +46,7 @@ def setup_module():
 def setUp():
     if os.environ.get("CLUSTER_FAILED") == "Yes":
        raise SkipTest("ceph cluster was not active+clean")
-    log.info('++++++starting %s ++++++' % self._testMethodName)
+    log.info('++++++starting %s ++++++' % __name__)
 
 
 def test02_InstallCephDeploy():
@@ -151,7 +151,7 @@ def test12_ValidateCephStatus():
 
 def test13_ValidateCephDeployVersion():
     expVersion = cephdeploy.getExpectedVersion(
-                            self.config.get('env','repo_baseurl'))
+                            cfg_data.get('env','repo_baseurl'))
     actVersion = cephdeploy.getActuaVersion()
     if actVersion not in expVersion:
         raise Exception, "expected '%s' and actual '%s' versions \
@@ -160,7 +160,7 @@ def test13_ValidateCephDeployVersion():
 
 def test14_ValidateCephVersion():
     expVersion = monitoring.getExpectedVersion(
-                 self.config.get('env','repo_baseurl'))
+                 cfg_data.get('env','repo_baseurl'))
     actVersion = monitoring.getActuaVersion()
     if actVersion not in expVersion:
         raise Exception, "expected '%s' and actual '%s' \
@@ -272,7 +272,7 @@ def test30_SwiftTests():
 
 
 def tearDown():
-    log.info('++++++completed %s ++++++' % self._testMethodName)
+    log.info('++++++completed %s ++++++' % __name__)
 
 
 def teardown_module():
