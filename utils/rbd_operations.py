@@ -9,12 +9,14 @@ log = logging.getLogger(__name__)
 
 #Images
 
-def createRBDImage(dictImg):
+def createRBDImage(dictImg, dictSnapshot):
     name = dictImg.get('name', None)
     size = dictImg.get('size', None)
     pool = dictImg.get('pool', 'rbd')
     imglist = rbdGetPoolImages(pool)
     if name in imglist:
+        # if image has snapshots it can not be deleted! rbd snap purge!
+        purge_snapshot({"poolname: %s, imagename: %s"}) % (pool, name)
         rbdRemovePoolImage(dictImg)
     cmd = "ssh %s rbd create %s --size %s --pool %s" % (os.environ["CLIENTNODE"], name, size, pool)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -173,6 +175,8 @@ def validate_snapshot_presence(dictSnapshot, expected_presence=True):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     all_snaps = []
+    print stdout
+    print type(stdout)
     for snap in general.convStringToJson(stdout):
         if snap in locals():
             all_snaps.append(snap['name'])
