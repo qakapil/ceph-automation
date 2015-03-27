@@ -176,6 +176,7 @@ def validate_snapshot_presence(dictSnapshot, expected_presence=True):
     all_snaps = []
     stdout_json = ast.literal_eval(stdout)
     print type(stdout)
+    print stdout_json
     for snap in stdout_json:
         if snap in locals():
             all_snaps.append(snap['name'])
