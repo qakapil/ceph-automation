@@ -73,25 +73,25 @@ def test_qemu():
 # Qemu
 
 def create_qemu_image():
-    for image in yaml_data['images']:
+    for image in yaml_data['qemu']:
         rbd_operations.create_qemu_image(image)
 
 def validate_qemu_image_size():
-    for image in yaml_data['images']:
+    for image in yaml_data['qemu']:
         rbd_operations.validate_qemu_image_size(image)
 
 def validate_qemu_image_presence():
-    for image in yaml_data['image']:
+    for image in yaml_data['qemu']:
         rbd_operations.validate_qemu_image_presence(image)
 
 def validate_qemu_image_format():
-    for image in yaml_data['image']:
+    for image in yaml_data['qemu']:
         # Optional parameters are: format_to_expect
         # Default value = qcow2
         rbd_operations.validate_qemu_image_format(image)
 
 def convert_qemu_image():
-    for image in yaml_data['image']:
+    for image in yaml_data['qemu']:
         # Optional parameters are: from_image_format, to_image_format
         # Default values are:
         # from_image_format = raw
@@ -100,7 +100,7 @@ def convert_qemu_image():
 
 
 def resize_qemu_image():
-    for image in yaml_data['image']:
+    for image in yaml_data['qemu']:
         # Optional parameters are: size
         # Default value = 2000
         rbd_operations.resize_qemu_image(image)
