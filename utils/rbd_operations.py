@@ -87,7 +87,7 @@ def mapImage(dictImage):
     # ensure device is not mapped already
     imagename = dictImage.get('name')
     pool = dictImage.get('pool', 'rbd')
-    cmd = "ssh %s rbd map %s/%s" % (os.environ["CLIENTNODE"], pool, imagename) #--id admin?
+    cmd = "ssh %s sudo rbd map %s/%s" % (os.environ["CLIENTNODE"], pool, imagename) #--id admin?
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing command %s. \
     Error message: %s" % (cmd, stderr)
@@ -109,7 +109,15 @@ def gather_device_names(dictImage):
 def unmap_image(device=None):
     # Before unmapping ensure its unmounted
     assert (device != None), "Error no device provided"
-    cmd = "ssh %s rbd unmap /dev/%s" % (os.environ["CLIENTNODE"], device)
+    cmd = "ssh %s sudo rbd unmap /dev/%s" % (os.environ["CLIENTNODE"], device)
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing command %s. \
+    Error message: %s" % (cmd, stderr)
+
+
+def unmount_image(device=None):
+    assert (device != None), "Error no device provided"
+    cmd = "ssh %s sudo umount /dev/%s" % (os.environ["CLEINTNODE"], device)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing command %s. \
     Error message: %s" % (cmd, stderr)
