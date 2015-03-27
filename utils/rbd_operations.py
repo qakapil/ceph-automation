@@ -189,7 +189,7 @@ def validate_snapshot_diff(dictSnapshot, expected_difference=False):
     poolname = dictSnapshot.get('pool', None)
     snapname = dictSnapshot.get('snapname', None)
     imagename = dictSnapshot.get('name', None)
-    cmd = "ssh %s rbd -p %s snap ls %s --format json" %(os.environ["CLIENTNODE"], poolname, imagename)
+    cmd = "ssh %s rbd -p %s diff %s --format json" %(os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
