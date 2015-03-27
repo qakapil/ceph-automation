@@ -209,13 +209,16 @@ def create_qemu_image(dictQemu, format='raw'):
     poolname = dictQemu.get('pool', None)
     imagename = dictQemu.get('name', None)
     size = dictQemu.get('size', None)
+    imglist = rbdGetPoolImages(poolname)
+    if imagename in imglist:
+        purge_snapshot(dictQemu)
+        rbdRemovePoolImage(dictQemu)
     cmd = "ssh %s qemu-img create -f %s rbd:%s/%s %s" % \
           (os.environ["CLIENTNODE"], format, poolname, imagename, size)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     # log.info('created qemu image %s') % imagename
-
 
 def convert_qemu_image(dictQemu, from_format='raw', to_format='qcow2'):
     poolname = dictQemu.get('pool', None)
