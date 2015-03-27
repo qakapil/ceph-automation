@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 #Images
 
-def createRBDImage(dictImg, dictSnapshot):
+def createRBDImage(dictImg):
     name = dictImg.get('name', None)
     size = dictImg.get('size', None)
     pool = dictImg.get('pool', 'rbd')
