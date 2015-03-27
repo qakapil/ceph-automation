@@ -1,6 +1,7 @@
 *.pyc
 /.pydevproject
 /.project
+/.idea
 *.log
 nosetests.xml
 rpm_versions.txt
