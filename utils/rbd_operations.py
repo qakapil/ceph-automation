@@ -178,8 +178,7 @@ def validate_snapshot_presence(dictSnapshot, expected_presence=True):
     print type(stdout)
     print stdout_json
     for snap in stdout_json:
-        if snap in locals():
-            all_snaps.append(snap['name'])
+        all_snaps.append(snap['name'])
     if expected_presence:
         assert (snapname in all_snaps), "Error the snapshot %s you supposed to have is not present" % (snapname)
     else:
