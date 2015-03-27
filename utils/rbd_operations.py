@@ -199,7 +199,7 @@ def validate_snapshot_diff(dictSnapshot, expected_difference=False):
         assert (diff != []), "Error. No differences between image: %s and snapshot: %s" % (imagename, snapname)
     else:
         assert (diff == []), "Error. Differences between image: %s and snapshot: %s" % (imagename, snapname)
-    log.info('validating snapshot diff of % with image: %s') % (snapname, imagename)
+    log.info('validating snapshot diff of %s with image: %s') % (snapname, imagename)
 
 
 # Qemu
