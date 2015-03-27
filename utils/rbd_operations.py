@@ -15,8 +15,7 @@ def createRBDImage(dictImg):
     pool = dictImg.get('pool', 'rbd')
     imglist = rbdGetPoolImages(pool)
     if name in imglist:
-        # if image has snapshots it can not be deleted! rbd snap purge!
-        purge_snapshot({"poolname: %s, imagename: %s"}) % (pool, name)
+        purge_snapshot(dictImg)
         rbdRemovePoolImage(dictImg)
     cmd = "ssh %s rbd create %s --size %s --pool %s" % (os.environ["CLIENTNODE"], name, size, pool)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -117,9 +116,9 @@ def unmap_images(dictImage):
 # Snapshots
 
 def create_snapshot(dictSnaphot):
-    poolname = dictSnaphot.get('poolname', None)
+    poolname = dictSnaphot.get('pool', None)
     snapname = dictSnaphot.get('snapname', None)
-    imagename = dictSnaphot.get('imagename', None)
+    imagename = dictSnaphot.get('name', None)
     cmd = "ssh %s rbd -p %s snap create --snap %s %s" % (os.environ["CLIENTNODE"], poolname, snapname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -127,8 +126,8 @@ def create_snapshot(dictSnaphot):
 
 
 def list_snapshots(dictSnapshot):
-    poolname = dictSnapshot.get('poolname', None)
-    imagename = dictSnapshot.get('imagename', None)
+    poolname = dictSnapshot.get('pool', None)
+    imagename = dictSnapshot.get('name', None)
     cmd = "ssh %s rbd snap ls %s/%s --format json --pretty-format" % (os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -138,9 +137,9 @@ def list_snapshots(dictSnapshot):
 
 def rollback_snapshot(dictSnapshot):
     # how to validate?
-    poolname = dictSnapshot.get('poolname', None)
+    poolname = dictSnapshot.get('pool', None)
     snapname = dictSnapshot.get('snapname', None)
-    imagename = dictSnapshot.get('imagename', None)
+    imagename = dictSnapshot.get('name', None)
     cmd = "ssh %s rbd snap rollback %s/%s@%s" % (os.environ["CLIENTNODE"], poolname, imagename, snapname)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -148,8 +147,8 @@ def rollback_snapshot(dictSnapshot):
 
     # purges all snapshots for a given image
 def purge_snapshot(dictSnapshot):
-    poolname = dictSnapshot.get('poolname', None)
-    imagename = dictSnapshot.get('imagename', None)
+    poolname = dictSnapshot.get('pool', None)
+    imagename = dictSnapshot.get('name', None)
     cmd = "ssh %s rbd -p %s snap purge %s" % (os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -157,9 +156,9 @@ def purge_snapshot(dictSnapshot):
 
     # removes a single snapshot
 def remove_snapshot(dictSnapshot):
-    poolname = dictSnapshot.get('poolname', None)
+    poolname = dictSnapshot.get('pool', None)
     snapname = dictSnapshot.get('snapname', None)
-    imagename = dictSnapshot.get('imagename', None)
+    imagename = dictSnapshot.get('name', None)
     cmd = "ssh %s rbd -p %s snap rm --snap %s" % (os.environ["CLIENTNODE"], poolname, snapname)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -167,9 +166,9 @@ def remove_snapshot(dictSnapshot):
 
 
 def validate_snapshot_presence(dictSnapshot, expected_presence=True):
-    poolname = dictSnapshot.get('poolname', None)
+    poolname = dictSnapshot.get('pool', None)
     snapname = dictSnapshot.get('snapname', None)
-    imagename = dictSnapshot.get('imagename', None)
+    imagename = dictSnapshot.get('name', None)
     cmd = "ssh %s rbd -p %s snap ls %s --format json" %(os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -187,9 +186,9 @@ def validate_snapshot_presence(dictSnapshot, expected_presence=True):
         assert (snapname not in all_snaps), "Error the snapshot %s you supposed to have is not present" % (snapname)
 
 def validate_snapshot_diff(dictSnapshot, expected_difference=False):
-    poolname = dictSnapshot.get('poolname', None)
+    poolname = dictSnapshot.get('pool', None)
     snapname = dictSnapshot.get('snapname', None)
-    imagename = dictSnapshot.get('imagename', None)
+    imagename = dictSnapshot.get('name', None)
     cmd = "ssh %s rbd -p %s snap ls %s --format json" %(os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
