@@ -3,9 +3,10 @@ import yaml
 import unittest
 import logging
 
+
 def fetchIniData(filename):
-    config = SafeConfigParser()
-    return config.read(filename)
+    cfg = SafeConfigParser()
+    return cfg.read(filename)
         
      
 

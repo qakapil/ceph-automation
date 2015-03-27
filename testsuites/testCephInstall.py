@@ -6,11 +6,12 @@ from utils import general
 from utils import rgw_tasks
 from utils import baseconfig
 from nose.exc import SkipTest
+from ConfigParser import SafeConfigParser
 import logging,time,re, os, sys
 
 log = logging.getLogger(__name__)
 
-cfg_data = {}
+cfg_data = None
 yaml_data = {}
 
 
@@ -18,7 +19,9 @@ def setup_module():
     global cfg_data
     global yaml_data
     filename = os.environ.get("CFG_FILE", "setup.cfg")
-    cfg_data = baseconfig.fetchIniData(filename)
+    #cfg_data = baseconfig.fetchIniData(filename)
+    cfg_data = SafeConfigParser()
+    cfg_data.read(filename)
 
     yamlfile = os.environ.get("YAMLDATA_FILE")
     if yamlfile == None:
