@@ -57,10 +57,10 @@ os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
 def test_qemu():
     create_qemu_image()
     validate_qemu_image_presence()
-#     resize_qemu_image()
-#     validate_qemu_image_size()
-#     convert_qemu_image()
-#     validate_qemu_image_format()
+    resize_qemu_image()
+    validate_qemu_image_size()
+    convert_qemu_image()
+    validate_qemu_image_format()
 #
 # def test_map_image():
 #     create_images()
