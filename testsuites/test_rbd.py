@@ -154,27 +154,27 @@ def validate_images_size():
 
 
 def create_snapshot():
-    for snapshot in yaml_data['snapshot']:
+    for snapshot in yaml_data['snapshots']:
         rbd_operations.create_snapshot(snapshot)
 
 
 def rollback_snapshot():
-    for snapshot in yaml_data['snapshot']:
+    for snapshot in yaml_data['snapshots']:
         rbd_operations.rollback_snapshot(snapshot)
 
 
 def purge_snapshot():
-    for snapshot in yaml_data['snapshot']:
+    for snapshot in yaml_data['snapshots']:
         rbd_operations.purge_snapshot(snapshot)
 
 
 def validate_snapshot_presence(expected_presence):
-    for snapshot in yaml_data['snapshot']:
+    for snapshot in yaml_data['snapshots']:
         rbd_operations.validate_snapshot_presence(snapshot, expected_presence)
 
 
 def validate_snapshot_diff(expected_difference):
-    for snapshot in yaml_data['snapshot']:
+    for snapshot in yaml_data['snapshots']:
         rbd_operations.validate_snapshot_diff(snapshot, expected_difference)
 
 
