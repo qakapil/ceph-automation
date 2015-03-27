@@ -194,6 +194,7 @@ def validate_snapshot_diff(dictSnapshot, expected_difference=False):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     diff = ast.literal_eval(stdout)
+    print diff
     if expected_difference:
         assert (diff != []), "Error. No differences between image: %s and snapshot: %s" % (imagename, snapname)
     else:
