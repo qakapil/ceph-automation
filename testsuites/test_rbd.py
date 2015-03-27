@@ -33,7 +33,7 @@ os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
 
 def test_image():
     create_images()
-    validate_images_size(1024)
+    validate_images_size(None)
     validate_images_presence(True)
     resize_images()
     validate_images_size(1250) #with resized values # make it more generic
@@ -141,7 +141,7 @@ def validate_images_presence(expected_presence):
         rbd_operations.validate_image_presence(image, expected_presence)
 
 
-def validate_images_size(expected_size=1250):
+def validate_images_size(expected_size=None):
     for image in yaml_data['images']:
         rbd_operations.validate_image_size(image, expected_size)
 
