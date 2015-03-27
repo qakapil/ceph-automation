@@ -214,7 +214,7 @@ def create_qemu_image(dictQemu, format='raw'):
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    log.info('created qemu image %s') % imagename
+    # log.info('created qemu image %s') % imagename
 
 
 def convert_qemu_image(dictQemu, from_format='raw', to_format='qcow2'):
@@ -227,7 +227,7 @@ def convert_qemu_image(dictQemu, from_format='raw', to_format='qcow2'):
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    log.info('converted the qemu image %s from % to %') % (imagename, from_format, to_format)
+    # log.info('converted the qemu image %s from % to %') % (imagename, from_format, to_format)
 
 def resize_qemu_image(dictQemu, new_size=2000):
     poolname = dictQemu.get('pool', None)
@@ -238,7 +238,7 @@ def resize_qemu_image(dictQemu, new_size=2000):
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s. \
     Error message: %s" % (cmd, stderr)
-    log.info('Resized the qemu image %s from % to %') % (imagename, size, new_size)
+    # log.info('Resized the qemu image %s from % to %') % (imagename, size, new_size)
 
 def validate_qemu_image_size(dictQemu):
     poolname = dictQemu.get('pool', None)
