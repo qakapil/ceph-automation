@@ -1,21 +1,35 @@
+from utils import monitoring
+from utils import operations
 from utils import baseconfig
-from utils import rbd_operations
-import os
+from ConfigParser import SafeConfigParser
+import logging,time,re, os, sys
+
+log = logging.getLogger(__name__)
+
+cfg_data = None
+yaml_data = {}
 
 
-yamlfile = os.environ.get("YAMLDATA_FILE")
-if yamlfile == None:
-    yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
-    yamlfile = 'yamldata/%s.yaml' % (yamlfile)
-yaml_data = baseconfig.fetchTestYamlData(yamlfile)
-os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
+def setUp():
+    global cfg_data
+    global yaml_data
+    filename = os.environ.get("CFG_FILE", "setup.cfg")
+    cfg_data = SafeConfigParser()
+    cfg_data.read(filename)
 
+    yamlfile = os.environ.get("YAMLDATA_FILE")
+    if yamlfile == None:
+        yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
+        yamlfile = 'yamldata/%s.yaml' % (yamlfile)
+    yaml_data = baseconfig.fetchTestYamlData(yamlfile)
 
-#def setUp():
-#    ?run_prerequisits?
-#    check_installation
-#    check_module
-#   check_rbd_sanity
+    baseconfig.setLogger('cephauto.log', cfg_data)
+    os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
+    if not monitoring.isClusterReady(60):
+        operations.createCephCluster(yaml_data, cfg_data)
+    status = monitoring.isClusterReady(300)
+    assert status is True, "Ceph cluster was not ready. Failing the test suite"
+
 
 def test_image():
     create_images()

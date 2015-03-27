@@ -3,7 +3,6 @@ from utils import cephdeploy
 from utils import monitoring
 from utils import operations
 from utils import general
-from utils import rgw_tasks
 from utils import baseconfig
 from nose.exc import SkipTest
 from ConfigParser import SafeConfigParser
@@ -19,7 +18,7 @@ def setup_module():
     global cfg_data
     global yaml_data
     filename = os.environ.get("CFG_FILE", "setup.cfg")
-    #cfg_data = baseconfig.fetchIniData(filename)
+
     cfg_data = SafeConfigParser()
     cfg_data.read(filename)
 

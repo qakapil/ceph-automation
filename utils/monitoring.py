@@ -41,33 +41,36 @@ def getCephStatus():
 
 
 def isClusterReady(wtime):
-    fsid = getFSID()
-    status = getCephStatus()
-    if fsid not in status:
-        raise Exception, "fsid %s was not found in ceph status %s"\
-                          % (fsid,status)
-    active_clean = False
-    counter = 0
-    default_pgs = getTotalPGs()
-    while not active_clean:
-        if default_pgs +' active+clean' in status:
-            log.info('placement groups in ceph status were \
-                      active+clean')
-            active_clean = True
-            continue
-        if (counter > int(wtime)):
-            raise Exception, 'PGs did not reach active+clean state \
-                               after 5 mins'
-        log.debug('waiting for ceph status to update')
-        time.sleep(1)
-        counter += 1
+    try:
+        fsid = getFSID()
         status = getCephStatus()
-    if 'health HEALTH_WARN clock skew detected' in status:
-        log.warning('health HEALTH_WARN clock skew detected in\
-                     ceph status')
-    if 'health HEALTH_OK' in status:
-        log.info('cluster health is OK and PGs are active+clean')
-    return True
+        if fsid not in status:
+            raise Exception, "fsid %s was not found in ceph status %s"\
+                              % (fsid,status)
+        active_clean = False
+        counter = 0
+        default_pgs = getTotalPGs()
+        while not active_clean:
+            if default_pgs +' active+clean' in status:
+                log.info('placement groups in ceph status were \
+                          active+clean')
+                active_clean = True
+                continue
+            if (counter > int(wtime)):
+                raise Exception, 'PGs did not reach active+clean state \
+                                   after 5 mins'
+            log.debug('waiting for ceph status to update')
+            time.sleep(1)
+            counter += 1
+            status = getCephStatus()
+        if 'health HEALTH_WARN clock skew detected' in status:
+            log.warning('health HEALTH_WARN clock skew detected in\
+                         ceph status')
+        if 'health HEALTH_OK' in status:
+            log.info('cluster health is OK and PGs are active+clean')
+        return True
+    except:
+        return False
 
     
 def getExpectedVersion(url):
