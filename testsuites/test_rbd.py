@@ -41,18 +41,19 @@ def test_image():
     validate_images_presence(False)
 
 #
-# def test_snapshot():
-#     create_snapshot()
-#     validate_snapshot_presence(True)
-#     validate_snapshot_diff(False)
-#     # change the image somehow
-#     # right now the only way is to map, mkfs, mount, touch, diff!
-#     validate_snapshot_diff(True)
-#     rollback_snapshot()
-#     validate_snapshot_diff(False)
-#     purge_snapshot()
-#     validate_snapshot_presence(False)
-#
+def test_snapshot():
+    create_images()
+    create_snapshot()
+    validate_snapshot_presence(True)
+    validate_snapshot_diff(False)
+    # change the image somehow
+    # right now the only way is to map, mkfs, mount, touch, diff!
+    # validate_snapshot_diff(True)
+    # rollback_snapshot()
+    # validate_snapshot_diff(False)
+    # purge_snapshot()
+    # validate_snapshot_presence(False)
+
 # def test_qemu():
 #     create_qemu_image()
 #     validate_qemu_image_presence()
