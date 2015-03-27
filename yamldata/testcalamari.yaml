@@ -1,23 +1,24 @@
 allnodes:
-- host-44-0-1-248
-- host-44-0-2-13
-- host-44-0-2-14
-- host-44-0-2-15
+- teuthida-10
+- teuthida-4
+- teuthida-2
+- teuthida-1
+clientnode_ip: 10.160.223.10
 master_fqdn:
-   host-44-0-1-250.openstack.local.p2.cloud.suse.de
+   teuthida-6.suse.de
 cluster:
-   jenkins@host-44-0-2-13.openstack.local.p2.cloud.suse.de:
+   jenkins@teuthida-4.suse.de:
        roles:
        - osd.0
-       - mon.host-44-0-2-13
-   jenkins@host-44-0-2-14.openstack.local.p2.cloud.suse.de:
+       - mon.teuthida-4
+   jenkins@teuthida-2.suse.de:
        roles:
        - osd.1
-       - mon.host-44-0-2-14
-   jenkins@host-44-0-2-15.openstack.local.p2.cloud.suse.de:
+       - mon.teuthida-2
+   jenkins@teuthida-1.suse.de:
        roles:
        - osd.2
-       - mon.host-44-0-2-15
-   jenkins@host-44-0-1-248.openstack.local.p2.cloud.suse.de:
+       - mon.teuthida-1
+   jenkins@teuthida-10.suse.de:
        roles:
        - client.0
