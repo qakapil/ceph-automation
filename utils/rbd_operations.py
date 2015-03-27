@@ -205,10 +205,10 @@ def validate_snapshot_diff(dictSnapshot, expected_difference=False):
 #1st ensure qemu is installed properly
 # qemu-tools
 
-def create_qemu_image(dictImage, format='raw'):
-    poolname = dictImage.get('pool', None)
-    imagename = dictImage.get('name', None)
-    size = dictImage.get('size', None)
+def create_qemu_image(dictQemu, format='raw'):
+    poolname = dictQemu.get('pool', None)
+    imagename = dictQemu.get('name', None)
+    size = dictQemu.get('size', None)
     cmd = "ssh %s qemu-img create -f %s rbd:%s/%s %s" % \
           (os.environ["CLIENTNODE"], format, poolname, imagename, size)
     rc, stdout, stderr = launch(cmd=cmd)
@@ -217,10 +217,10 @@ def create_qemu_image(dictImage, format='raw'):
     log.info('created qemu image %s') % imagename
 
 
-def convert_qemu_image(dictImage, from_format='raw', to_format='qcow2'):
-    poolname = dictImage.get('pool', None)
-    imagename = dictImage.get('name', None)
-    size = dictImage.get('size', None)
+def convert_qemu_image(dictQemu, from_format='raw', to_format='qcow2'):
+    poolname = dictQemu.get('pool', None)
+    imagename = dictQemu.get('name', None)
+    size = dictQemu.get('size', None)
     physical_image = []  # TODO
     cmd = "ssh %s qemu-img convert -f %s -O %s %s rbd:%s/%s" % \
           (os.environ["CLIENTNODE"], from_format, to_format, physical_image, poolname, imagename)
@@ -229,10 +229,10 @@ def convert_qemu_image(dictImage, from_format='raw', to_format='qcow2'):
     Error message: %s" % (cmd, stderr)
     log.info('converted the qemu image %s from % to %') % (imagename, from_format, to_format)
 
-def resize_qemu_image(dictImage, new_size=2000):
-    poolname = dictImage.get('pool', None)
-    imagename = dictImage.get('name', None)
-    size = dictImage.get('size', None)
+def resize_qemu_image(dictQemu, new_size=2000):
+    poolname = dictQemu.get('pool', None)
+    imagename = dictQemu.get('name', None)
+    size = dictQemu.get('size', None)
     cmd = "ssh %s qemu-img resize rbd:%s/%s %s" % \
           (os.environ["CLIENTNODE"], poolname, imagename, size)
     rc, stdout, stderr = launch(cmd=cmd)
@@ -240,10 +240,10 @@ def resize_qemu_image(dictImage, new_size=2000):
     Error message: %s" % (cmd, stderr)
     log.info('Resized the qemu image %s from % to %') % (imagename, size, new_size)
 
-def validate_qemu_image_size(dictImage):
-    poolname = dictImage.get('pool', None)
-    imagename = dictImage.get('name', None)
-    size = dictImage.get('size', None)
+def validate_qemu_image_size(dictQemu):
+    poolname = dictQemu.get('pool', None)
+    imagename = dictQemu.get('name', None)
+    size = dictQemu.get('size', None)
     cmd = "ssh %s qemu-img info rbd:%s/%s | sed -n '3p'" % (os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s. \
@@ -252,20 +252,19 @@ def validate_qemu_image_size(dictImage):
     assert (size != act_size), "Error. Size did not changed. Expected size: %s Actual Size: %s " % \
                                (size, act_size)
 
-#
-#
-def validate_qemu_image_presence(dictImage):
-    poolname = dictImage.get('pool', None)
-    imagename = dictImage.get('name', None)
+
+def validate_qemu_image_presence(dictQemu):
+    poolname = dictQemu.get('pool', None)
+    imagename = dictQemu.get('name', None)
     cmd = "ssh %s qemu-img info rbd:%s/%s" % (os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
 
 
-def validate_qemu_image_format(dictImage, expected_format='qcow2'):
-    poolname = dictImage.get('pool', None)
-    imagename = dictImage.get('name', None)
+def validate_qemu_image_format(dictQemu, expected_format='qcow2'):
+    poolname = dictQemu.get('pool', None)
+    imagename = dictQemu.get('name', None)
     cmd = "ssh %s qemu-img info rbd:%s/%s | sed -n '2p'" %\
           (os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
