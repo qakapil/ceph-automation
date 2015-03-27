@@ -30,33 +30,33 @@ os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
 #    check_module
 #   check_rbd_sanity
 
-
-def test_image():
-    create_images()
-    validate_images_size(None)
-    validate_images_presence(True)
-    resize_images()
-    validate_images_size(1250) #with resized values # make it more generic
-    remove_images()
-    validate_images_presence(False)
-
 #
-def test_snapshot():
-    create_images()
-    create_snapshot()
-    validate_snapshot_presence(True)
-    validate_snapshot_diff(False)
-    # change the image somehow
-    # right now the only way is to map, mkfs, mount, touch, diff!
-    # validate_snapshot_diff(True)
-    rollback_snapshot()
-    validate_snapshot_diff(False)
-    purge_snapshot()
-    validate_snapshot_presence(False)
+# def test_image():
+#     create_images()
+#     validate_images_size(None)
+#     validate_images_presence(True)
+#     resize_images()
+#     validate_images_size(1250) #with resized values # make it more generic
+#     remove_images()
+#     validate_images_presence(False)
+#
+# #
+# def test_snapshot():
+#     create_images()
+#     create_snapshot()
+#     validate_snapshot_presence(True)
+#     validate_snapshot_diff(False)
+#     # change the image somehow
+#     # right now the only way is to map, mkfs, mount, touch, diff!
+#     # validate_snapshot_diff(True)
+#     rollback_snapshot()
+#     validate_snapshot_diff(False)
+#     purge_snapshot()
+#     validate_snapshot_presence(False)
 
-# def test_qemu():
-#     create_qemu_image()
-#     validate_qemu_image_presence()
+def test_qemu():
+    create_qemu_image()
+    validate_qemu_image_presence()
 #     resize_qemu_image()
 #     validate_qemu_image_size()
 #     convert_qemu_image()
