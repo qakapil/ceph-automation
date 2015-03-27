@@ -33,7 +33,7 @@ os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
 
 def test_image():
     create_images()
-    validate_images_size()
+    validate_images_size(yaml_data['image']['size'])
     validate_images_presence(True)
     resize_images()
     validate_images_size(1250) #with resized values
