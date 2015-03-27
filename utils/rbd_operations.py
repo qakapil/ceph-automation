@@ -39,9 +39,9 @@ def rbdGetPoolImages(poolname):
     #maybe json?
 
 def validate_image_size(dictImage):
-    pool = dictImage.get('poolname', None)
-    name = dictImage.get('imagename', None)
-    size = dictImage.get('size_mb', None)
+    pool = dictImage.get('pool', None)
+    name = dictImage.get('name', None)
+    size = dictImage.get('size', None)
     cmd = "ssh %s rbd -p %s --image %s info --format json" % (os.environ["CLIENTNODE"], pool, name)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -51,8 +51,8 @@ def validate_image_size(dictImage):
     log.info("validated image - %s in pool %s " % (name, pool))
 
 def validate_image_presence(dictImage, expected_presence=True):
-    poolname = dictImage.get('poolname', None)
-    imagename = dictImage.get('imagename', None)
+    poolname = dictImage.get('pool', None)
+    imagename = dictImage.get('name', None)
     cmd = "ssh %s rbd -p %s ls --format json" % (os.environ["CLIENTNODE"], poolname)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
