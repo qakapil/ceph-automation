@@ -7,14 +7,12 @@ import logging
 def fetchIniData(filename):
     cfg = SafeConfigParser()
     return cfg.read(filename)
-        
-     
 
 def fetchTestYamlData(yamlfile):
     document = open(yamlfile).read()
     return yaml.load(document)
-        
-    
+
+
 def setLogger(logfile, cfg_data):
     LEVELS = {'debug': logging.DEBUG,
     'info': logging.INFO,

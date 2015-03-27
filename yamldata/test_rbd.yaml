@@ -26,7 +26,7 @@ osd_activate:
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
-- {name: im2, size: 1024}
+- {name: im2, size: 1024, pool: rbd}
 - {name: im3, size: 512, pool: data}
 radosobjects:
 - {objname: test-obj-1, pool: data}
@@ -35,6 +35,10 @@ createpools:
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_mb: 300}
 snapshots:
-- { poolname: rbd, snapname: snap, imagename: librbdimg}
+- { pool: rbd, snapname: snap, name: im1}
+qemu:
+- { pool: rbd, name: qemu1, size: 1000}
+- { pool: rbd, name: qemu2, size: 500}
+- { pool: data, name: qemu2, size: 500}
 rgws:
 - {rgw-host: host-44-0-1-111, rgw-name: gateway1, rgw-port: 80}
