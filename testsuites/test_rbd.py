@@ -23,7 +23,7 @@ yaml_data = baseconfig.fetchTestYamlData(yamlfile)
 # baseconfig.setLogger('cephauto.log', cfg_data)
 os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
 
-monitoring.printRPMVersions(cfg_data.get('env', 'repo_baseurl'))
+# monitoring.printRPMVersions(cfg_data.get('env', 'repo_baseurl'))
 url = cfg_data.get('env', 'repo_baseurl')
 
 
