@@ -33,10 +33,10 @@ os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
 
 def test_image():
     create_images()
-    validate_images_size(yaml_data['image']['size'])
+    validate_images_size(yaml_data[0]['images']['size'])
     validate_images_presence(True)
     resize_images()
-    validate_images_size(1250) #with resized values
+    validate_images_size(1250) #with resized values # make it more generic
     remove_images()
     validate_images_presence(False)
 
