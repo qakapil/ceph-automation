@@ -174,7 +174,7 @@ def validate_snapshot_presence(dictSnapshot, expected_presence=True):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     all_snaps = []
-    print stdout
+    stdout_json = ast.literal_eval(stdout)
     print type(stdout)
     for snap in general.convStringToJson(stdout):
         if snap in locals():
