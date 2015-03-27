@@ -58,6 +58,7 @@ def validate_image_presence(dictImage, expected_presence=True):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     all_images = []
+    log.info("json output = %s") % stdout
     for image in general.convStringToJson(stdout):
         all_images.append(image)
     if expected_presence:
