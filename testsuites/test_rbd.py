@@ -49,10 +49,10 @@ def test_snapshot():
     # change the image somehow
     # right now the only way is to map, mkfs, mount, touch, diff!
     # validate_snapshot_diff(True)
-    # rollback_snapshot()
-    # validate_snapshot_diff(False)
-    # purge_snapshot()
-    # validate_snapshot_presence(False)
+    rollback_snapshot()
+    validate_snapshot_diff(False)
+    purge_snapshot()
+    validate_snapshot_presence(False)
 
 # def test_qemu():
 #     create_qemu_image()
