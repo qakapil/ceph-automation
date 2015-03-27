@@ -1,6 +1,7 @@
 from launch import launch
 import logging
 import general
+import ast
 import os, time
 
 
@@ -58,9 +59,8 @@ def validate_image_presence(dictImage, expected_presence=True):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     all_images = []
-    print stdout
-    log.info("json output = %s") % stdout
-    for image in general.convStringToJson(stdout):
+    stdout_list = ast.literal_eval(stdout)
+    for image in stdout_list:
         all_images.append(image)
     if expected_presence:
         assert (imagename in all_images), "Error, Image %s was not present" % imagename
