@@ -8,23 +8,23 @@ import logging,time,re, os, sys
 from nose.exc import SkipTest
 
 
-log = logging.getLogger(__name__)
-
-
-filename = os.environ.get("CFG_FILE", "setup.cfg")
-cfg_data = baseconfig.fetchIniData(filename)
-
+# log = logging.getLogger(__name__)
+#
+#
+# filename = os.environ.get("CFG_FILE", "setup.cfg")
+# cfg_data = baseconfig.fetchIniData(filename)
+#
 yamlfile = os.environ.get("YAMLDATA_FILE")
 if yamlfile == None:
     yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
     yamlfile = 'yamldata/%s.yaml' % (yamlfile)
 yaml_data = baseconfig.fetchTestYamlData(yamlfile)
-
+#
 # baseconfig.setLogger('cephauto.log', cfg_data)
-os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
-
+# os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
+#
 # monitoring.printRPMVersions(cfg_data.get('env', 'repo_baseurl'))
-url = cfg_data.get('env', 'repo_baseurl')
+# url = cfg_data.get('env', 'repo_baseurl')
 
 
 
@@ -76,25 +76,25 @@ def test_map_image():
 # Qemu
 
 def create_qemu_image():
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         rbd_operations.create_qemu_image(image)
 
 def validate_qemu_image_size():
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         rbd_operations.validate_qemu_image_size(image)
 
 def validate_qemu_image_presence():
-    for image in cfg_data['image']:
+    for image in yaml_data['image']:
         rbd_operations.validate_qemu_image_presence(image)
 
 def validate_qemu_image_format():
-    for image in cfg_data['image']:
+    for image in yaml_data['image']:
         # Optional parameters are: format_to_expect
         # Default value = qcow2
         rbd_operations.validate_qemu_image_format(image)
 
 def convert_qemu_image():
-    for image in cfg_data['image']:
+    for image in yaml_data['image']:
         # Optional parameters are: from_image_format, to_image_format
         # Default values are:
         # from_image_format = raw
@@ -103,7 +103,7 @@ def convert_qemu_image():
 
 
 def resize_qemu_image():
-    for image in cfg_data['image']:
+    for image in yaml_data['image']:
         # Optional parameters are: size
         # Default value = 2000
         rbd_operations.resize_qemu_image(image)
@@ -124,29 +124,29 @@ def qemu_nbd():
 # Image Operations
 
 def create_images():
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         rbd_operations.createRBDImage(image)
 
 
 def resize_images():
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         # Optional parameter are: size
         # Default size = 1250
         rbd_operations.resizeRBDImage(image)
 
 
 def remove_images():
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         rbd_operations.rbdRemovePoolImage(image)
 
 
 def validate_images_presence(expected_presence):
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         rbd_operations.validate_image_presence(image, expected_presence)
 
 
 def validate_images_size():
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         rbd_operations.validate_image_size(image)
 
 
@@ -154,46 +154,47 @@ def validate_images_size():
 
 
 def create_snapshot():
-    for snapshot in cfg_data['snapshot']:
+    for snapshot in yaml_data['snapshot']:
         rbd_operations.create_snapshot(snapshot)
 
 
 def rollback_snapshot():
-    for snapshot in cfg_data['snapshot']:
+    for snapshot in yaml_data['snapshot']:
         rbd_operations.rollback_snapshot(snapshot)
 
 
 def purge_snapshot():
-    for snapshot in cfg_data['snapshot']:
+    for snapshot in yaml_data['snapshot']:
         rbd_operations.purge_snapshot(snapshot)
 
 
 def validate_snapshot_presence(expected_presence):
-    for snapshot in cfg_data['snapshot']:
+    for snapshot in yaml_data['snapshot']:
         rbd_operations.validate_snapshot_presence(snapshot, expected_presence)
 
 
 def validate_snapshot_diff(expected_difference):
-    for snapshot in cfg_data['snapshot']:
+    for snapshot in yaml_data['snapshot']:
         rbd_operations.validate_snapshot_diff(snapshot, expected_difference)
 
 
 # Mapping
 
 def map_images():
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         rbd_operations.mapImage(image)
 
 
 def show_mapped_images():
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         rbd_operations.showmapped_images(image)
 
 
 def unmap_images():
-    for image in cfg_data['images']:
+    for image in yaml_data['images']:
         rbd_operations.unmap_images(image)
 
 
 def tearDown():
-    log.info('++++++completed %s ++++++')
+    pass
+    # log.info('++++++completed %s ++++++')
