@@ -1,27 +1,14 @@
-from utils import basetest
-from utils import zypperutils
-from utils import monitoring
-from utils import general
 from utils import baseconfig
 from utils import rbd_operations
-import logging,time,re, os, sys
-from nose.exc import SkipTest
+import os
 
 
-# log = logging.getLogger(__name__)
-# filename = os.environ.get("CFG_FILE", "setup.cfg")
-# cfg_data = baseconfig.fetchIniData(filename)
 yamlfile = os.environ.get("YAMLDATA_FILE")
 if yamlfile == None:
     yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
     yamlfile = 'yamldata/%s.yaml' % (yamlfile)
 yaml_data = baseconfig.fetchTestYamlData(yamlfile)
-# baseconfig.setLogger('cephauto.log', cfg_data)
 os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
-
-# monitoring.printRPMVersions(cfg_data.get('env', 'repo_baseurl'))
-# url = cfg_data.get('env', 'repo_baseurl')
-
 
 
 #def setUp():
@@ -30,45 +17,60 @@ os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
 #    check_module
 #   check_rbd_sanity
 
-#
 def test_image():
     create_images()
+    # Images are created
     validate_images_size(None)
+    # Assume the imagesize valid
     validate_images_presence(True)
+    # Assume the image is present.
     resize_images()
+    # Resize the image
     validate_images_size(1250) #with resized values # make it more generic
+    # Check for correct imagesize
     remove_images()
+    # Remove the image
     validate_images_presence(False)
+    # Assume that the image is not present anymore
 
 #
 def test_snapshot():
     create_images()
+    # Create a image to create a snapshot of
     create_snapshot()
+    # Snapshot the newly created images
     validate_snapshot_presence(True)
+    # Assume the snapshots are present
     validate_snapshot_diff(False)
+    # Assume the snapshots and the image are not different
     # change the image somehow
     # right now the only way is to map, mkfs, mount, touch, diff!
     # validate_snapshot_diff(True)
+    # After changing the image assume there is a difference
     rollback_snapshot()
+    # Roll back the image
     validate_snapshot_diff(False)
+    # Assume the snapshot is not different again
     purge_snapshot()
+    # Purging all the snapshots attached to one specific image
     validate_snapshot_presence(False)
+    # Assume the snapshot is not present anymore
 
 def test_qemu():
     create_qemu_image()
     validate_qemu_image_presence()
     resize_qemu_image()
     validate_qemu_image_size()
-    # convert_qemu_image() # missing physical imgae on machine
-    # validate_qemu_image_format() depends on above function
+    # convert_qemu_image() # missing physical image on machine
+    # validate_qemu_image_format() depends on function above
 
 def test_map_image():
     create_images()
-    # different image name here! Randomize imagenames! Randomize everything for max test coverage!
+    # different image name here! Randomize imagenames! Randomize everything for max test coverage! dont have to delete all over again
     validate_images_presence(True)
     # map_images() module not loaded cant continue testing
-    # show_mapped_images()
-    # unmap_images()
+    # show_mapped_images() same here
+    # unmap_images() same here
 
 # Qemu
 
