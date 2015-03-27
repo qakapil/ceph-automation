@@ -35,6 +35,6 @@ createpools:
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_mb: 300}
 snapshots:
-- { poolname: rbd, snapname: snap, imagename: librbdimg}
+- { poolname: rbd, snapname: snap, imagename: im1}
 rgws:
 - {rgw-host: host-44-0-1-111, rgw-name: gateway1, rgw-port: 80}
