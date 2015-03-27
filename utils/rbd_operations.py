@@ -84,6 +84,7 @@ def rbdRemovePoolImage(dictImg):
 def mapImage(dictImage):
     # is sudo required?
     #http://ceph.com/docs/master/rbd/rbd-ko/
+    # ensure device is not mapped already
     imagename = dictImage.get('name')
     pool = dictImage.get('pool', 'rbd')
     cmd = "ssh %s rbd map %s/%s" % (os.environ["CLIENTNODE"], pool, imagename) #--id admin?
@@ -92,25 +93,26 @@ def mapImage(dictImage):
     Error message: %s" % (cmd, stderr)
 
 
-def showmapped_images(dictImage):
+def gather_device_names(dictImage):
     pool = dictImage.get('pool', 'rbd')
     cmd = "ssh %s rbd -p %s showmapped --format json" % (os.environ["CLIENTNODE"], pool)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing command %s. \
     Error message: %s" % (cmd, stderr)
-    mapped_images = []
-    count = 1
-    for imagename in general.convStringToJson(stdout):
-        mapped_images.append(imagename['%s']['name']) % count
-        count += 1
+    stdout_json = ast.literal_eval(stdout)
+    devices = []
+    for item in stdout_json.items():
+        devices.append(item[-1]['device'].strip().split('\\')[-1].replace('/', ''))
+    return devices
 
-def unmap_images(dictImage):
-    # TBC
-    # discover device, then unmap
-    #rbd unmap /dev/rbd0
-    # sudo rbd unmap /dev/rbd/{poolname}/{imagename}
-    # sudo?
-    pass
+
+def unmap_image(device=None):
+    # Before unmapping ensure its unmounted
+    assert (device != None), "Error no device provided"
+    cmd = "ssh %s rbd unmap /dev/%s" % (os.environ["CLIENTNODE"], device)
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing command %s. \
+    Error message: %s" % (cmd, stderr)
 
 
 # Snapshots

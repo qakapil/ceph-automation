@@ -184,14 +184,14 @@ def map_images():
         rbd_operations.mapImage(image)
 
 
-def show_mapped_images():
+def gather_mapped_images():
     for image in yaml_data['images']:
-        rbd_operations.showmapped_images(image)
+        rbd_operations.gather_device_names(image)
 
 
 def unmap_images():
-    for image in yaml_data['images']:
-        rbd_operations.unmap_images(image)
+    for device in rbd_operations.gather_device_names(yaml_data['images']):
+        rbd_operations.unmap_image(device)
 
 
 def tearDown():
