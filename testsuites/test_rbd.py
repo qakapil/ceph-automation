@@ -1,6 +1,7 @@
 from utils import monitoring
 from utils import operations
 from utils import baseconfig
+from utils import rbd_operations
 from ConfigParser import SafeConfigParser
 import logging,time,re, os, sys
 
