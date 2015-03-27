@@ -206,8 +206,8 @@ def validate_snapshot_diff(dictSnapshot, expected_difference=False):
 # qemu-tools
 
 def create_qemu_image(dictImage, format='raw'):
-    poolname = dictImage.get('poolname', None)
-    imagename = dictImage.get('imagename', None)
+    poolname = dictImage.get('pool', None)
+    imagename = dictImage.get('name', None)
     size = dictImage.get('size', None)
     cmd = "ssh %s qemu-img create -f %s rbd:%s/%s %s" % \
           (os.environ["CLIENTNODE"], format, poolname, imagename, size)
@@ -218,8 +218,8 @@ def create_qemu_image(dictImage, format='raw'):
 
 
 def convert_qemu_image(dictImage, from_format='raw', to_format='qcow2'):
-    poolname = dictImage.get('poolname', None)
-    imagename = dictImage.get('imagename', None)
+    poolname = dictImage.get('pool', None)
+    imagename = dictImage.get('name', None)
     size = dictImage.get('size', None)
     physical_image = []  # TODO
     cmd = "ssh %s qemu-img convert -f %s -O %s %s rbd:%s/%s" % \
@@ -230,8 +230,8 @@ def convert_qemu_image(dictImage, from_format='raw', to_format='qcow2'):
     log.info('converted the qemu image %s from % to %') % (imagename, from_format, to_format)
 
 def resize_qemu_image(dictImage, new_size=2000):
-    poolname = dictImage.get('poolname', None)
-    imagename = dictImage.get('imagename', None)
+    poolname = dictImage.get('pool', None)
+    imagename = dictImage.get('name', None)
     size = dictImage.get('size', None)
     cmd = "ssh %s qemu-img resize rbd:%s/%s %s" % \
           (os.environ["CLIENTNODE"], poolname, imagename, size)
@@ -241,8 +241,8 @@ def resize_qemu_image(dictImage, new_size=2000):
     log.info('Resized the qemu image %s from % to %') % (imagename, size, new_size)
 
 def validate_qemu_image_size(dictImage):
-    poolname = dictImage.get('poolname', None)
-    imagename = dictImage.get('imagename', None)
+    poolname = dictImage.get('pool', None)
+    imagename = dictImage.get('name', None)
     size = dictImage.get('size', None)
     cmd = "ssh %s qemu-img info rbd:%s/%s | sed -n '3p'" % (os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
@@ -255,8 +255,8 @@ def validate_qemu_image_size(dictImage):
 #
 #
 def validate_qemu_image_presence(dictImage):
-    poolname = dictImage.get('poolname', None)
-    imagename = dictImage.get('imagename', None)
+    poolname = dictImage.get('pool', None)
+    imagename = dictImage.get('name', None)
     cmd = "ssh %s qemu-img info rbd:%s/%s" % (os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -264,8 +264,8 @@ def validate_qemu_image_presence(dictImage):
 
 
 def validate_qemu_image_format(dictImage, expected_format='qcow2'):
-    poolname = dictImage.get('poolname', None)
-    imagename = dictImage.get('imagename', None)
+    poolname = dictImage.get('pool', None)
+    imagename = dictImage.get('name', None)
     cmd = "ssh %s qemu-img info rbd:%s/%s | sed -n '2p'" %\
           (os.environ["CLIENTNODE"], poolname, imagename)
     rc, stdout, stderr = launch(cmd=cmd)
