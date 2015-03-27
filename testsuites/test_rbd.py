@@ -43,35 +43,35 @@ def test_image():
     validate_images_size() #with resized values
     remove_images()
     validate_images_presence(False)
-
-
-def test_snapshot():
-    create_snapshot()
-    validate_snapshot_presence(True)
-    validate_snapshot_diff(False)
-    # change the image somehow
-    # right now the only way is to map, mkfs, mount, touch, diff!
-    validate_snapshot_diff(True)
-    rollback_snapshot()
-    validate_snapshot_diff(False)
-    purge_snapshot()
-    validate_snapshot_presence(False)
-
-def test_qemu():
-    create_qemu_image()
-    validate_qemu_image_presence()
-    resize_qemu_image()
-    validate_qemu_image_size()
-    convert_qemu_image()
-    validate_qemu_image_format()
-
-def test_map_image():
-    create_images()
-    # different image name here! Randomize imagenames! Randomize everything for max test coverage!
-    validate_images_presence(True)
-    map_images()
-    show_mapped_images()
-    unmap_images()
+#
+#
+# def test_snapshot():
+#     create_snapshot()
+#     validate_snapshot_presence(True)
+#     validate_snapshot_diff(False)
+#     # change the image somehow
+#     # right now the only way is to map, mkfs, mount, touch, diff!
+#     validate_snapshot_diff(True)
+#     rollback_snapshot()
+#     validate_snapshot_diff(False)
+#     purge_snapshot()
+#     validate_snapshot_presence(False)
+#
+# def test_qemu():
+#     create_qemu_image()
+#     validate_qemu_image_presence()
+#     resize_qemu_image()
+#     validate_qemu_image_size()
+#     convert_qemu_image()
+#     validate_qemu_image_format()
+#
+# def test_map_image():
+#     create_images()
+#     # different image name here! Randomize imagenames! Randomize everything for max test coverage!
+#     validate_images_presence(True)
+#     map_images()
+#     show_mapped_images()
+#     unmap_images()
 
 # Qemu
 
