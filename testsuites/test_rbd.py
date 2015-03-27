@@ -9,17 +9,13 @@ from nose.exc import SkipTest
 
 
 # log = logging.getLogger(__name__)
-#
-#
 # filename = os.environ.get("CFG_FILE", "setup.cfg")
 # cfg_data = baseconfig.fetchIniData(filename)
-#
 yamlfile = os.environ.get("YAMLDATA_FILE")
 if yamlfile == None:
     yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
     yamlfile = 'yamldata/%s.yaml' % (yamlfile)
 yaml_data = baseconfig.fetchTestYamlData(yamlfile)
-#
 # baseconfig.setLogger('cephauto.log', cfg_data)
 os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
 
@@ -39,11 +35,11 @@ def test_image():
     create_images()
     validate_images_size()
     validate_images_presence(True)
-    # resize_images()
-    # validate_images_size() #with resized values
-    # remove_images()
-    # validate_images_presence(False)
-#
+    resize_images()
+    validate_images_size() #with resized values
+    remove_images()
+    validate_images_presence(False)
+
 #
 # def test_snapshot():
 #     create_snapshot()
