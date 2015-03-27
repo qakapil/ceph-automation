@@ -39,10 +39,10 @@ def test_image():
     create_images()
     validate_images_size()
     validate_images_presence(True)
-    resize_images()
-    validate_images_size() #with resized values
-    remove_images()
-    validate_images_presence(False)
+    # resize_images()
+    # validate_images_size() #with resized values
+    # remove_images()
+    # validate_images_presence(False)
 #
 #
 # def test_snapshot():
