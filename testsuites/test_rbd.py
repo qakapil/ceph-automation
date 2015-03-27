@@ -36,7 +36,7 @@ def test_image():
     validate_images_size()
     validate_images_presence(True)
     resize_images()
-    validate_images_size() #with resized values
+    validate_images_size(1250) #with resized values
     remove_images()
     validate_images_presence(False)
 
@@ -141,9 +141,9 @@ def validate_images_presence(expected_presence):
         rbd_operations.validate_image_presence(image, expected_presence)
 
 
-def validate_images_size():
+def validate_images_size(expected_size):
     for image in yaml_data['images']:
-        rbd_operations.validate_image_size(image)
+        rbd_operations.validate_image_size(image, expected_size)
 
 
 # Snapshots

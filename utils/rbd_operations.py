@@ -39,7 +39,7 @@ def rbdGetPoolImages(poolname):
     return stdout.strip().split('\n')
     #maybe json?
 
-def validate_image_size(dictImage):
+def validate_image_size(dictImage, expected_size=1250):
     pool = dictImage.get('pool', None)
     name = dictImage.get('name', None)
     size = dictImage.get('size', None)
@@ -48,7 +48,7 @@ def validate_image_size(dictImage):
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
     act_size_in_mb = (general.convStringToJson(stdout)['size']/1024/1024)
-    assert(str(size) in str(act_size_in_mb)), "Error. Size for image %s was %s MB" % (name, act_size_in_mb)
+    assert (str(expected_size) in str(act_size_in_mb)), "Error. Size for image %s was %s MB" % (name, act_size_in_mb)
     log.info("validated image - %s in pool %s " % (name, pool))
 
 def validate_image_presence(dictImage, expected_presence=True):
