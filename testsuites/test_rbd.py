@@ -11,7 +11,7 @@ cfg_data = None
 yaml_data = {}
 
 
-def setUp():
+def setup_module():
     global cfg_data
     global yaml_data
     filename = os.environ.get("CFG_FILE", "setup.cfg")
@@ -205,6 +205,5 @@ def unmap_images():
             rbd_operations.unmap_image(device)
 
 
-def tearDown():
-    pass
-    # log.info('++++++completed %s ++++++')
+def teardown_module():
+    log.info('++++++completed %s ++++++')
