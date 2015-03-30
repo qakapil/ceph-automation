@@ -10,7 +10,7 @@ def createDirOLD(dirPath):
     if not os.path.isdir(dirPath):
         try:
             os.mkdir(dirPath)
-        except  Exception as e:
+        except Exception as e:
             log.error("Error while creating the dir: "+dirPath, sys.exc_info()[0])
             raise Exception, e
     else:

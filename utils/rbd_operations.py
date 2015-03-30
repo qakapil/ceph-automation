@@ -18,7 +18,11 @@ def createRBDImage(dictImg):
         purge_snapshot(dictImg)
         rbdRemovePoolImage(dictImg)
     cmd = "ssh %s rbd create %s --size %s --pool %s" % (os.environ["CLIENTNODE"], name, size, pool)
+<<<<<<< Updated upstream
     rc,stdout,stderr = launch(cmd=cmd)
+=======
+    rc, stdout, stderr = launch(cmd=cmd)
+>>>>>>> Stashed changes
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
 
