@@ -103,7 +103,7 @@ def printRPMVersions(url):
     print ("The rpm version of ceph is "+ ceph_ver)
     
     cephdeploy_ver = cephdeploy.getExpectedVersion(url)
-    log.info("The rpm version of ceph is "+ cephdeploy_ver)
+    log.info("The rpm version of ceph-deploy is "+ cephdeploy_ver)
     print ("The rpm version of ceph is ' "+ cephdeploy_ver)
     
     f = open('rpm_versions.txt', 'w')
