@@ -243,5 +243,6 @@ def teardown_module():
     log.info('++++++completed rbd test suite ++++++')
     if vErrors:
         log.info('test suite failed with these errors - '+str(vErrors))
+    else:
         log.info('starting teardown in teardown_module')
         general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
