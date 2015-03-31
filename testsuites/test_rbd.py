@@ -58,6 +58,7 @@ def test_image():
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
+        raise sys.exc_info()[0], sys.exc_info()[1]
 
 
 def test_snapshot():
@@ -87,6 +88,7 @@ def test_snapshot():
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
+        raise sys.exc_info()[0], sys.exc_info()[1]
 
 
 def test_qemu():
@@ -102,6 +104,7 @@ def test_qemu():
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
+        raise sys.exc_info()[0], sys.exc_info()[1]
 
 
 def test_map_image():
@@ -117,6 +120,7 @@ def test_map_image():
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
+        raise sys.exc_info()[0], sys.exc_info()[1]
 
 
 # Qemu
