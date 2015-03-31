@@ -2,13 +2,18 @@ from utils import monitoring
 from utils import operations
 from utils import baseconfig
 from utils import rbd_operations
+from utils import general
+import inspect
 from ConfigParser import SafeConfigParser
-import logging,time,re, os, sys
+import logging
+import os
+import sys
 
 log = logging.getLogger(__name__)
 
 cfg_data = None
 yaml_data = {}
+vErrors = []
 
 
 def setup_module():
@@ -33,59 +38,86 @@ def setup_module():
 
 
 def test_image():
-    create_images()
-    # Images are created
-    validate_images_size(None)
-    # Assume the imagesize valid
-    validate_images_presence(True)
-    # Assume the image is present.
-    resize_images()
-    # Resize the image
-    validate_images_size(1250) #with resized values # make it more generic
-    # Check for correct imagesize
-    remove_images()
-    # Remove the image
-    validate_images_presence(False)
-    # Assume that the image is not present anymore
+    global vErrors
+    try:
+        create_images()
+        # Images are created
+        validate_images_size(None)
+        # Assume the imagesize valid
+        validate_images_presence(True)
+        # Assume the image is present.
+        resize_images()
+        # Resize the image
+        validate_images_size(1250) #with resized values # make it more generic
+        # Check for correct imagesize
+        remove_images()
+        # Remove the image
+        validate_images_presence(False)
+        # Assume that the image is not present anymore
+    except:
+        sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
+        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
+        vErrors.append(sError)
 
-#
+
 def test_snapshot():
-    create_images()
-    # Create a image to create a snapshot of
-    create_snapshot()
-    # Snapshot the newly created images
-    validate_snapshot_presence(True)
-    # Assume the snapshots are present
-    validate_snapshot_diff(False)
-    # Assume the snapshots and the image are not different
-    # change the image somehow
-    # right now the only way is to map, mkfs, mount, touch, diff!
-    # validate_snapshot_diff(True)
-    # After changing the image assume there is a difference
-    rollback_snapshot()
-    # Roll back the image
-    validate_snapshot_diff(False)
-    # Assume the snapshot is not different again
-    purge_snapshot()
-    # Purging all the snapshots attached to one specific image
-    validate_snapshot_presence(False)
-    # Assume the snapshot is not present anymore
+    global vErrors
+    try:
+        create_images()
+        # Create a image to create a snapshot of
+        create_snapshot()
+        # Snapshot the newly created images
+        validate_snapshot_presence(True)
+        # Assume the snapshots are present
+        validate_snapshot_diff(False)
+        # Assume the snapshots and the image are not different
+        # change the image somehow
+        # right now the only way is to map, mkfs, mount, touch, diff!
+        # validate_snapshot_diff(True)
+        # After changing the image assume there is a difference
+        rollback_snapshot()
+        # Roll back the image
+        validate_snapshot_diff(False)
+        # Assume the snapshot is not different again
+        purge_snapshot()
+        # Purging all the snapshots attached to one specific image
+        validate_snapshot_presence(False)
+        # Assume the snapshot is not present anymore
+    except:
+        sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
+        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
+        vErrors.append(sError)
+
 
 def test_qemu():
-    create_qemu_image()
-    validate_qemu_image_presence()
-    resize_qemu_image()
-    validate_qemu_image_size()
-    # convert_qemu_image() # missing physical image on machine
-    # validate_qemu_image_format() depends on function above
+    global vErrors
+    try:
+        create_qemu_image()
+        validate_qemu_image_presence()
+        resize_qemu_image()
+        validate_qemu_image_size()
+        # convert_qemu_image() # missing physical image on machine
+        # validate_qemu_image_format() depends on function above
+    except:
+        sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
+        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
+        vErrors.append(sError)
+
 
 def test_map_image():
-    create_images()
-    # different image name here! Randomize imagenames! Randomize everything for max test coverage! dont have to delete all over again
-    validate_images_presence(True)
-    # map_images() module not loaded cant continue testing
-    # show_mapped_images() same here
-    # unmap_images() same here
+    global vErrors
+    try:
+        create_images()
+        # different image name here! Randomize imagenames! Randomize everything for max test coverage! dont have to delete all over again
+        validate_images_presence(True)
+        # map_images() module not loaded cant continue testing
+        # show_mapped_images() same here
+        # unmap_images() same here
+    except:
+        sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
+        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
+        vErrors.append(sError)
+
 
 # Qemu
 
@@ -93,9 +125,11 @@ def create_qemu_image():
     for image in yaml_data['qemu']:
         rbd_operations.create_qemu_image(image)
 
+
 def validate_qemu_image_size():
     for image in yaml_data['qemu']:
         rbd_operations.validate_qemu_image_size(image)
+
 
 def validate_qemu_image_presence():
     for image in yaml_data['qemu']:
@@ -206,4 +240,8 @@ def unmap_images():
 
 
 def teardown_module():
-    log.info('++++++completed %s ++++++')
+    log.info('++++++completed rbd test suite ++++++')
+    if vErrors:
+        log.info('test suite failed with these errors - '+str(vErrors))
+        log.info('starting teardown in teardown_module')
+        general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
