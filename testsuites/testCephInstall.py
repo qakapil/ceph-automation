@@ -33,8 +33,15 @@ def setup_module():
 
     monitoring.printRPMVersions(cfg_data.get('env', 'repo_baseurl'))
     url = cfg_data.get('env', 'repo_baseurl')
+    ceph_internal_url = cfg_data.get('env', 'ceph_internal_url')
+
     for node in yaml_data['allnodes']:
         zypperutils.addRepo('ceph', url, node)
+
+    general.downloadISOAddRepo(ceph_internal_url, 'internal', 'ceph-internal',
+                               os.environ["CLIENTNODE"], iso_name='SUSE-Enterprise-Storage-1.0-Internal-x86_64-GM-Media.iso')
+    for pkg in ['rbd-kmp-default','qemu-block-rbd','qemu-tools']:
+        zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
 
     before_cleanup = os.environ.get("BEFORE_CLEANUP")
     if before_cleanup is not None:
