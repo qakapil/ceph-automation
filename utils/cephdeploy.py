@@ -36,7 +36,7 @@ def createInitialMons(listMons):
     if len(listMons) < 1:
         log.error("initial mons list not provided in the yaml file")
         raise Exception, "initial mons list not provided in the yaml file"
-    cmd = 'ssh %s ceph-deploy mon create-initial' % (os.environ["CLIENTNODE"])
+    cmd = 'ssh %s ceph-deploy --overwrite-conf mon create-initial' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
