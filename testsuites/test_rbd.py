@@ -2,6 +2,7 @@ from utils import monitoring
 from utils import operations
 from utils import baseconfig
 from utils import rbd_operations
+from utils import zypperutils
 from ConfigParser import SafeConfigParser
 import logging,time,re, os, sys
 
@@ -23,6 +24,8 @@ def setup_module():
         yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
         yamlfile = 'yamldata/%s.yaml' % (yamlfile)
     yaml_data = baseconfig.fetchTestYamlData(yamlfile)
+
+    #zypperutils.addRepo('ceph', '')
 
     baseconfig.setLogger('cephauto.log', cfg_data)
     os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]

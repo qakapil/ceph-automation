@@ -50,7 +50,7 @@ def removeRepo(reponame, node):
         return True
     else:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    zypperRefresh()
+    # zypperRefresh()
     
     
     

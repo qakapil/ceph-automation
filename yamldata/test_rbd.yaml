@@ -1,28 +1,28 @@
 workingdir: /home/jenkins/cephdeploy-cluster
 clientnode:
-- host-44-0-1-101
+- host-44-0-3-216
 #clientnode_ip: 10.160.223.10
 allnodes:
-- host-44-0-1-101
-- host-44-0-1-107
-- host-44-0-1-111
-- host-44-0-1-116
+- host-44-0-3-216
+- host-44-0-3-217
+- host-44-0-3-218
+- host-44-0-3-219
 initmons:
-- host-44-0-1-107
-- host-44-0-1-111
-- host-44-0-1-116
+- host-44-0-3-217
+- host-44-0-3-218
+- host-44-0-3-219
 osd_zap:
-- host-44-0-1-107:vdb
-- host-44-0-1-111:vdb
-- host-44-0-1-116:vdb
+- host-44-0-3-217:vdb
+- host-44-0-3-218:vdb
+- host-44-0-3-219:vdb
 osd_prepare:
-- host-44-0-1-107:vdb
-- host-44-0-1-111:vdb
-- host-44-0-1-116:vdb
+- host-44-0-3-217:vdb
+- host-44-0-3-218:vdb
+- host-44-0-3-219:vdb
 osd_activate:
-- host-44-0-1-107:vdb1
-- host-44-0-1-111:vdb1
-- host-44-0-1-116:vdb1
+- host-44-0-3-217:vdb1
+- host-44-0-3-218:vdb1
+- host-44-0-3-219:vdb1
 default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
@@ -41,4 +41,4 @@ qemu:
 - { pool: rbd, name: qemu2, size: 500}
 - { pool: data, name: qemu2, size: 500}
 rgws:
-- {rgw-host: host-44-0-1-111, rgw-name: gateway1, rgw-port: 80}
+- {rgw-host: host-44-0-3-216, rgw-name: gateway1, rgw-port: 80}

@@ -1,4 +1,3 @@
-from launch import launch
 import logging
 import general
 import os, time
@@ -72,6 +71,7 @@ def mapImage(dictImage):
     # is sudo required?
     #http://ceph.com/docs/master/rbd/rbd-ko/
     # ensure device is not mapped already
+    # cant be sure even if after cleanup => before cleanup would be better!
     imagename = dictImage.get('name')
     pool = dictImage.get('pool', 'rbd')
     cmd = "ssh %s sudo rbd map %s/%s" % (os.environ["CLIENTNODE"], pool, imagename) #--id admin?
@@ -100,6 +100,15 @@ def unmount_image(device=None):
     assert (device != None), "Error no device provided"
     cmd = "ssh %s sudo umount /dev/%s" % (os.environ["CLEINTNODE"], device)
     general.eval_returns(cmd)
+
+def mount_image(device=None, target=None):
+    pass
+
+def mkfs_for_image(device=None):
+    assert (device != None), "Error no device provided"
+    cmd = "ssh %s sudo mkfs.xfs /dev/%s" % (os.environ["CLEINTNODE"], device)
+    general.eval_returns(cmd)
+
 
 
 # Snapshots
