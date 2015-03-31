@@ -36,6 +36,7 @@ def setup_module():
         operations.createCephCluster(yaml_data, cfg_data)
     status = monitoring.isClusterReady(300)
     assert status is True, "Ceph cluster was not ready. Failing the test suite"
+    ceph_internal_url = cfg_data.get('env', 'ceph_internal_url')
     general.downloadISOAddRepo(ceph_internal_url, 'Media', 'ceph-internal',
                                os.environ["CLIENTNODE"], iso_name=None, iso_internal=True)
     for pkg in ['rbd-kmp-default','qemu-block-rbd','qemu-tools']:
