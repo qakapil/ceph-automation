@@ -33,6 +33,9 @@ def setup_module():
 
     monitoring.printRPMVersions(cfg_data.get('env', 'repo_baseurl'))
     url = cfg_data.get('env', 'repo_baseurl')
+    ceph_internal_url = cfg_data.get('env', 'ceph_internal_url')
+    general.downloadISOAddRepo(ceph_internal_url, 'internal', 'ceph-internal',
+                       os.environ["CLIENTNODE"], iso_name='SUSE-Enterprise-Storage-1.0-Internal-x86_64-GM-Media.iso')
     for node in yaml_data['allnodes']:
         zypperutils.addRepo('ceph', url, node)
 
