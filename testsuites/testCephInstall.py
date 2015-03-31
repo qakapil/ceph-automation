@@ -38,10 +38,10 @@ def setup_module():
     for node in yaml_data['allnodes']:
         zypperutils.addRepo('ceph', url, node)
 
-    general.downloadISOAddRepo(ceph_internal_url, 'Media', 'ceph-internal',
-                               os.environ["CLIENTNODE"], iso_name=None, iso_internal=True)
-    for pkg in ['rbd-kmp-default','qemu-block-rbd','qemu-tools']:
-        zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
+    #general.downloadISOAddRepo(ceph_internal_url, 'Media', 'ceph-internal',
+                               #os.environ["CLIENTNODE"], iso_name=None, iso_internal=True)
+    #for pkg in ['rbd-kmp-default','qemu-block-rbd','qemu-tools']:
+        #zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
 
     before_cleanup = os.environ.get("BEFORE_CLEANUP")
     if before_cleanup is not None:
