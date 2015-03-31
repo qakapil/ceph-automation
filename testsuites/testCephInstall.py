@@ -38,8 +38,8 @@ def setup_module():
     for node in yaml_data['allnodes']:
         zypperutils.addRepo('ceph', url, node)
 
-    general.downloadISOAddRepo(ceph_internal_url, 'internal', 'ceph-internal',
-                               os.environ["CLIENTNODE"], iso_name='SUSE-Enterprise-Storage-1.0-Internal-x86_64-GM-Media.iso')
+    general.downloadISOAddRepo(ceph_internal_url, 'Media', 'ceph-internal',
+                               os.environ["CLIENTNODE"], iso_name=None, iso_internal=True)
     for pkg in ['rbd-kmp-default','qemu-block-rbd','qemu-tools']:
         zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
 
