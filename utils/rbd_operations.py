@@ -86,13 +86,13 @@ def check_if_mounted(device=None):
     assert (device != None), "Error no device provided"
     cmd = "ssh %s df | awk '{print $1}'" % (os.environ["CLIENTNODE"])
     stdout, stderr = general.eval_returns(cmd)
-    print stdout.split("\n")
-    # device = stdout.split("\n")
-    # device_with_path = "/dev/%s" % device
-    # if device_with_path in general.convert_to_structure(stdout):
-    #     return True
-    # else:
-    #     return False
+    devices = stdout.split("\n")
+    device_list = general.convert_to_structure(devices)
+    device_full_path = "/dev/%s" % device
+    if device_full_path in device_list:
+        return True
+    else:
+        return False
 
 
 def gather_device_names(dictImage):
