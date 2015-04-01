@@ -14,12 +14,22 @@ def createRBDImage(dictImg):
     imglist = rbdGetPoolImages(pool)
     if name in imglist:
         if gather_device_names(dictImg) != {}:
-            unmount_image(gather_device_names(dictImg)[name])
+            # get mounted images
+            if check_if_mounted(gather_device_names(dictImg)[name]) != '':
+                unmount_image(gather_device_names(dictImg)[name])
             unmap_image(gather_device_names(dictImg)[name])
         purge_snapshot(dictImg)
         rbdRemovePoolImage(dictImg)
     cmd = "ssh %s rbd create %s --size %s --pool %s" % (os.environ["CLIENTNODE"], name, size, pool)
     general.eval_returns(cmd)
+
+
+def check_if_mounted(device=None):
+    assert (device != None), "Error no device provided"
+    cmd = "ssh %s mount | grep /dev/%s"
+    stdout, stderr = general.eval_returns(cmd)
+    return stdout
+
 
 def resizeRBDImage(dictImg, new_size=1250):
     name = dictImg.get('name', None)
