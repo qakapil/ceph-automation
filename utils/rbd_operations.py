@@ -83,7 +83,7 @@ def mapImage(dictImage):
 
 def gather_device_names(dictImage):
     pool = dictImage.get('pool', 'rbd')
-    cmd = "ssh %s rbd -p %s showmapped --format json" % (os.environ["CLIENTNODE"], pool)
+    cmd = "ssh %s rbd showmapped --format json" % (os.environ["CLIENTNODE"])
     stdout, strderr = general.eval_returns(cmd)
     stdout_json = general.convert_to_structure(stdout)
     properties = {}
