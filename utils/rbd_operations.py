@@ -84,7 +84,9 @@ def mapImage(dictImage):
 
 def check_if_mounted(device=None):
     assert (device != None), "Error no device provided"
-    cmd = "ssh %s if mount | grep /dev/%s; then echo mounted, else echo notmounted fi " % (os.environ["CLIENTNODE"], device)
+    cmd = "ssh %s if mount | grep /dev/%s; then echo mounted \
+     else echo notmounted \
+      fi " % (os.environ["CLIENTNODE"], device)
     stdout, stderr = general.eval_returns(cmd)
     return stdout
 
