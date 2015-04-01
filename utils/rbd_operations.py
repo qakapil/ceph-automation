@@ -13,9 +13,8 @@ def createRBDImage(dictImg):
     pool = dictImg.get('pool', 'rbd')
     imglist = rbdGetPoolImages(pool)
     if name in imglist:
-        dct = gather_device_names(dictImg)
-        print dct
-        unmap_image(dct[name])
+        if gather_device_names(dictImg) != {}:
+            unmap_image(gather_device_names(dictImg)[name])
         purge_snapshot(dictImg)
         rbdRemovePoolImage(dictImg)
     cmd = "ssh %s rbd create %s --size %s --pool %s" % (os.environ["CLIENTNODE"], name, size, pool)
