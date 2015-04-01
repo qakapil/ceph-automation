@@ -260,6 +260,7 @@ def write_to_image():
 def unmap_images():
     for image in yaml_data['images']:
         ret_dict = rbd_operations.gather_device_names(image)
+        print ret_dict
         rbd_operations.unmount_image(ret_dict[image['name']])
         rbd_operations.unmap_image(ret_dict[image['name']])
 

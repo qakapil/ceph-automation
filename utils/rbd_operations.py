@@ -13,9 +13,7 @@ def createRBDImage(dictImg):
     pool = dictImg.get('pool', 'rbd')
     imglist = rbdGetPoolImages(pool)
     if name in imglist:
-        print gather_device_names(dictImg)
         if gather_device_names(dictImg) != {}:
-            print check_if_mounted(gather_device_names(dictImg)[name])
             if check_if_mounted(gather_device_names(dictImg)[name]):
                 unmount_image(gather_device_names(dictImg)[name])
             unmap_image(gather_device_names(dictImg)[name])
