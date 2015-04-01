@@ -15,6 +15,7 @@ def createRBDImage(dictImg):
     if name in imglist:
         print gather_device_names(dictImg)
         if gather_device_names(dictImg) != {}:
+            print check_if_mounted(gather_device_names(dictImg)[name])
             if check_if_mounted(gather_device_names(dictImg)[name]) != '':
                 unmount_image(gather_device_names(dictImg)[name])
             unmap_image(gather_device_names(dictImg)[name])
@@ -83,7 +84,7 @@ def mapImage(dictImage):
 
 def check_if_mounted(device=None):
     assert (device != None), "Error no device provided"
-    cmd = "test -x 'ssh %s mount | grep /dev/%s'" % (os.environ["CLIENTNODE"], device)
+    cmd = "ssh %s if mount | grep /dev/%s; then echo mounted, else echo notmounted fi " % (os.environ["CLIENTNODE"], device)
     stdout, stderr = general.eval_returns(cmd)
     return stdout
 
