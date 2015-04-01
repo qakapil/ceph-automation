@@ -382,15 +382,20 @@ def updateCephConf_NW(public_nw, cluster_nw):
                               Error message: '%s'" % (cmd, stderr)
 
 
-def downloadISOAddRepo(url, media, reponame, node, iso_name=None):
+def downloadISOAddRepo(url, media, reponame, node, iso_name=None, iso_internal=False):
     build_version=iso_name
     url = url.strip()
     uname = os.environ.get("WGET_UNAME")
     passwd = os.environ.get("WGET_PASS")
     if iso_name == None:
         if (uname or passwd) ==  None:
-            cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media.\' \
-            | grep -v -i  Internal | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
+            if iso_internal:
+                cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media.\' \
+                | grep -i  Internal | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
+            else:
+                cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media.\' \
+                | grep -v -i  Internal | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
+           
         else:
             cmd = 'ssh %s wget --http-user=%s --http-password=%s -q -O- %s | grep \'Storage.*Media\' \
             | grep -v -i  Internal | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, uname, passwd, url)
