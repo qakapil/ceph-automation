@@ -97,6 +97,7 @@ def test_snapshot():
         validate_snapshot_diff(False)
         # Assume the snapshots and the image are not different
         # write_to_image()
+        map_images()
         # Map, Mkfs, Mount, write to image
         # unmap_images()
         # Unmap
