@@ -30,9 +30,8 @@ def setup_module():
     #     yamlfile = 'yamldata/%s.yaml' % (yamlfile)
     # yaml_data = baseconfig.fetchTestYamlData(yamlfile)
     #
-    # #zypperutils.addRepo('ceph', '')
     #
-    # baseconfig.setLogger('cephauto.log', cfg_data)
+    baseconfig.setLogger('cephauto.log', cfg_data)
     # os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
     # if not monitoring.isClusterReady(60):
     #     operations.createCephCluster(yaml_data, cfg_data)
