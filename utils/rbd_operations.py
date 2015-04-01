@@ -105,7 +105,7 @@ def mount_image(device=None, target=None):
     assert (device != None and target != None), "Error device or target not provided"
     # make sure target follows format of /%s
     # only execute this on the adm node
-    cmd = "ssh %s sudo mkdir ~/%s" % (os.environ["CLIENTNODE"], target)
+    cmd = "ssh %s sudo mkdir ~/%s || true" % (os.environ["CLIENTNODE"], target)
     general.eval_returns(cmd)
     cmd = "ssh %s sudo mount /dev/%s ~/%s" % (os.environ["CLIENTNODE"], device, target)
     general.eval_returns(cmd)
