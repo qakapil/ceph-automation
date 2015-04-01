@@ -70,13 +70,9 @@ def rbdRemovePoolImage(dictImg):
 ## Mapping Images
 
 def mapImage(dictImage):
-    # is sudo required?
-    #http://ceph.com/docs/master/rbd/rbd-ko/
-    # ensure device is not mapped already
-    # cant be sure even if after cleanup => before cleanup would be better!
     imagename = dictImage.get('name')
     pool = dictImage.get('pool', 'rbd')
-    cmd = "ssh %s sudo rbd map %s/%s" % (os.environ["CLIENTNODE"], pool, imagename) #--id admin?
+    cmd = "ssh %s sudo rbd map %s/%s" % (os.environ["CLIENTNODE"], pool, imagename)
     general.eval_returns(cmd)
 
 
