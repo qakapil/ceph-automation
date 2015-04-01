@@ -84,10 +84,15 @@ def mapImage(dictImage):
 
 def check_if_mounted(device=None):
     assert (device != None), "Error no device provided"
-    cmd = "ssh %s mountpoint -x /dev/%s"\
-          % (os.environ["CLIENTNODE"], device)
+    cmd = "ssh %s df | awk '{print $6}'"\
+          % (os.environ["CLIENTNODE"])
     stdout, stderr = general.eval_returns(cmd)
-    return stdout
+    print general.convert_to_structure(stdout)
+    if device in general.convert_to_structure(stdout):
+        return True
+    else:
+        return False
+
 
 def gather_device_names(dictImage):
     pool = dictImage.get('pool', 'rbd')
