@@ -24,12 +24,6 @@ def createRBDImage(dictImg):
     general.eval_returns(cmd)
 
 
-def check_if_mounted(device=None):
-    assert (device != None), "Error no device provided"
-    cmd = "ssh %s mount | grep /dev/%s" % (os.environ["CLIENTNODE"], device)
-    stdout, stderr = general.eval_returns(cmd)
-    return stdout
-
 
 def resizeRBDImage(dictImg, new_size=1250):
     name = dictImg.get('name', None)
@@ -86,6 +80,12 @@ def mapImage(dictImage):
     cmd = "ssh %s sudo rbd map %s/%s" % (os.environ["CLIENTNODE"], pool, imagename)
     general.eval_returns(cmd)
 
+def check_if_mounted(device=None):
+    assert (device != None), "Error no device provided"
+    cmd = "ssh %s mount | grep /dev/%s" % (os.environ["CLIENTNODE"], device)
+    stdout, stderr = general.eval_returns(cmd)
+    return stdout
+
 
 def gather_device_names(dictImage):
     pool = dictImage.get('pool', 'rbd')
@@ -123,8 +123,13 @@ def mount_image(device=None, target=None):
 
 def write_to_mounted_image(target=None):
     assert (target != None), "Error target not provided"
-    cmd = "ssh %s cd ~/%s && sudo chown -R jenkins:users ~/%s && touch testfile_%s.txt && echo content > testfile_%s.txt && cd .." % \
-          (os.environ["CLIENTNODE"], target, target, target, target)
+    cmd = "ssh %s sudo chown -R jenkins:users ~/%s " % (os.environ["CLIENTNODE"], target)
+    general.eval_returns(cmd)
+    cmd = "ssh %s touch testfile_%s.txt " % (os.environ["CLIENTNODE"], target)
+    general.eval_returns(cmd)
+    cmd = "ssh %s echo content > testfile_%s.txt" % (os.environ["CLIENTNODE"], target)
+    general.eval_returns(cmd)
+    cmd = "ssh %s cd" % os.environ["CLIENTNODE"]
     general.eval_returns(cmd)
 
 
