@@ -88,7 +88,7 @@ def test_qemu():
 def test_snapshot():
     global vErrors
     try:
-        create_images()
+        # create_images()
         # Create a image to create a snapshot of
         create_snapshot()
         # Snapshot the newly created images
@@ -121,7 +121,7 @@ def test_snapshot():
 def test_map_image():
     global vErrors
     try:
-        create_images()
+        # create_images()
         validate_images_presence(True)
         map_images()
         write_to_image()
