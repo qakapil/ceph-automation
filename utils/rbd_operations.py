@@ -96,7 +96,7 @@ def unmap_image(device=None):
 
 def unmount_image(device=None):
     assert (device != None), "Error no device provided"
-    cmd = "ssh %s sudo umount /dev/%s" % (os.environ["CLEINTNODE"], device)
+    cmd = "ssh %s sudo umount /dev/%s" % (os.environ["CLIENTNODE"], device)
     general.eval_returns(cmd)
 
 
@@ -119,7 +119,7 @@ def write_to_mounted_image(target=None):
 
 def mkfs_for_image(device=None):
     assert (device != None), "Error no device provided"
-    cmd = "ssh %s sudo mkfs.xfs /dev/%s" % (os.environ["CLEINTNODE"], device)
+    cmd = "ssh %s sudo mkfs.xfs /dev/%s" % (os.environ["CLIENTNODE"], device)
     general.eval_returns(cmd)
 
 
