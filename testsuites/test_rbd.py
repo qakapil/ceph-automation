@@ -63,6 +63,22 @@ def test_image():
         raise sys.exc_info()[0], sys.exc_info()[1]
 
 
+def test_qemu():
+    global vErrors
+    try:
+        create_qemu_image()
+        validate_qemu_image_presence()
+        resize_qemu_image()
+        validate_qemu_image_size()
+        # convert_qemu_image() # missing physical image on machine
+        # validate_qemu_image_format() depends on function above
+    except:
+        sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
+        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
+        vErrors.append(sError)
+        raise sys.exc_info()[0], sys.exc_info()[1]
+
+
 def test_snapshot():
     global vErrors
     try:
@@ -74,9 +90,11 @@ def test_snapshot():
         # Assume the snapshots are present
         validate_snapshot_diff(False)
         # Assume the snapshots and the image are not different
-        # change the image somehow
-        # right now the only way is to map, mkfs, mount, touch, diff!
-        # validate_snapshot_diff(True)
+        write_to_image()
+        # Map, Mkfs, Mount, write to image
+        unmap_images()
+        # Unmap
+        validate_snapshot_diff(True)
         # After changing the image assume there is a difference
         rollback_snapshot()
         # Roll back the image
@@ -86,22 +104,6 @@ def test_snapshot():
         # Purging all the snapshots attached to one specific image
         validate_snapshot_presence(False)
         # Assume the snapshot is not present anymore
-    except:
-        sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
-        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
-        vErrors.append(sError)
-        raise sys.exc_info()[0], sys.exc_info()[1]
-
-
-def test_qemu():
-    global vErrors
-    try:
-        create_qemu_image()
-        validate_qemu_image_presence()
-        resize_qemu_image()
-        validate_qemu_image_size()
-        # convert_qemu_image() # missing physical image on machine
-        # validate_qemu_image_format() depends on function above
     except:
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
