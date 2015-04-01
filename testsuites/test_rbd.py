@@ -44,6 +44,9 @@ def setup_module():
     #     zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
 
 
+
+# ENSURE IMAGES ARE UNMAPPED!
+
 def test_image():
     global vErrors
     try:
@@ -105,7 +108,7 @@ def test_snapshot():
         # Roll back the image
         validate_snapshot_diff(False)
         # Assume the snapshot is not different again
-        # purge_snapshot()
+        purge_snapshot()
         # Purging all the snapshots attached to one specific image
         validate_snapshot_presence(False)
         # Assume the snapshot is not present anymore
@@ -255,6 +258,7 @@ def write_to_image():
 
 def unmap_images():
     for image in yaml_data['images']:
+        print rbd_operations.gather_device_names
         rbd_operations.unmount_image(rbd_operations.gather_device_names[image])
         rbd_operations.unmap_image(rbd_operations.gather_device_names[image])
 
