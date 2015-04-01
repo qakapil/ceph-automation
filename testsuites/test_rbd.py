@@ -122,6 +122,7 @@ def test_map_image():
     try:
         create_images()
         validate_images_presence(True)
+        map_images()
         write_to_image()
         unmap_images()
     except:
@@ -248,7 +249,6 @@ def map_images():
 def write_to_image():
     for image in yaml_data['images']:
         rbd_operations.createRBDImage(image)
-        rbd_operations.mapImage(image)
         ret_dict = rbd_operations.gather_device_names(image)
         rbd_operations.mkfs_for_image(ret_dict[image['name']])
         rbd_operations.mount_image((ret_dict[image['name']]), image['name'])
