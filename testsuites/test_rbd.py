@@ -23,16 +23,16 @@ def setup_module():
     filename = os.environ.get("CFG_FILE", "setup.cfg")
     cfg_data = SafeConfigParser()
     cfg_data.read(filename)
-    #
-    # yamlfile = os.environ.get("YAMLDATA_FILE")
-    # if yamlfile == None:
-    #     yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
-    #     yamlfile = 'yamldata/%s.yaml' % (yamlfile)
-    # yaml_data = baseconfig.fetchTestYamlData(yamlfile)
-    #
-    #
+
+    yamlfile = os.environ.get("YAMLDATA_FILE")
+    if yamlfile == None:
+        yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
+        yamlfile = 'yamldata/%s.yaml' % (yamlfile)
+    yaml_data = baseconfig.fetchTestYamlData(yamlfile)
+
+
     baseconfig.setLogger('cephauto.log', cfg_data)
-    # os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
+    os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
     # if not monitoring.isClusterReady(60):
     #     operations.createCephCluster(yaml_data, cfg_data)
     # status = monitoring.isClusterReady(300)
@@ -42,7 +42,7 @@ def setup_module():
     #                            os.environ["CLIENTNODE"], iso_name=None, iso_internal=True)
     # for pkg in ['rbd-kmp-default','qemu-block-rbd','qemu-tools']:
     #     zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
-    #
+
 
 def test_image():
     global vErrors
