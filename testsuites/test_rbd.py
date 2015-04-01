@@ -42,13 +42,13 @@ def setup_module():
     #                            os.environ["CLIENTNODE"], iso_name=None, iso_internal=True)
     # for pkg in ['rbd-kmp-default','qemu-block-rbd','qemu-tools']:
     #     zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
-
+    #
 
 
 def test_image():
     global vErrors
     try:
-        create_images()
+        create_images_without_removal()
         # Images are created
         validate_images_size(None)
         # Assume the imagesize valid
@@ -97,7 +97,7 @@ def test_snapshot():
         validate_snapshot_diff(False)
         # Assume the snapshots and the image are not different
         # write_to_image()
-        map_images()
+        # map_images()
         # Map, Mkfs, Mount, write to image
         # unmap_images()
         # Unmap
@@ -188,6 +188,11 @@ def qemu_nbd():
 def create_images():
     for image in yaml_data['images']:
         rbd_operations.createRBDImage(image)
+
+
+def create_images_without_removal():
+    for image in yaml_data['images']:
+        rbd_operations.create_rbd_image(image)
 
 
 def resize_images():
