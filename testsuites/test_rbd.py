@@ -105,7 +105,7 @@ def test_snapshot():
         # Roll back the image
         validate_snapshot_diff(False)
         # Assume the snapshot is not different again
-        purge_snapshot()
+        # purge_snapshot()
         # Purging all the snapshots attached to one specific image
         validate_snapshot_presence(False)
         # Assume the snapshot is not present anymore
