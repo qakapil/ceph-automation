@@ -14,6 +14,7 @@ def createRBDImage(dictImg):
     imglist = rbdGetPoolImages(pool)
     if name in imglist:
         if gather_device_names(dictImg) != {}:
+            # and maybe unmount?
             unmap_image(gather_device_names(dictImg)[name])
         purge_snapshot(dictImg)
         rbdRemovePoolImage(dictImg)
@@ -112,7 +113,7 @@ def mount_image(device=None, target=None):
 
 def write_to_mounted_image(target=None):
     assert (target != None), "Error target not provided"
-    cmd = "ssh %s cd ~/%s && sudo chown jenkins:users %s && touch testfile_%s.txt && echo content > testfile_%s.txt" % \
+    cmd = "ssh %s cd ~/%s && sudo chown -R jenkins:users ~/%s && touch testfile_%s.txt && echo content > testfile_%s.txt && cd .." % \
           (os.environ["CLIENTNODE"], target, target, target, target)
     general.eval_returns(cmd)
 
