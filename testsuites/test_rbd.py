@@ -23,27 +23,27 @@ def setup_module():
     filename = os.environ.get("CFG_FILE", "setup.cfg")
     cfg_data = SafeConfigParser()
     cfg_data.read(filename)
-
-    yamlfile = os.environ.get("YAMLDATA_FILE")
-    if yamlfile == None:
-        yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
-        yamlfile = 'yamldata/%s.yaml' % (yamlfile)
-    yaml_data = baseconfig.fetchTestYamlData(yamlfile)
-
-    #zypperutils.addRepo('ceph', '')
-
-    baseconfig.setLogger('cephauto.log', cfg_data)
-    os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
-    if not monitoring.isClusterReady(60):
-        operations.createCephCluster(yaml_data, cfg_data)
-    status = monitoring.isClusterReady(300)
-    assert status is True, "Ceph cluster was not ready. Failing the test suite"
-    ceph_internal_url = cfg_data.get('env', 'ceph_internal_url')
-    general.downloadISOAddRepo(ceph_internal_url, 'Media', 'ceph-internal',
-                               os.environ["CLIENTNODE"], iso_name=None, iso_internal=True)
-    for pkg in ['rbd-kmp-default','qemu-block-rbd','qemu-tools']:
-        zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
-
+    #
+    # yamlfile = os.environ.get("YAMLDATA_FILE")
+    # if yamlfile == None:
+    #     yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
+    #     yamlfile = 'yamldata/%s.yaml' % (yamlfile)
+    # yaml_data = baseconfig.fetchTestYamlData(yamlfile)
+    #
+    # #zypperutils.addRepo('ceph', '')
+    #
+    # baseconfig.setLogger('cephauto.log', cfg_data)
+    # os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
+    # if not monitoring.isClusterReady(60):
+    #     operations.createCephCluster(yaml_data, cfg_data)
+    # status = monitoring.isClusterReady(300)
+    # assert status is True, "Ceph cluster was not ready. Failing the test suite"
+    # ceph_internal_url = cfg_data.get('env', 'ceph_internal_url')
+    # general.downloadISOAddRepo(ceph_internal_url, 'Media', 'ceph-internal',
+    #                            os.environ["CLIENTNODE"], iso_name=None, iso_internal=True)
+    # for pkg in ['rbd-kmp-default','qemu-block-rbd','qemu-tools']:
+    #     zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
+    #
 
 def test_image():
     global vErrors
