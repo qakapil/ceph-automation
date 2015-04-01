@@ -113,11 +113,9 @@ def test_map_image():
     global vErrors
     try:
         create_images()
-        # different image name here! Randomize imagenames! Randomize everything for max test coverage! dont have to delete all over again
         validate_images_presence(True)
-        # map_images() module not loaded cant continue testing
-        # show_mapped_images() same here
-        # unmap_images() same here
+        write_to_image()
+        unmap_images()
     except:
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
@@ -239,10 +237,19 @@ def map_images():
         rbd_operations.mapImage(image)
 
 
+def write_to_image():
+    for image in yaml_data['images']:
+        rbd_operations.createRBDImage(image)
+        rbd_operations.mapImage(image)
+        rbd_operations.mkfs_for_image(rbd_operations.gather_device_names[image])
+        rbd_operations.mount_image(rbd_operations.gather_device_names[image], image)
+        rbd_operations.write_to_mounted_image(image)
+
+
 def unmap_images():
     for image in yaml_data['images']:
-        for device in rbd_operations.gather_device_names(image):
-            rbd_operations.unmap_image(device)
+        rbd_operations.unmount_image(rbd_operations.gather_device_names[image])
+        rbd_operations.unmap_image(rbd_operations.gather_device_names[image])
 
 
 def teardown_module():

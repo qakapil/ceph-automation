@@ -82,11 +82,11 @@ def gather_device_names(dictImage):
     pool = dictImage.get('pool', 'rbd')
     cmd = "ssh %s rbd -p %s showmapped --format json" % (os.environ["CLIENTNODE"], pool)
     stdout, strderr = general.eval_returns(cmd)
-    stdout_json =general.convert_to_structure(stdout)
-    devices = []
-    for item in stdout_json.items():
-        devices.append(item[-1]['device'].strip().split('\\')[-1].replace('/', ''))
-    return devices
+    stdout_json = general.convert_to_structure(stdout)
+    properties = {}
+    for props in stdout_json.values():
+        properties.update({props['name']: props['device'].split('\\')[-1].replace('/', '')})
+    return properties
 
 
 def unmap_image(device=None):
@@ -101,14 +101,28 @@ def unmount_image(device=None):
     cmd = "ssh %s sudo umount /dev/%s" % (os.environ["CLEINTNODE"], device)
     general.eval_returns(cmd)
 
+
 def mount_image(device=None, target=None):
-    pass
+    assert (device != None and target != None), "Error device or target not provided"
+    # make sure target follows format of /%s
+    # only execute this on the adm node
+    cmd = "ssh %s sudo mkdir ~/%s" % (os.environ["CLIENTNODE"], target)
+    general.eval_returns(cmd)
+    cmd = "ssh %s sudo mount /dev/%s ~/%s" % (os.environ["CLIENTNODE"], device, target)
+    general.eval_returns(cmd)
+
+
+def write_to_mounted_image(target=None):
+    assert (target != None), "Error target not provided"
+    cmd = "ssh %s cd ~/%s && sudo chown jenkins:users %s && touch testfile_%s.txt && echo content > testfile_%s.txt" % \
+          (os.environ["CLIENTNODE"], target, target, target, target)
+    general.eval_returns(cmd)
+
 
 def mkfs_for_image(device=None):
     assert (device != None), "Error no device provided"
     cmd = "ssh %s sudo mkfs.xfs /dev/%s" % (os.environ["CLEINTNODE"], device)
     general.eval_returns(cmd)
-
 
 
 # Snapshots
