@@ -87,9 +87,8 @@ def check_if_mounted(device=None):
     cmd = "ssh %s df | awk '{print $1}'" % (os.environ["CLIENTNODE"])
     stdout, stderr = general.eval_returns(cmd)
     devices = stdout.split("\n")
-    device_list = general.convert_to_structure(devices)
     device_full_path = "/dev/%s" % device
-    if device_full_path in device_list:
+    if device_full_path in devices:
         return True
     else:
         return False
