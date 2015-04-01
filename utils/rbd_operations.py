@@ -26,7 +26,7 @@ def createRBDImage(dictImg):
 
 def check_if_mounted(device=None):
     assert (device != None), "Error no device provided"
-    cmd = "ssh %s mount | grep /dev/%s"
+    cmd = "ssh %s mount | grep /dev/%s" % (os.environ["CLIENTNODE"], device)
     stdout, stderr = general.eval_returns(cmd)
     return stdout
 
