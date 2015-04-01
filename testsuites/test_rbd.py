@@ -88,7 +88,7 @@ def test_qemu():
 def test_snapshot():
     global vErrors
     try:
-        # create_images()
+        create_images_without_removal()
         # Create a image to create a snapshot of
         create_snapshot()
         # Snapshot the newly created images
@@ -112,6 +112,7 @@ def test_snapshot():
         # Purging all the snapshots attached to one specific image
         validate_snapshot_presence(False)
         # Assume the snapshot is not present anymore
+        remove_images()
     except:
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
@@ -122,7 +123,7 @@ def test_snapshot():
 def test_map_image():
     global vErrors
     try:
-        # create_images()
+        create_images_without_removal()
         validate_images_presence(True)
         map_images()
         write_to_image()
