@@ -254,8 +254,8 @@ def map_images():
 
 def write_to_image():
     for image in yaml_data['images']:
-        rbd_operations.createRBDImage(image)
-        ret_dict = rbd_operations.gather_device_names(image)
+        # rbd_operations.createRBDImage(image)
+        ret_dict = rbd_operations.gather_device_names()
         rbd_operations.mkfs_for_image(ret_dict[image['name']])
         rbd_operations.mount_image((ret_dict[image['name']]), image['name'])
         rbd_operations.write_to_mounted_image(image['name'])
@@ -263,7 +263,7 @@ def write_to_image():
 
 def unmap_images():
     for image in yaml_data['images']:
-        ret_dict = rbd_operations.gather_device_names(image)
+        ret_dict = rbd_operations.gather_device_names()
         print ret_dict
         rbd_operations.unmount_image(ret_dict[image['name']])
         rbd_operations.unmap_image(ret_dict[image['name']])
