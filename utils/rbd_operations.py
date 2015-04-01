@@ -13,11 +13,11 @@ def createRBDImage(dictImg):
     pool = dictImg.get('pool', 'rbd')
     imglist = rbdGetPoolImages(pool)
     if name in imglist:
-        # if gather_device_names(dictImg) != {}:
-        #     if check_if_mounted(gather_device_names(dictImg)[name]):
-        #         unmount_image(gather_device_names(dictImg)[name])
-        #     unmap_image(gather_device_names(dictImg)[name])
-        # purge_snapshot(dictImg)
+        if gather_device_names() != {}:
+            if check_if_mounted(gather_device_names()[name]):
+                unmount_image(gather_device_names()[name])
+            unmap_image(gather_device_names()[name])
+        purge_snapshot(dictImg)
         rbdRemovePoolImage(dictImg)
     cmd = "ssh %s rbd create %s --size %s --pool %s" % (os.environ["CLIENTNODE"], name, size, pool)
     general.eval_returns(cmd)
@@ -92,7 +92,7 @@ def check_if_mounted(device=None):
         return False
 
 
-def gather_device_names(dictImage):
+def gather_device_names():
     cmd = "ssh %s rbd showmapped --format json" % (os.environ["CLIENTNODE"])
     stdout, strderr = general.eval_returns(cmd)
     stdout_json = general.convert_to_structure(stdout)
