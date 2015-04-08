@@ -438,11 +438,12 @@ def validate_qemu_image_format(dictQemu, expected_format='qcow2'):
 
 
 
-
 def flatten_image_clone():
     # Fill image clone with parent data (make it independent)
     # Depending on cloning, depending on locking..
     pass
+
+# Image
 
 
 def watch_image():
@@ -450,6 +451,8 @@ def watch_image():
     pass
     # how to test?s
     # might be big
+
+# Misc
 
 
 # Additional params to test
