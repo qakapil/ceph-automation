@@ -54,6 +54,22 @@ def test_image():
         # Assume the imagesize valid
         validate_images_presence(True)
         # Assume the image is present.
+        export_images()
+        # Export all images
+        import_images()
+        # Import all images
+        export_image_diff()
+        # Export the image diff
+        import_image_diff()
+        # Import the image diff
+        lock_images()
+        # Lock the images. Assume writing is not possible  TODO: MISSING TEST
+        unlock_images()
+        # Unlocks the images. Assume writing is possible again.  TODO: MISSING TEST
+        copy_images()
+        # Copy TODO: Make presence tests more generic to test file existence with pattern
+        move_images()
+        # Move
         resize_images()
         # Resize the image
         validate_images_size(1250) #with resized values # make it more generic
@@ -187,6 +203,54 @@ def qemu_nbd():
 
 # Image Operations
 
+
+def export_images():
+    for image in yaml_data['images']:
+        rbd_operations.export_image(image)
+
+
+def import_images():
+    for image in yaml_data['images']:
+        rbd_operations.import_image(image)
+
+
+def export_image_diff():
+    for image in yaml_data['image']:
+        rbd_operations.export_diff(image)
+
+
+def import_image_diff():
+    for image in yaml_data['image']:
+        rbd_operations.import_diff(image)
+
+
+def lock_images():
+    for image in yaml_data['image']:
+        rbd_operations.add_lock_to_image(image)
+
+
+def unlock_images():
+    for image in yaml_data['image']:
+        ret_dct = rbd_operations.show_lock_of_image(image)
+        rbd_operations.remove_lock_of_image(image, ret_dct.keys()[0], ret_dct.values()[0]['locker'])
+
+
+def copy_images():
+    for image in yaml_data['image']:
+        rbd_operations.copy_image(image)
+
+
+def move_images():
+    for image in yaml_data['image']:
+        rbd_operations.move_image(image)
+
+
+
+def benchmarking():
+    for image in yaml_data['images']:
+        rbd_operations.benchmarking(image)
+
+
 def create_images():
     for image in yaml_data['images']:
         rbd_operations.createRBDImage(image)
@@ -220,6 +284,29 @@ def validate_images_size(expected_size=None):
 
 
 # Snapshots
+
+
+def show_children_of_snapshot():
+    for snapshot in yaml_data['snapshots']:
+        rbd_operations.children_for_snapshot(snapshot)
+
+
+def protect_snapshots():
+    # Not yet implemented
+    for snapshots in yaml_data['snapshots']:
+        rbd_operations.protect_snapshot(snapshots)
+
+
+def unprotect_snapshot():
+    # Not yet implemented
+    for snapshots in yaml_data['snapshots']:
+        rbd_operations.unprotect_snapshot(snapshots)
+
+
+def clone_snapshot():
+    # Not yet implemented
+    for snapshot in yaml_data['snapshots']:
+        rbd_operations.clone_snapshot(snapshot)
 
 
 def create_snapshot():
