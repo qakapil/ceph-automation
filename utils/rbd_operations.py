@@ -183,7 +183,7 @@ def remove_image(pool=None, image=None):
 
 def images_in_pool(pool=None):
     assert (pool != None), "Error, pool not provided"
-    cmd = "ssh %s rbd -p %s ls"
+    cmd = "ssh %s rbd -p %s ls" % (os.environ["CLIENTNODE"], pool)
     stdout, stderr = general.eval_returns(cmd)
     return general.convert_to_structure(stdout)
 
