@@ -191,6 +191,7 @@ def images_in_pool(pool=None):
 def get_pool_names():
     cmd = "ssh %s rados lspools" % os.environ["CLIENTNODE"]
     stdout, stderr = general.eval_returns(cmd)
+    print type(general.convert_to_structure(stdout))
     return general.convert_to_structure(stdout)
 
 
