@@ -183,7 +183,7 @@ def remove_image(pool=None, image=None):
 
 def images_in_pool(pool=None):
     assert (pool != None), "Error, pool not provided"
-    cmd = "ssh %s rbd -p %s ls" % (os.environ["CLIENTNODE"], pool)
+    cmd = "ssh %s rbd -p %s ls --format json" % (os.environ["CLIENTNODE"], pool)
     stdout, stderr = general.eval_returns(cmd)
     return general.convert_to_structure(stdout)
 
@@ -196,7 +196,6 @@ def get_pool_names():
     for pool in ret_dct:
         list_of_pools.append(pool['poolname'])
     return list_of_pools
-
 
 
 def rbdRemovePoolImage(dictImg):
