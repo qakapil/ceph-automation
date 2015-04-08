@@ -177,7 +177,7 @@ def validate_image_presence(dictImage, expected_presence=True):
 
 def remove_image(pool=None, image=None):
     assert (pool != None and image != None), "Error, pool or image not provided"
-    cmd = "ssh %s rbd -p %s rm %s"
+    cmd = "ssh %s rbd -p %s rm %s" % (os.environ["CLIENTNODE"], pool, image)
     general.eval_returns(cmd)
 
 
