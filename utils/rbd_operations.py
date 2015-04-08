@@ -189,10 +189,14 @@ def images_in_pool(pool=None):
 
 
 def get_pool_names():
-    cmd = "ssh %s rados lspools" % os.environ["CLIENTNODE"]
+    cmd = "ssh %s ceph osd lspools --format json" % os.environ["CLIENTNODE"]
     stdout, stderr = general.eval_returns(cmd)
-    print general.convert_to_structure(stdout)
-    return general.convert_to_structure(stdout)
+    ret_dct = general.convert_to_structure(stdout)
+    list_of_pools = []
+    for pool in ret_dct:
+        list_of_pools.append(pool['poolname'])
+    return list_of_pools
+
 
 
 def rbdRemovePoolImage(dictImg):
@@ -353,8 +357,9 @@ def purge_snapshot(dictSnapshot):
     cmd = "ssh %s rbd -p %s snap purge %s" % (os.environ["CLIENTNODE"], poolname, imagename)
     stdout, strderr = general.eval_returns(cmd)
 
-    # removes a single snapshot
+
 def remove_snapshot(dictSnapshot):
+    # removes a single snapshot
     poolname = dictSnapshot.get('pool', None)
     snapname = dictSnapshot.get('snapname', None)
     cmd = "ssh %s rbd -p %s snap rm --snap %s" % (os.environ["CLIENTNODE"], poolname, snapname)
