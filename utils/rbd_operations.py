@@ -175,6 +175,25 @@ def validate_image_presence(dictImage, expected_presence=True):
         assert (imagename not in all_images), "Error. Image Should have not been in %s" % poolname
 
 
+def remove_image(pool=None, image=None):
+    assert (pool != None and image != None), "Error, pool or image not provided"
+    cmd = "ssh %s rbd -p %s rm %s"
+    general.eval_returns(cmd)
+
+
+def images_in_pool(pool=None):
+    assert (pool != None), "Error, pool not provided"
+    cmd = "ssh %s rbd -p %s ls"
+    stdout, stderr = general.eval_returns(cmd)
+    return general.convert_to_structure(stdout)
+
+
+def get_pool_names():
+    cmd = "ssh %s rados lspools" % os.environ["CLIENTNODE"]
+    stdout, stderr = general.eval_returns(cmd)
+    return general.convert_to_structure(stdout)
+
+
 def rbdRemovePoolImage(dictImg):
     imgname = dictImg.get('name', None)
     poolname = dictImg.get('pool', 'rbd')

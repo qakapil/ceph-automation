@@ -48,6 +48,7 @@ def setup_module():
 def test_image():
     global vErrors
     try:
+        delete_all_images()
         create_images_without_removal()
         # Images are created, dont remove old ones, none yet.
         validate_images_size(None)
@@ -202,6 +203,11 @@ def qemu_nbd():
 
 
 # Image Operations
+
+def delete_all_images():
+    for pool in rbd_operations.get_pool_names():
+        for image in rbd_operations.images_in_pool(pool):
+            rbd_operations.remove_image(pool, image)
 
 
 def export_images():
