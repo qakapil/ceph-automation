@@ -205,6 +205,7 @@ def qemu_nbd():
 # Image Operations
 
 def delete_all_images():
+    rbd_operations.delete_exported_images()
     for pool in rbd_operations.get_pool_names():
         for image in rbd_operations.images_in_pool(pool):
             rbd_operations.remove_image(pool, image)
