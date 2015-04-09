@@ -42,7 +42,7 @@ def import_image(dictImg):
 
 
 def delete_exported_images():
-    cmd = "ssh %s sudo rm im* "
+    cmd = "ssh %s sudo rm im* " % os.environ["CLIENTNODE"]
     general.eval_returns(cmd)
 
 
