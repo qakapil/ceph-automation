@@ -55,9 +55,9 @@ def test_image():
         # Assume the imagesize valid
         validate_images_presence(True)
         # Assume the image is present.
-        export_images()
+        #export_images()
         # Export all images
-        import_images()
+        #import_images()
         # Import all images
         #export_image_diff()
         # Export the image diff
