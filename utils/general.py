@@ -8,7 +8,6 @@ import ast
 log = logging.getLogger(__name__)
 
 
-
 def convert_to_structure(stdout):
     return ast.literal_eval(stdout)
 
@@ -17,7 +16,16 @@ def eval_returns(cmd):
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
+    log.debug(stdout)
     return stdout, stderr
+
+
+def exe_command(cmd):
+    rc, stdout, stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+
+
 
 
 def createDirOLD(dirPath):
