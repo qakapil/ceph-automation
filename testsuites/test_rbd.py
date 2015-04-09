@@ -67,9 +67,9 @@ def test_image():
         # Lock the images. Assume writing is not possible  TODO: MISSING TEST
         #unlock_images()
         # Unlocks the images. Assume writing is possible again.  TODO: MISSING TEST
-        copy_images()
+        #copy_images()
         # Copy TODO: Make presence tests more generic to test file existence with pattern
-        move_images()
+        #move_images()
         # Move
         resize_images()
         # Resize the image
