@@ -20,6 +20,11 @@ def eval_returns(cmd):
     return stdout, stderr
 
 
+def hand_error_message(cmd):
+    rc, stdout, stderr = launch(cmd=cmd)
+    return stdout, stderr
+
+
 def createDirOLD(dirPath):
     if not os.path.isdir(dirPath):
         try:

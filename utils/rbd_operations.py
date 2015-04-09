@@ -64,7 +64,11 @@ def import_diff(dictImg):
     general.eval_returns(cmd)
 
 
-# also cleanup images on HDD
+def write_to_locked_image(dictImg):
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+
+
 
 
 
