@@ -41,6 +41,11 @@ def import_image(dictImg):
     general.eval_returns(cmd)
 
 
+def delete_exported_images():
+    cmd = "ssh %s sudo rm im* "
+    general.eval_returns(cmd)
+
+
 def export_diff(dictImg):
     # print extents that differ since a previous snap or image creation
     name = dictImg.get('name', None)
@@ -57,6 +62,10 @@ def import_diff(dictImg):
     import_diff_name = name+"_exported_diff"
     cmd = "ssh %s rbd -p %s import-diff %s %s" % (os.environ["CLIENTNODE"], pool, import_diff_name, name)
     general.eval_returns(cmd)
+
+
+# also cleanup images on HDD
+
 
 
 def show_lock_of_image(dictImg):

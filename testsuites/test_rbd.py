@@ -59,9 +59,9 @@ def test_image():
         # Export all images
         import_images()
         # Import all images
- #       export_image_diff()
+        # export_image_diff()
         # Export the image diff
-  #      import_image_diff()
+        # import_image_diff()
         # Import the image diff
         lock_images()
         # Lock the images. Assume writing is not possible  TODO: MISSING TEST
@@ -249,7 +249,6 @@ def copy_images():
 def move_images():
     for image in yaml_data['image']:
         rbd_operations.move_image(image)
-
 
 
 def benchmarking():
