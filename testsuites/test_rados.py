@@ -58,6 +58,8 @@ def test_pools():
         assert (pool_name not in pool_list), "pool could not be deleted"
     except Exception:
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
+        log.error(sError)
+        log.error(Exception.args)
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
         raise Exception(str(sys.exc_info()[1]))
