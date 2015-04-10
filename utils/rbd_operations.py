@@ -1,12 +1,128 @@
 import logging
 import general
-import os
-
+import os, time
+import random
 
 
 log = logging.getLogger(__name__)
 
 #Images
+
+
+def export_image(dictImg):
+    # export image to file
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    exported_image_name = name+"_exported"
+    cmd = "ssh %s rbd -p %s export %s %s" % (os.environ["CLIENTNODE"], pool, name, exported_image_name)
+    general.eval_returns(cmd)
+
+
+def benchmarking(dictImg):
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    cmd = "ssh %s rbd -p %s bench-write %s" % (os.environ["CLIENTNODE"], pool, name)
+    # include options
+    #             --io-size <bytes>              write size
+    #             --io-threads <num>             ios in flight
+    #             --io-total <bytes>             total bytes to write
+    #             --io-pattern <seq|rand>        write pattern
+    stdout, stderr = general.eval_returns(cmd)
+    test_results = general.convert_to_structure(stdout)
+
+
+def import_image(dictImg):
+    # import image from file
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    imported_image_name = name+"_exported"
+    new_name = name+"_imported"
+    cmd = "ssh %s rbd -p %s import %s %s" % (os.environ["CLIENTNODE"], pool, imported_image_name, new_name)
+    general.eval_returns(cmd)
+
+
+def delete_exported_images():
+    cmd = "ssh %s sudo rm im* || true" % os.environ["CLIENTNODE"]
+    general.eval_returns(cmd)
+
+
+def export_diff(dictImg):
+    # print extents that differ since a previous snap or image creation
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    export_diff_name = name+"_exported_diff"
+    cmd = "ssh %s rbd -p %s export-diff %s %s" % (os.environ["CLIENTNODE"], pool, name, export_diff_name)
+    log.info("Executing export diff"+ cmd)
+    general.eval_returns(cmd)
+
+
+def import_diff(dictImg):
+    # import a incremental diff from path or stdin
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    import_diff_name = name+"_exported_diff"
+    cmd = "ssh %s rbd -p %s import-diff %s %s" % (os.environ["CLIENTNODE"], pool, import_diff_name, name)
+    general.eval_returns(cmd)
+
+
+def write_to_locked_image(dictImg):
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+
+
+
+
+
+def show_lock_of_image(dictImg):
+    # show locks held on an image
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    cmd = "ssh %s rbd -p %s lock list %s --format json" % (os.environ["CLIENTNODE"], pool, name)
+    stdout, stderr = general.eval_returns(cmd)
+    locks_json = general.convert_to_structure(stdout)
+    return locks_json
+    # retruns {} if empty
+    # returns {"1":{"locker":"client.4244","address":"10.160.223.1:0\/1035459"}} if present
+    #           id            locker
+
+
+def add_lock_to_image(dictImg):
+    # take a lock called id on an image
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    id = random.randrange(1, 10000)
+    cmd = "ssh %s rbd -p %s lock add %s %s" % (os.environ["CLIENTNODE"], pool, name, id)
+    general.eval_returns(cmd)
+
+
+def remove_lock_of_image(dictImg, id=None, locker=None):
+    # release a lock on an image
+    assert(id != None and locker != None), "Error! locker or id not provided"
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    cmd = "ssh %s rbd -p %s lock remove %s %s %s" % (os.environ["CLIENTNODE"], pool, name, id, locker)
+    general.eval_returns(cmd)
+
+
+def copy_image(dictImg):
+    # copy src image to dest
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    new_name = name+"_cp"
+    new_pool = 'data'
+    cmd = "ssh %s rbd -p %s cp %s %s/%s" % (os.environ["CLIENTNODE"], pool, name, new_pool, new_name)
+    general.eval_returns(cmd)
+
+
+def move_image(dictImg):
+    # move src image to dest / rename - renaming/mv across pools is not supported
+    name = dictImg.get('name', None)
+    pool = dictImg.get('pool', 'rbd')
+    new_name = name+"_mv"
+    new_pool = pool
+    cmd = "ssh %s rbd -p %s mv %s %s/%s" % (os.environ["CLIENTNODE"], pool, name, new_pool, new_name)
+    general.eval_returns(cmd)
+
 
 def createRBDImage(dictImg):
     name = dictImg.get('name', None)
@@ -71,6 +187,29 @@ def validate_image_presence(dictImage, expected_presence=True):
         assert (imagename in all_images), "Error, Image %s was not present" % imagename
     else:
         assert (imagename not in all_images), "Error. Image Should have not been in %s" % poolname
+
+
+def remove_image(pool=None, image=None):
+    assert (pool != None and image != None), "Error, pool or image not provided"
+    cmd = "ssh %s rbd -p %s rm %s" % (os.environ["CLIENTNODE"], pool, image)
+    general.eval_returns(cmd)
+
+
+def images_in_pool(pool=None):
+    assert (pool != None), "Error, pool not provided"
+    cmd = "ssh %s rbd -p %s ls --format json" % (os.environ["CLIENTNODE"], pool)
+    stdout, stderr = general.eval_returns(cmd)
+    return general.convert_to_structure(stdout)
+
+
+def get_pool_names():
+    cmd = "ssh %s ceph osd lspools --format json" % os.environ["CLIENTNODE"]
+    stdout, stderr = general.eval_returns(cmd)
+    ret_dct = general.convert_to_structure(stdout)
+    list_of_pools = []
+    for pool in ret_dct:
+        list_of_pools.append(pool['poolname'])
+    return list_of_pools
 
 
 def rbdRemovePoolImage(dictImg):
@@ -153,12 +292,59 @@ def mkfs_for_image(device=None):
 
 # Snapshots
 
+def children_for_snapshot(dictSnaphot):
+    # Display children of a snapshot
+    poolname = dictSnaphot.get('pool', None)
+    snapname = dictSnaphot.get('snapname', None)
+    imagename = dictSnaphot.get('name', None)
+    cmd = "ssh %s rbd -p %s children %s/%s@%s" % (os.environ["CLIENTNODE"], poolname, poolname, imagename, snapname)
+    stdout, stderr = general.eval_returns(cmd)
+    children = general.convert_to_structure(stdout)
+    # returns [] if empty
+
+
 def create_snapshot(dictSnaphot):
     poolname = dictSnaphot.get('pool', None)
     snapname = dictSnaphot.get('snapname', None)
     imagename = dictSnaphot.get('name', None)
     cmd = "ssh %s rbd -p %s snap create --snap %s %s" % (os.environ["CLIENTNODE"], poolname, snapname, imagename)
     general.eval_returns(cmd)
+
+
+def unprotect_snapshot(dictSnaphot):
+    # rbd: protecting snap failed: (38) Function not implemented
+    # 2015-04-08 12:45:18.120444 7f5288f88780 -1 librbd: snap_protect: image must support layering
+
+    # allow snapshot to be deleted
+    poolname = dictSnaphot.get('pool', None)
+    snapname = dictSnaphot.get('snapname', None)
+    imagename = dictSnaphot.get('name', None)
+    cmd = "ssh %s rbd -p %s snap unprotect %s --snap %s" % (os.environ["CLIENTNODE"], poolname, imagename, snapname)
+    general.eval_returns(cmd)
+
+
+def protect_snapshot(dictSnaphot):
+    # rbd: protecting snap failed: (38) Function not implemented
+    # 2015-04-08 12:45:18.120444 7f5288f88780 -1 librbd: snap_protect: image must support layering
+
+    # prevent a snapshot from being deleted
+    poolname = dictSnaphot.get('pool', None)
+    snapname = dictSnaphot.get('snapname', None)
+    imagename = dictSnaphot.get('name', None)
+    cmd = "ssh %s rbd -p %s snap protect %s --snap %s" % (os.environ["CLIENTNODE"], poolname, imagename, snapname)
+    general.eval_returns(cmd)
+
+
+def clone_snapshot(dictSnaphot):
+    # clone a snapshot into a COW child image
+    # To create a copy-on-write clone of a protected snapshot:
+    # Not possible because protecting snapshots is not enabled
+    poolname = dictSnaphot.get('pool', None)
+    snapname = dictSnaphot.get('snapname', None)
+    imagename = dictSnaphot.get('name', None)
+    cmd = "ssh %s rbd -p %s snap protect %s --snap %s" % (os.environ["CLIENTNODE"], poolname, imagename, snapname)
+    general.eval_returns(cmd)
+    pass
 
 
 def list_snapshots(dictSnapshot):
@@ -184,8 +370,9 @@ def purge_snapshot(dictSnapshot):
     cmd = "ssh %s rbd -p %s snap purge %s" % (os.environ["CLIENTNODE"], poolname, imagename)
     stdout, strderr = general.eval_returns(cmd)
 
-    # removes a single snapshot
+
 def remove_snapshot(dictSnapshot):
+    # removes a single snapshot
     poolname = dictSnapshot.get('pool', None)
     snapname = dictSnapshot.get('snapname', None)
     cmd = "ssh %s rbd -p %s snap rm --snap %s" % (os.environ["CLIENTNODE"], poolname, snapname)
@@ -289,29 +476,23 @@ def validate_qemu_image_format(dictQemu, expected_format='qcow2'):
 
 
 
-#Misc
-
-def benchmarking():
+def flatten_image_clone():
+    # Fill image clone with parent data (make it independent)
+    # Depending on cloning, depending on locking..
     pass
 
+# Image
 
-# snapshots TODO
 
-def copy_move_etc():
+def watch_image():
+    # watch events on image
     pass
+    # how to test?s
+    # might be big
+
+# Misc
 
 
-def lock_snapshot(dictSnapshot):
-    pass
-
-
-def unprotect_snapshot(dictSnapshot):
-    pass
-
-
-def protect_snapshot(dictSnapshot):
-    pass
-
-
-def clone_snapshot(dictSnapshot):
-    pass
+# Additional params to test
+# - --allow-shrink
+# - --read-only

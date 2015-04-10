@@ -26,6 +26,9 @@ def exe_command(cmd):
     Error message: %s" % (cmd, stderr)
 
 
+def hand_error_message(cmd):
+    rc, stdout, stderr = launch(cmd=cmd)
+    return stdout, stderr
 
 
 def createDirOLD(dirPath):
