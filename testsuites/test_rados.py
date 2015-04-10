@@ -44,12 +44,12 @@ def test_pools():
     try:
         pool_name = 'test_pool'
         pool_list = rados_operations.lspools()
-        pool_list = pool_list.split('/n')
+        pool_list = pool_list.split('\n')
         if pool_name in pool_list:
             rados_operations.rmpool(pool_name)
         rados_operations.mkpool(pool_name)
         pool_list = rados_operations.lspools()
-        pool_list = pool_list.split('/n')
+        pool_list = pool_list.split('\n')
         assert pool_name in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
                                        % (pool_name, str(pool_list))
         rados_operations.rmpool(pool_name)
@@ -68,32 +68,32 @@ def test_copypool():
         pool_name1 = 'test_pool1'
         pool_name2 = 'test_pool2'
         pool_list = rados_operations.lspools()
-        pool_list = pool_list.split('/n')
+        pool_list = pool_list.split('\n')
         if pool_name1 in pool_list:
             rados_operations.rmpool(pool_name2)
         rados_operations.mkpool(pool_name1)
         pool_list = rados_operations.lspools()
-        pool_list = pool_list.split('/n')
+        pool_list = pool_list.split('\n')
         assert pool_name1 in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
                                        % (pool_name1, str(pool_list))
         pool_list = rados_operations.lspools()
-        pool_list = pool_list.split('/n')
+        pool_list = pool_list.split('\n')
         if pool_name2 in pool_list:
             rados_operations.rmpool(pool_name2)
         rados_operations.mkpool(pool_name2)
         pool_list = rados_operations.lspools()
-        pool_list = pool_list.split('/n')
+        pool_list = pool_list.split('\n')
         assert pool_name2 in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
                                        % (pool_name2, str(pool_list))
 
         obj_name = 'test_object'
         rados_operations.create_object(obj_name, pool_name1)
         pool1_objects = rados_operations.rados_ls(pool_name1)
-        pool1_objects = pool1_objects.split('/n')
+        pool1_objects = pool1_objects.split('\n')
         assert (obj_name in pool1_objects), "object %s was not created %s" % (obj_name, pool1_objects)
         rados_operations.cppool(pool_name1, pool_name2)
         pool2_objects = rados_operations.rados_ls(pool_name2)
-        pool2_objects = pool2_objects.split('/n')
+        pool2_objects = pool2_objects.split('\n')
         assert (pool1_objects == pool2_objects), "objects in the two lists were not same %s %s" % \
                                                  (str(pool1_objects), str(pool2_objects))
 
@@ -114,12 +114,12 @@ def test_objects():
     try:
         pool_name = 'test_pool'
         pool_list = rados_operations.lspools()
-        pool_list = pool_list.split('/n')
+        pool_list = pool_list.split('\n')
         if pool_name in pool_list:
             rados_operations.rmpool(pool_name)
         rados_operations.mkpool(pool_name)
         pool_list = rados_operations.lspools()
-        pool_list = pool_list.split('/n')
+        pool_list = pool_list.split('\n')
         assert pool_name in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
                                        % (pool_name, str(pool_list))
         filename = 'test_file.txt'
@@ -128,7 +128,7 @@ def test_objects():
         obj_name = 'test_obj'
         rados_operations.put_object('test_obj', filename, pool_name)
         pool_objects = rados_operations.rados_ls(pool_name)
-        pool_objects = pool_objects.split('/n')
+        pool_objects = pool_objects.split('\n')
         assert (obj_name in pool_objects), "object %s was not created %s" % (obj_name, pool_objects)
         cp_obj_name = 'test_obj_copy'
         rados_operations.copy_object(obj_name, cp_obj_name, pool_name)
