@@ -20,7 +20,7 @@ def rmpool(pool_name):
     stdout, stderr = general.eval_returns(cmd)
     time.sleep(2)
     if "successfully deleted pool" not in stdout.strip():
-        log.error("KAPSERR"+stdout+" : "+stderr)
+        log.error("could not delete pool "+stdout+" : "+stderr)
         raise Exception("could not delete pool "+pool_name)
 
 def cppool(src_pool, dest_pool):

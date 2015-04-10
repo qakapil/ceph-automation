@@ -149,4 +149,4 @@ def teardown_module():
         log.info('test suite failed with these errors - '+str(vErrors))
     else:
         log.info('starting teardown in teardown_module')
-        general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
+        #general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
