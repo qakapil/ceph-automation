@@ -58,7 +58,7 @@ def test_pools():
         assert (pool_name not in pool_list), "pool could not be deleted"
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
-        log.error(exc_type+" : "+exc_value+" : "+exc_traceback)
+        log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
