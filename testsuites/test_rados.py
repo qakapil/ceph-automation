@@ -52,15 +52,15 @@ def test_pools():
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
         log.info("pool list 2 is - "+str(pool_list))
-        #assert (pool_name in pool_list), "newly created pool was not found in lspools ouput"
+        assert (pool_name in pool_list), "newly created pool was not found in lspools ouput"
         rados_operations.rmpool(pool_name)
         log.info("pool list 3 is - "+str(pool_list))
-        #assert (pool_name not in pool_list), "pool could not be deleted"
-    except:
+        assert (pool_name not in pool_list), "pool could not be deleted"
+    except Exception:
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise Exception(sys.exc_info()[0])
+        raise Exception(str(sys.exc_info()[1]))
 
 
 def test_copypool():
@@ -99,11 +99,11 @@ def test_copypool():
         assert (pool_name1 not in pool_list), "pool could not be deleted"
         rados_operations.rmpool(pool_name2)
         assert (pool_name2 not in pool_list), "pool could not be deleted "
-    except:
+    except Exception:
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise Exception(sys.exc_info()[0])
+        raise Exception(str(sys.exc_info()[1]))
 
 
 def test_objects():
@@ -132,11 +132,11 @@ def test_objects():
         obj_cp_stat = rados_operations.stat_object(cp_obj_name, pool_name)
         obj_cp_size = obj_cp_stat.split(",")[1].strip()
         assert (obj_size == obj_cp_size), "copied objets size was not same"
-    except:
+    except Exception:
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise Exception(sys.exc_info()[0])
+        raise Exception(str(sys.exc_info()[1]))
 
 
 def teardown_module():
