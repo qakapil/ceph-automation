@@ -52,6 +52,7 @@ def export_diff(dictImg):
     pool = dictImg.get('pool', 'rbd')
     export_diff_name = name+"_exported_diff"
     cmd = "ssh %s rbd -p %s export-diff %s %s" % (os.environ["CLIENTNODE"], pool, name, export_diff_name)
+    log.info("Executing export diff"+ cmd)
     general.eval_returns(cmd)
 
 

@@ -63,19 +63,19 @@ def test_image():
         # Export the image diff
         import_image_diff()
         # Import the image diff
-        #lock_images()
+        lock_images()
         # Lock the images. Assume writing is not possible  TODO: MISSING TEST
-        #unlock_images()
+        unlock_images()
         # Unlocks the images. Assume writing is possible again.  TODO: MISSING TEST
-        #copy_images()
-        # Copy TODO: Make presence tests more generic to test file existence with pattern
-        #move_images()
-        # Move
         resize_images()
         # Resize the image
         validate_images_size(1250) #with resized values # make it more generic
         # Check for correct imagesize
-        remove_images()
+        copy_images()
+        # Copy TODO: Make presence tests more generic to test file existence with pattern
+        move_images()
+        # Move
+        delete_all_images()
         # Remove the image
         validate_images_presence(False)
         # Assume that the image is not present anymore
@@ -222,33 +222,33 @@ def import_images():
 
 
 def export_image_diff():
-    for image in yaml_data['image']:
+    for image in yaml_data['images']:
         rbd_operations.export_diff(image)
 
 
 def import_image_diff():
-    for image in yaml_data['image']:
+    for image in yaml_data['images']:
         rbd_operations.import_diff(image)
 
 
 def lock_images():
-    for image in yaml_data['image']:
+    for image in yaml_data['images']:
         rbd_operations.add_lock_to_image(image)
 
 
 def unlock_images():
-    for image in yaml_data['image']:
+    for image in yaml_data['images']:
         ret_dct = rbd_operations.show_lock_of_image(image)
         rbd_operations.remove_lock_of_image(image, ret_dct.keys()[0], ret_dct.values()[0]['locker'])
 
 
 def copy_images():
-    for image in yaml_data['image']:
+    for image in yaml_data['images']:
         rbd_operations.copy_image(image)
 
 
 def move_images():
-    for image in yaml_data['image']:
+    for image in yaml_data['images']:
         rbd_operations.move_image(image)
 
 
