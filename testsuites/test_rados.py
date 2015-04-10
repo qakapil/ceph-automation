@@ -45,17 +45,17 @@ def test_pools():
         pool_name = 'test_pool'
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
-        log.info("pool list 1 is - "+pool_list)
+        log.info("pool list 1 is - "+str(pool_list))
         if pool_name in pool_list:
             rados_operations.rmpool(pool_name)
         rados_operations.mkpool(pool_name)
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
-        log.info("pool list 2 is - "+pool_list)
+        log.info("pool list 2 is - "+str(pool_list))
         assert pool_name in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
                                        % (pool_name, str(pool_list))
         rados_operations.rmpool(pool_name)
-        log.info("pool list 3 is - "+pool_list)
+        log.info("pool list 3 is - "+str(pool_list))
         assert pool_name not in pool_list, "pool %s could not be deleted %s"\
                                            % (pool_name, str(pool_list))
     except:
