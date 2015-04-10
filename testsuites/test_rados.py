@@ -45,16 +45,13 @@ def test_pools():
         pool_name = 'test_pool'
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
-        log.info("pool list 1 is - "+str(pool_list))
         if pool_name in pool_list:
             rados_operations.rmpool(pool_name)
         rados_operations.mkpool(pool_name)
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
-        log.info("pool list 2 is - "+str(pool_list))
         assert (pool_name in pool_list), "newly created pool was not found in lspools ouput"
         rados_operations.rmpool(pool_name)
-        log.info("pool list 3 is - "+str(pool_list))
         #assert (pool_name not in pool_list), "pool could not be deleted"
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
