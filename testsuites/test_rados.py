@@ -3,7 +3,6 @@ from utils import operations
 from utils import baseconfig
 from utils import rados_operations
 from utils import general
-import traceback
 
 import inspect
 from ConfigParser import SafeConfigParser
@@ -58,9 +57,6 @@ def test_pools():
         log.info("pool list 3 is - "+str(pool_list))
         assert (pool_name not in pool_list), "pool could not be deleted"
     except Exception:
-        traceback.print_stack()
-        log.error(repr(traceback.extract_stack()))
-        log.error(repr(traceback.format_stack()))
         exc_type, exc_value, exc_traceback = sys.exc_info()
         log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
@@ -106,8 +102,9 @@ def test_copypool():
         rados_operations.rmpool(pool_name2)
         assert (pool_name2 not in pool_list), "pool could not be deleted "
     except Exception:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
-        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
         raise Exception(str(sys.exc_info()[1]))
 
@@ -139,8 +136,9 @@ def test_objects():
         obj_cp_size = obj_cp_stat.split(",")[1].strip()
         assert (obj_size == obj_cp_size), "copied objets size was not same"
     except Exception:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
-        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
         raise Exception(str(sys.exc_info()[1]))
 
