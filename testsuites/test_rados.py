@@ -132,6 +132,8 @@ def test_objects():
         obj_cp_stat = rados_operations.stat_object(cp_obj_name, pool_name)
         obj_cp_size = obj_cp_stat.split(",")[1].strip()
         assert (obj_size == obj_cp_size), "copied objets size was not same"
+        rados_operations.rmpool(pool_name)
+        #assert (pool_name not in pool_list), "pool could not be deleted"
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
