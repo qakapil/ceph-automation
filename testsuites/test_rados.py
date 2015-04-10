@@ -3,6 +3,7 @@ from utils import operations
 from utils import baseconfig
 from utils import rados_operations
 from utils import general
+import traceback
 
 import inspect
 from ConfigParser import SafeConfigParser
@@ -57,6 +58,9 @@ def test_pools():
         log.info("pool list 3 is - "+str(pool_list))
         assert (pool_name not in pool_list), "pool could not be deleted"
     except Exception:
+        traceback.print_stack()
+        log.error(repr(traceback.extract_stack()))
+        log.error(repr(traceback.format_stack()))
         exc_type, exc_value, exc_traceback = sys.exc_info()
         log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
