@@ -14,6 +14,11 @@ def mkpool(pool_name, auid=None, crush_rule=None):
     general.eval_returns(cmd)
 
 
+def rmpool(pool_name):
+    cmd = "ssh %s rados rmpool %s %s --yes-i-really-really-mean-it" % (os.environ["CLIENTNODE"], pool_name)
+    general.eval_returns(cmd)
+
+
 def cppool(src_pool, dest_pool):
     cmd = "ssh %s rados cppool %s %s" % (os.environ["CLIENTNODE"], src_pool, dest_pool)
     general.eval_returns(cmd)
