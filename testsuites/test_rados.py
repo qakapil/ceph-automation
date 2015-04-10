@@ -62,7 +62,7 @@ def test_pools():
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise sys.exc_info()[0]
+        raise Exception(sys.exc_info()[0])
 
 
 def test_copypool():
@@ -110,7 +110,7 @@ def test_copypool():
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise sys.exc_info()[0]
+        raise Exception(sys.exc_info()[0])
 
 
 def test_objects():
@@ -144,7 +144,7 @@ def test_objects():
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise sys.exc_info()[0]
+        raise Exception(sys.exc_info()[0])
 
 
 def teardown_module():
