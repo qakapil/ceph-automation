@@ -45,21 +45,24 @@ def test_pools():
         pool_name = 'test_pool'
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
+        log.info("pool list 1 is - "+pool_list)
         if pool_name in pool_list:
             rados_operations.rmpool(pool_name)
         rados_operations.mkpool(pool_name)
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
+        log.info("pool list 2 is - "+pool_list)
         assert pool_name in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
                                        % (pool_name, str(pool_list))
         rados_operations.rmpool(pool_name)
+        log.info("pool list 3 is - "+pool_list)
         assert pool_name not in pool_list, "pool %s could not be deleted %s"\
                                            % (pool_name, str(pool_list))
     except:
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise sys.exc_info()[0], sys.exc_info()[1]
+        raise sys.exc_info()[0]
 
 
 def test_copypool():
@@ -107,7 +110,7 @@ def test_copypool():
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise sys.exc_info()[0], sys.exc_info()[1]
+        raise sys.exc_info()[0]
 
 
 def test_objects():
@@ -141,7 +144,7 @@ def test_objects():
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise sys.exc_info()[0], sys.exc_info()[1]
+        raise sys.exc_info()[0]
 
 
 def teardown_module():
