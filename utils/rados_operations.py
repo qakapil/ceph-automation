@@ -94,3 +94,23 @@ def listsnaps(object_name, pool_name):
     return stdout
 
 
+def locklist(object_name, pool_name):
+    cmd = "ssh %s rados -p %s lock list %s" % (os.environ["CLIENTNODE"], pool_name, object_name)
+    stdout, stderr = general.eval_returns(cmd)
+    return stdout
+
+
+def lockget(object_name, pool_name, lock_name):
+    cmd = "ssh %s rados -p %s lock get %s %s" % (os.environ["CLIENTNODE"], pool_name, object_name, lock_name)
+    general.eval_returns(cmd)
+
+
+def lockbreak(object_name, pool_name, lock_name, locker_name):
+    cmd = "ssh %s rados -p %s lock break %s %s %s" % (os.environ["CLIENTNODE"], pool_name, object_name, lock_name, locker_name)
+    general.eval_returns(cmd)
+
+
+def lockinfo(object_name, pool_name, lock_name):
+    cmd = "ssh %s rados -p %s lock info %s %s" % (os.environ["CLIENTNODE"], pool_name, object_name, lock_name)
+    stdout, stderr = general.eval_returns(cmd)
+    return stdout
