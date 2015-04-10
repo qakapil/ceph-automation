@@ -70,9 +70,6 @@ def write_to_locked_image(dictImg):
     pool = dictImg.get('pool', 'rbd')
 
 
-
-
-
 def show_lock_of_image(dictImg):
     # show locks held on an image
     name = dictImg.get('name', None)
