@@ -16,8 +16,9 @@ def mkpool(pool_name, auid=None, crush_rule=None):
 
 def rmpool(pool_name):
     cmd = "ssh %s rados rmpool %s %s --yes-i-really-really-mean-it" % (os.environ["CLIENTNODE"], pool_name, pool_name)
-    general.eval_returns(cmd)
-
+    stdout, stderr = general.eval_returns(cmd)
+    if "successfully deleted pool" not in stdout.strip():
+         raise Exception("could not delete pool "+pool_name)
 
 def cppool(src_pool, dest_pool):
     cmd = "ssh %s rados cppool %s %s" % (os.environ["CLIENTNODE"], src_pool, dest_pool)
