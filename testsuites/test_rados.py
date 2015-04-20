@@ -172,7 +172,7 @@ def test_snaps():
         rados_operations.mksnap(obj_name, pool_name)
         snap_list = rados_operations.listsnaps(obj_name, pool_name)
         snap_list = snap_list.split('\n')
-        assert (obj_name == str(snap_list[0].strip())), "snap was not created for object %s" % (obj_name)
+        assert (obj_name in str(snap_list[0].strip())), "snap was not created for object %s" % (obj_name)
 
         rados_operations.rmpool(obj_name, pool_name)
     except Exception:
