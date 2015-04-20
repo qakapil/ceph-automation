@@ -52,6 +52,8 @@ def test_pools():
         pool_list = pool_list.split('\n')
         assert (pool_name in pool_list), "newly created pool was not found in lspools ouput"
         rados_operations.rmpool(pool_name)
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
         assert (pool_name not in pool_list), "pool %s could not be deleted. pool list is %s" % (pool_name, str(pool_list))
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -95,8 +97,12 @@ def test_copypool():
         assert (pool1_objects == pool2_objects), "objects in the two lists were not same"
 
         rados_operations.rmpool(pool_name1)
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
         assert (pool_name1 not in pool_list), "pool %s could not be deleted. pool list is %s" % (pool_name1, str(pool_list))
         rados_operations.rmpool(pool_name2)
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
         assert (pool_name2 not in pool_list), "pool %s could not be deleted. pool list is %s" % (pool_name2, str(pool_list))
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -133,6 +139,8 @@ def test_objects():
         obj_cp_size = obj_cp_stat.split(",")[1].strip()
         assert (obj_size == obj_cp_size), "copied objets size was not same"
         rados_operations.rmpool(pool_name)
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
         assert (pool_name not in pool_list), "pool %s could not be deleted. pool list is %s" % (pool_name, str(pool_list))
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
