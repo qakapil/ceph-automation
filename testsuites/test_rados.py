@@ -211,7 +211,7 @@ def test_locks():
         locks_list = rados_operations.locklist(obj_name, pool_name)
         locks_list = general.convert_to_structure(locks_list)
         num_locks = locks_list['locks']
-        assert (num_locks == 1), "num locks were not 1 as expected - %s" % num_locks
+        assert (len(num_locks) == 1), "num locks were not 1 as expected - %s" % num_locks
         actual_lock_name = locks_list['locks'][0]['name']
         assert (actual_lock_name.strip() == lock_name), "lock name was incorrect - %s" % actual_lock_name
 
