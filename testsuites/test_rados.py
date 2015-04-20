@@ -95,9 +95,9 @@ def test_copypool():
         assert (pool1_objects == pool2_objects), "objects in the two lists were not same"
 
         rados_operations.rmpool(pool_name1)
-        #assert (pool_name1 not in pool_list), "pool could not be deleted"
+        assert (pool_name1 not in pool_list), "pool could not be deleted"
         rados_operations.rmpool(pool_name2)
-        #assert (pool_name2 not in pool_list), "pool could not be deleted "
+        assert (pool_name2 not in pool_list), "pool could not be deleted "
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
@@ -133,7 +133,7 @@ def test_objects():
         obj_cp_size = obj_cp_stat.split(",")[1].strip()
         assert (obj_size == obj_cp_size), "copied objets size was not same"
         rados_operations.rmpool(pool_name)
-        #assert (pool_name not in pool_list), "pool could not be deleted"
+        assert (pool_name not in pool_list), "pool could not be deleted"
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
@@ -148,4 +148,4 @@ def teardown_module():
         log.info('test suite failed with these errors - '+str(vErrors))
     else:
         log.info('starting teardown in teardown_module')
-        #general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
+        general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
