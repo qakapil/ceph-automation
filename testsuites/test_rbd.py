@@ -44,11 +44,11 @@ def setup_module():
         zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
 
 
-
 def test_image():
     global vErrors
     try:
         delete_all_images()
+        # For further testing without jenkins
         create_images_without_removal()
         # Images are created, dont remove old ones, none yet.
         validate_images_size(None)
@@ -168,11 +168,13 @@ def validate_qemu_image_presence():
     for image in yaml_data['qemu']:
         rbd_operations.validate_qemu_image_presence(image)
 
+
 def validate_qemu_image_format():
     for image in yaml_data['qemu']:
         # Optional parameters are: format_to_expect
         # Default value = qcow2
         rbd_operations.validate_qemu_image_format(image)
+
 
 def convert_qemu_image():
     for image in yaml_data['qemu']:
@@ -189,6 +191,8 @@ def resize_qemu_image():
         # Default value = 2000
         rbd_operations.resize_qemu_image(image)
 
+
+# TODO
 
 def toggle_caching():
     pass

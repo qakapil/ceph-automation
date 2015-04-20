@@ -68,6 +68,7 @@ def import_diff(dictImg):
 def write_to_locked_image(dictImg):
     name = dictImg.get('name', None)
     pool = dictImg.get('pool', 'rbd')
+    # is possible, what is locked state?
 
 
 def show_lock_of_image(dictImg):
@@ -153,6 +154,7 @@ def resizeRBDImage(dictImg, new_size=1250):
     general.eval_returns(cmd)
     log.info("resized image %s in pool %s with the new size of %s" % (name, pool, new_size))
 
+
 def rbdGetPoolImages(poolname):
     cmd = "ssh %s rbd -p %s ls" % (os.environ["CLIENTNODE"], poolname)
     stdout, strderr = general.eval_returns(cmd)
@@ -170,6 +172,7 @@ def validate_image_size(dictImage, size=None):
     assert (str(size) in str(act_size_in_mb)), "Error. Size for image %s was %s MB - expected it to be %s" \
                                                % (name, act_size_in_mb, size)
     log.info("validated image - %s in pool %s " % (name, pool))
+
 
 def validate_image_presence(dictImage, expected_presence=True):
     poolname = dictImage.get('pool', None)
@@ -215,7 +218,8 @@ def rbdRemovePoolImage(dictImg):
     cmd = "ssh %s rbd -p %s rm %s" % (os.environ["CLIENTNODE"], poolname, imgname)
     general.eval_returns(cmd)
 
-## Mapping Images
+# Mapping Images
+
 
 def mapImage(dictImage):
     imagename = dictImage.get('name')
@@ -289,6 +293,7 @@ def mkfs_for_image(device=None):
 
 # Snapshots
 
+
 def children_for_snapshot(dictSnaphot):
     # Display children of a snapshot
     poolname = dictSnaphot.get('pool', None)
@@ -341,7 +346,6 @@ def clone_snapshot(dictSnaphot):
     imagename = dictSnaphot.get('name', None)
     cmd = "ssh %s rbd -p %s snap protect %s --snap %s" % (os.environ["CLIENTNODE"], poolname, imagename, snapname)
     general.eval_returns(cmd)
-    pass
 
 
 def list_snapshots(dictSnapshot):
@@ -360,7 +364,7 @@ def rollback_snapshot(dictSnapshot):
     cmd = "ssh %s rbd snap rollback %s/%s@%s" % (os.environ["CLIENTNODE"], poolname, imagename, snapname)
     general.eval_returns(cmd)
 
-    # purges all snapshots for a given image
+
 def purge_snapshot(dictSnapshot):
     poolname = dictSnapshot.get('pool', None)
     imagename = dictSnapshot.get('name', None)
@@ -408,8 +412,6 @@ def validate_snapshot_diff(dictSnapshot, expected_difference=False):
 
 # Qemu
 
-#1st ensure qemu is installed properly
-# qemu-tools
 
 def create_qemu_image(dictQemu, format='raw'):
     poolname = dictQemu.get('pool', None)
@@ -424,6 +426,7 @@ def create_qemu_image(dictQemu, format='raw'):
     general.eval_returns(cmd)
     # log.info('created qemu image %s') % imagename
 
+
 def convert_qemu_image(dictQemu, from_format='raw', to_format='qcow2'):
     poolname = dictQemu.get('pool', None)
     imagename = dictQemu.get('name', None)
@@ -433,6 +436,7 @@ def convert_qemu_image(dictQemu, from_format='raw', to_format='qcow2'):
           (os.environ["CLIENTNODE"], from_format, to_format, physical_image, poolname, imagename)
     general.eval_returns(cmd)
     # log.info('converted the qemu image %s from % to %') % (imagename, from_format, to_format)
+
 
 def resize_qemu_image(dictQemu, new_size=2000):
     poolname = dictQemu.get('pool', None)
@@ -472,7 +476,6 @@ def validate_qemu_image_format(dictQemu, expected_format='qcow2'):
                                                % (expected_format, actual_format)
 
 
-
 def flatten_image_clone():
     # Fill image clone with parent data (make it independent)
     # Depending on cloning, depending on locking..
@@ -486,8 +489,6 @@ def watch_image():
     pass
     # how to test?s
     # might be big
-
-# Misc
 
 
 # Additional params to test
