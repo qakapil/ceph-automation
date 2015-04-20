@@ -174,7 +174,13 @@ def test_snaps():
         snap_list = snap_list.split('\n')
         assert (obj_name in str(snap_list[0].strip())), "snap was not created for object %s" % (obj_name)
 
-        rados_operations.rmpool(obj_name, pool_name)
+        rados_operations.rmsnap(obj_name, pool_name)
+
+        rados_operations.rmpool(pool_name)
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
+        assert (pool_name not in pool_list), "pool %s could not be deleted. pool list is %s" % (pool_name, str(pool_list))
+        
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
