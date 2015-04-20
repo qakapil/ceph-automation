@@ -150,6 +150,47 @@ def test_objects():
         raise Exception(str(sys.exc_info()[1]))
 
 
+
+def test_snaps():
+    try:
+        pool_name = 'test_pool'
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
+        if pool_name in pool_list:
+            rados_operations.rmpool(pool_name)
+        rados_operations.mkpool(pool_name)
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
+        assert pool_name in pool_list, "newly created pool was not found in lspools ouput"
+
+        obj_name = 'test_object'
+        rados_operations.create_object(obj_name, pool_name)
+        pool_objects = rados_operations.rados_ls(pool_name)
+        pool_objects = pool_objects.split('\n')
+        assert (obj_name in pool_objects), "object was not created"
+
+        rados_operations.mksnap(obj_name, pool_name)
+        snap_list = rados_operations.listsnaps(obj_name, pool_name)
+        snap_list = snap_list.split('\n')
+        assert (obj_name == str(snap_list[0].strip())), "snap was not created for object %s" % (obj_name)
+
+        rados_operations.rmpool(obj_name, pool_name)
+    except Exception:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
+        sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
+        vErrors.append(sError)
+        raise Exception(str(sys.exc_info()[1]))
+
+
+
+
+
+
+
+
+
+
 def teardown_module():
     log.info('++++++completed rbd test suite ++++++')
     if vErrors:
