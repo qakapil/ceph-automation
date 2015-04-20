@@ -16,7 +16,7 @@ def eval_returns(cmd):
     rc, stdout, stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
-    log.debug(stdout)
+    #log.debug(stdout)
     return stdout, stderr
 
 

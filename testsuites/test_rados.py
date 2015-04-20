@@ -50,16 +50,18 @@ def test_pools():
         rados_operations.mkpool(pool_name)
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
-        assert pool_name in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
-                                       % (pool_name, str(pool_list))
+        assert (pool_name in pool_list), "newly created pool was not found in lspools ouput"
         rados_operations.rmpool(pool_name)
-        assert pool_name not in pool_list, "pool %s could not be deleted %s"\
-                                           % (pool_name, str(pool_list))
-    except:
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
+        assert (pool_name not in pool_list), "pool %s could not be deleted. pool list is %s" % (pool_name, str(pool_list))
+    except Exception:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
         log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise sys.exc_info()[0], sys.exc_info()[1]
+        raise Exception(str(sys.exc_info()[1]))
 
 
 def test_copypool():
@@ -74,8 +76,7 @@ def test_copypool():
         rados_operations.mkpool(pool_name1)
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
-        assert pool_name1 in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
-                                       % (pool_name1, str(pool_list))
+        assert (pool_name1 in pool_list), "newly created pool was not found in lspools ouput"
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
         if pool_name2 in pool_list:
@@ -83,31 +84,32 @@ def test_copypool():
         rados_operations.mkpool(pool_name2)
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
-        assert pool_name2 in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
-                                       % (pool_name2, str(pool_list))
+        assert (pool_name2 in pool_list), "newly created pool was not found in lspools ouput "
 
         obj_name = 'test_object'
         rados_operations.create_object(obj_name, pool_name1)
         pool1_objects = rados_operations.rados_ls(pool_name1)
         pool1_objects = pool1_objects.split('\n')
-        assert (obj_name in pool1_objects), "object %s was not created %s" % (obj_name, pool1_objects)
+        assert (obj_name in pool1_objects), "object was not created"
         rados_operations.cppool(pool_name1, pool_name2)
         pool2_objects = rados_operations.rados_ls(pool_name2)
         pool2_objects = pool2_objects.split('\n')
-        assert (pool1_objects == pool2_objects), "objects in the two lists were not same %s %s" % \
-                                                 (str(pool1_objects), str(pool2_objects))
+        assert (pool1_objects == pool2_objects), "objects in the two lists were not same"
 
         rados_operations.rmpool(pool_name1)
-        assert pool_name1 not in pool_list, "pool %s could not be deleted %s"\
-                                           % (pool_name1, str(pool_list))
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
+        assert (pool_name1 not in pool_list), "pool %s could not be deleted. pool list is %s" % (pool_name1, str(pool_list))
         rados_operations.rmpool(pool_name2)
-        assert pool_name2 not in pool_list, "pool %s could not be deleted %s"\
-                                           % (pool_name2, str(pool_list))
-    except:
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
+        assert (pool_name2 not in pool_list), "pool %s could not be deleted. pool list is %s" % (pool_name2, str(pool_list))
+    except Exception:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
-        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise sys.exc_info()[0], sys.exc_info()[1]
+        raise Exception(str(sys.exc_info()[1]))
 
 
 def test_objects():
@@ -120,8 +122,7 @@ def test_objects():
         rados_operations.mkpool(pool_name)
         pool_list = rados_operations.lspools()
         pool_list = pool_list.split('\n')
-        assert pool_name in pool_list, "newly created pool %s was not found in lspools ouput - %s" \
-                                       % (pool_name, str(pool_list))
+        assert pool_name in pool_list, "newly created pool was not found in lspools ouput"
         filename = 'test_file.txt'
         cmd = "ssh %s touch %s" % (os.environ["CLIENTNODE"], filename)
         general.eval_returns(cmd)
@@ -129,7 +130,7 @@ def test_objects():
         rados_operations.put_object('test_obj', filename, pool_name)
         pool_objects = rados_operations.rados_ls(pool_name)
         pool_objects = pool_objects.split('\n')
-        assert (obj_name in pool_objects), "object %s was not created %s" % (obj_name, pool_objects)
+        assert (obj_name in pool_objects), "object was not created "
         cp_obj_name = 'test_obj_copy'
         rados_operations.copy_object(obj_name, cp_obj_name, pool_name)
         obj_stat = rados_operations.stat_object(obj_name, pool_name)
@@ -137,11 +138,16 @@ def test_objects():
         obj_cp_stat = rados_operations.stat_object(cp_obj_name, pool_name)
         obj_cp_size = obj_cp_stat.split(",")[1].strip()
         assert (obj_size == obj_cp_size), "copied objets size was not same"
-    except:
+        rados_operations.rmpool(pool_name)
+        pool_list = rados_operations.lspools()
+        pool_list = pool_list.split('\n')
+        assert (pool_name not in pool_list), "pool %s could not be deleted. pool list is %s" % (pool_name, str(pool_list))
+    except Exception:
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
-        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
         vErrors.append(sError)
-        raise sys.exc_info()[0], sys.exc_info()[1]
+        raise Exception(str(sys.exc_info()[1]))
 
 
 def teardown_module():
@@ -150,4 +156,4 @@ def teardown_module():
         log.info('test suite failed with these errors - '+str(vErrors))
     else:
         log.info('starting teardown in teardown_module')
-        general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
+        #general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
