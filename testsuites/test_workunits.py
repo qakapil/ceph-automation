@@ -63,7 +63,7 @@ def test_workunit():
             stdout, stderr = general.eval_returns(cmd)
             test_scripts = stdout.split('\n')
             test_scripts = test_scripts[:len(test_scripts)-1]
-            log.info('Following tests will be executed -> %s' % str(test_scripts))
+            log.info('Following tests will be executed -> \n%s' % str(test_scripts))
             for script in test_scripts:
                 yield run_script, workunit, script
 
@@ -77,12 +77,13 @@ def test_workunit():
 
 
 def run_script(workunit, script_name):
-    log.info('*********************************************************')
+    log.info('\n*********************************************************\n')
     log.info('Executing %s tests from %s dir' % (script_name, workunit))
     cmd = 'ssh %s %s/%s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'], script_name)
     stdout, stderr = general.eval_returns(cmd)
-    log.info('test output -> %s %s' % (stdout, stderr))
-    log.info('*********************************************************')
+    log.info('test output stdout -> %s' % (stdout))
+    log.info('test output stderr -> %s' % (stderr))
+    log.info('\n*********************************************************\n')
 
 
 def teardown_module():
