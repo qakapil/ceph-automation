@@ -50,7 +50,10 @@ def test_workunit():
         cmd = 'ssh %s tar --strip-components=4 -C %s -xvf /tmp/%s.tar.gz ceph-%s/qa/workunits/%s' % \
         (os.environ["CLIENTNODE"], yaml_data['test_dir'], yaml_data['ceph_branch'], yaml_data['ceph_branch'], yaml_data['workunit_dir'])
         general.eval_returns(cmd)
-        test_scripts = os.listdir(yaml_data['test_dir'])
+        cmd = 'ssh %s ls %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
+        stdout, stderr = general.eval_returns(cmd)
+        test_scripts = stdout.split('\n')
+        test_scripts = test_scripts[:len(test_scripts)-1]
         for script in test_scripts:
             run_script(yaml_data['workunit_dir'], script)
 
