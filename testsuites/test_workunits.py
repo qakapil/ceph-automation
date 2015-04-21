@@ -55,7 +55,7 @@ def test_workunit():
         test_scripts = stdout.split('\n')
         test_scripts = test_scripts[:len(test_scripts)-1]
         for script in test_scripts:
-            log.info('Executing %s tests from %s dir') % (script, yaml_data['workunit_dir'])
+            log.info('Executing %s tests from %s dir' % (script, yaml_data['workunit_dir']))
             run_script(yaml_data['workunit_dir'], script)
 
     except Exception:
@@ -68,13 +68,13 @@ def test_workunit():
 
 
 def run_script(workunit_dir, script_name):
-    log.info('Executing %s tests from %s dir') % (script_name, workunit_dir)
+    log.info('Executing %s tests from %s dir' % (script_name, workunit_dir))
     cmd = 'ssh %s %s/%s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'], script_name)
     general.eval_returns(cmd)
 
 
 def teardown_module():
-    log.info('++++++completed rbd test suite ++++++')
+    log.info('++++++completed test suite ++++++')
     if vErrors:
         log.info('test suite failed with these errors - '+str(vErrors))
     else:
