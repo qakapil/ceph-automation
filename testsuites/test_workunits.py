@@ -48,7 +48,7 @@ def setup_module():
 def test_workunit():
     global vErrors
     try:
-        #cmd = 'ssh %s rm /tmp/%s.tar.gz %s' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'])
+        #cmd = 'ssh %s rm /tmp/%s.tar.gz || true' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'])
         #general.eval_returns(cmd)
         #url = 'https://github.com/SUSE/ceph/archive/%s.tar.gz' % (yaml_data['ceph_branch'])
         #cmd = 'ssh %s wget -O /tmp/%s.tar.gz %s' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'], url)
