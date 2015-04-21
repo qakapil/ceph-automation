@@ -2,7 +2,7 @@ from utils import monitoring
 from utils import operations
 from utils import baseconfig
 from utils import general
-
+from utils import cephdeploy
 import inspect
 from ConfigParser import SafeConfigParser
 import logging
@@ -28,10 +28,14 @@ def setup_module():
         yamlfile = __name__.split('.')[len(__name__.split('.'))-1]
         yamlfile = 'yamldata/%s.yaml' % (yamlfile)
     yaml_data = baseconfig.fetchTestYamlData(yamlfile)
-
-
     baseconfig.setLogger('cephauto.log', cfg_data)
     os.environ["CLIENTNODE"] = yaml_data['clientnode'][0]
+
+    before_cleanup = os.environ.get("BEFORE_CLEANUP")
+    if before_cleanup != None:
+        log.info('starting teardown for before_cleanup')
+        general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
+
     if not monitoring.isClusterReady(60):
         operations.createCephCluster(yaml_data, cfg_data)
     status = monitoring.isClusterReady(300)
@@ -41,22 +45,27 @@ def setup_module():
 def test_workunit():
     global vErrors
     try:
-        yaml_data['test_dir'] = '%s/%s' % (yaml_data['test_dir'], yaml_data['workunit_dir'])
-        url = 'https://github.com/SUSE/ceph/archive/%s.tar.gz' % (yaml_data['ceph_branch'])
-        cmd = 'ssh %s wget -O /tmp/%s.tar.gz %s' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'], url)
-        general.eval_returns(cmd)
-        cmd = 'ssh %s mkdir -p %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
-        general.eval_returns(cmd)
-        cmd = 'ssh %s tar --strip-components=4 -C %s -xvf /tmp/%s.tar.gz ceph-%s/qa/workunits/%s' % \
-        (os.environ["CLIENTNODE"], yaml_data['test_dir'], yaml_data['ceph_branch'], yaml_data['ceph_branch'], yaml_data['workunit_dir'])
-        general.eval_returns(cmd)
-        cmd = 'ssh %s ls %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
-        stdout, stderr = general.eval_returns(cmd)
-        test_scripts = stdout.split('\n')
-        test_scripts = test_scripts[:len(test_scripts)-1]
-        for script in test_scripts:
-            log.info('Executing %s tests from %s dir' % (script, yaml_data['workunit_dir']))
-            run_script(yaml_data['workunit_dir'], script)
+        #cmd = 'ssh %s rm /tmp/%s.tar.gz %s' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'])
+        #general.eval_returns(cmd)
+        #url = 'https://github.com/SUSE/ceph/archive/%s.tar.gz' % (yaml_data['ceph_branch'])
+        #cmd = 'ssh %s wget -O /tmp/%s.tar.gz %s' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'], url)
+        #general.eval_returns(cmd)
+        #cmd = 'ssh %s rm -rf %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
+        #general.eval_returns(cmd)
+        for workunit in yaml_data['workunits']:
+            yaml_data['test_dir'] = '%s/%s' % (yaml_data['test_dir'], workunit)
+            #cmd = 'ssh %s mkdir -p %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
+            #general.eval_returns(cmd)
+            #cmd = 'ssh %s tar --strip-components=4 -C %s -xvf /tmp/%s.tar.gz ceph-%s/qa/workunits/%s' % \
+            #(os.environ["CLIENTNODE"], yaml_data['test_dir'], yaml_data['ceph_branch'], yaml_data['ceph_branch'], workunit)
+            #general.eval_returns(cmd)
+            cmd = 'ssh %s ls %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
+            stdout, stderr = general.eval_returns(cmd)
+            test_scripts = stdout.split('\n')
+            test_scripts = test_scripts[:len(test_scripts)-1]
+            log.info('Following tests will be executed -> %s' % str(test_scripts))
+            for script in test_scripts:
+                yield run_script, workunit, script
 
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -67,10 +76,13 @@ def test_workunit():
         raise Exception(str(sys.exc_info()[1]))
 
 
-def run_script(workunit_dir, script_name):
-    log.info('Executing %s tests from %s dir' % (script_name, workunit_dir))
+def run_script(workunit, script_name):
+    log.info('*********************************************************')
+    log.info('Executing %s tests from %s dir' % (script_name, workunit))
     cmd = 'ssh %s %s/%s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'], script_name)
-    general.eval_returns(cmd)
+    stdout, stderr = general.eval_returns(cmd)
+    log.info('test output -> %s %s' % (stdout, stderr))
+    log.info('*********************************************************')
 
 
 def teardown_module():
@@ -79,4 +91,5 @@ def teardown_module():
         log.info('test suite failed with these errors - '+str(vErrors))
     else:
         log.info('starting teardown in teardown_module')
-        general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
+        #general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
+        cephdeploy.cleanupNodes(yaml_data['allnodes'], 'ceph')

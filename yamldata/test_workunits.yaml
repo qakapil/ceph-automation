@@ -37,5 +37,6 @@ librbd_images:
 rgws:
 - {rgw-host: teuthida-1, rgw-name: gateway1, rgw-port: 80}
 test_dir: /home/jenkins/cephtest
-workunit_dir: rados
 ceph_branch: firefly
+workunits:
+- rados
