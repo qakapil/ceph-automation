@@ -55,6 +55,7 @@ def test_workunit():
         test_scripts = stdout.split('\n')
         test_scripts = test_scripts[:len(test_scripts)-1]
         for script in test_scripts:
+            log.info('Executing %s tests from %s dir') % (script, yaml_data['workunit_dir'])
             run_script(yaml_data['workunit_dir'], script)
 
     except Exception:
@@ -67,7 +68,7 @@ def test_workunit():
 
 
 def run_script(workunit_dir, script_name):
-    log.info('Executing %s tests from workunit dir') % workunit_dir
+    log.info('Executing %s tests from %s dir') % (script_name, workunit_dir)
     cmd = 'ssh %s %s/%s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'], script_name)
     general.eval_returns(cmd)
 
