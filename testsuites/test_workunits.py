@@ -3,6 +3,7 @@ from utils import operations
 from utils import baseconfig
 from utils import general
 from utils import cephdeploy
+from utils import zypperutils
 import inspect
 from ConfigParser import SafeConfigParser
 import logging
@@ -40,6 +41,8 @@ def setup_module():
         operations.createCephCluster(yaml_data, cfg_data)
     status = monitoring.isClusterReady(300)
     assert status is True, "Ceph cluster was not ready. Failing the test suite"
+    for pkg in ['ceph-test','ceph-devel','ceph-devel']:
+        zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
 
 
 def test_workunit():
@@ -65,6 +68,7 @@ def test_workunit():
             test_scripts = test_scripts[:len(test_scripts)-1]
             log.info('Following tests will be executed -> \n%s' % str(test_scripts))
             for script in test_scripts:
+                log.info('\n*********************************************************\n')
                 yield run_script, workunit, script
 
     except Exception:
@@ -77,13 +81,11 @@ def test_workunit():
 
 
 def run_script(workunit, script_name):
-    log.info('\n*********************************************************\n')
     log.info('Executing %s tests from %s dir' % (script_name, workunit))
     cmd = 'ssh %s %s/%s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'], script_name)
     stdout, stderr = general.eval_returns(cmd)
     log.info('test output stdout -> %s' % (stdout))
     log.info('test output stderr -> %s' % (stderr))
-    log.info('\n*********************************************************\n')
 
 
 def teardown_module():
