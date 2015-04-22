@@ -53,7 +53,7 @@ def test_workunit():
         url = 'https://github.com/SUSE/ceph/archive/%s.tar.gz' % (yaml_data['ceph_branch'])
         cmd = 'ssh %s wget -O /tmp/%s.tar.gz %s' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'], url)
         general.eval_returns(cmd)
-        cmd = 'ssh %s rm -rf %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
+        cmd = 'ssh %s sudo rm -rf %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
         general.eval_returns(cmd)
         for workunit in yaml_data['workunits']:
             for suite in workunit:
