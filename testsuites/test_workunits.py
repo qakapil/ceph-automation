@@ -56,28 +56,32 @@ def test_workunit():
         #cmd = 'ssh %s rm -rf %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
         #general.eval_returns(cmd)
         for workunit in yaml_data['workunits']:
-            yaml_data['test_dir'] = '%s/%s' % (yaml_data['test_dir'], workunit)
-            #cmd = 'ssh %s mkdir -p %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
-            #general.eval_returns(cmd)
-            #cmd = 'ssh %s tar --strip-components=4 -C %s -xvf /tmp/%s.tar.gz ceph-%s/qa/workunits/%s' % \
-            #(os.environ["CLIENTNODE"], yaml_data['test_dir'], yaml_data['ceph_branch'], yaml_data['ceph_branch'], workunit)
-            #general.eval_returns(cmd)
+            for suite in workunit:
+                yaml_data['test_dir'] = '%s/%s' % (yaml_data['test_dir'], suite)
+                #cmd = 'ssh %s mkdir -p %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
+                #general.eval_returns(cmd)
+                #cmd = 'ssh %s tar --strip-components=4 -C %s -xvf /tmp/%s.tar.gz ceph-%s/qa/workunits/%s' % \
+                #(os.environ["CLIENTNODE"], yaml_data['test_dir'], yaml_data['ceph_branch'], yaml_data['ceph_branch'], suite)
+                #general.eval_returns(cmd)
             cmd = 'ssh %s ls %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
             stdout, stderr = general.eval_returns(cmd)
+            excluded_scripts = workunit[suite]['excludes']
             test_scripts = stdout.split('\n')
+            for files in excluded_scripts:
+                if files in test_scripts:
+                    test_scripts.pop(files)
             test_scripts = test_scripts[:len(test_scripts)-1]
             log.info('Following tests will be executed -> \n%s' % str(test_scripts))
             for script in test_scripts:
                 log.info('\n*********************************************************\n')
-                yield run_script, workunit, script
-
+                yield run_script, suite, script
     except Exception:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
-        sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
-        log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
-        vErrors.append(sError)
-        raise Exception(str(sys.exc_info()[1]))
+      exc_type, exc_value, exc_traceback = sys.exc_info()
+      log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
+      sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
+      log.error(inspect.stack()[0][3] + "Failed with error - "+sError)
+      vErrors.append(sError)
+      raise Exception(str(sys.exc_info()[1]))
 
 
 def run_script(workunit, script_name):
