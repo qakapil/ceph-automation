@@ -48,21 +48,21 @@ def setup_module():
 def test_workunit():
     global vErrors
     try:
-        #cmd = 'ssh %s rm /tmp/%s.tar.gz || true' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'])
-        #general.eval_returns(cmd)
-        #url = 'https://github.com/SUSE/ceph/archive/%s.tar.gz' % (yaml_data['ceph_branch'])
-        #cmd = 'ssh %s wget -O /tmp/%s.tar.gz %s' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'], url)
-        #general.eval_returns(cmd)
-        #cmd = 'ssh %s rm -rf %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
-        #general.eval_returns(cmd)
+        cmd = 'ssh %s rm /tmp/%s.tar.gz || true' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'])
+        general.eval_returns(cmd)
+        url = 'https://github.com/SUSE/ceph/archive/%s.tar.gz' % (yaml_data['ceph_branch'])
+        cmd = 'ssh %s wget -O /tmp/%s.tar.gz %s' % (os.environ["CLIENTNODE"], yaml_data['ceph_branch'], url)
+        general.eval_returns(cmd)
+        cmd = 'ssh %s rm -rf %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
+        general.eval_returns(cmd)
         for workunit in yaml_data['workunits']:
             for suite in workunit:
                 yaml_data['test_dir'] = '%s/%s' % (yaml_data['test_dir'], suite)
-                #cmd = 'ssh %s mkdir -p %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
-                #general.eval_returns(cmd)
-                #cmd = 'ssh %s tar --strip-components=4 -C %s -xvf /tmp/%s.tar.gz ceph-%s/qa/workunits/%s' % \
-                #(os.environ["CLIENTNODE"], yaml_data['test_dir'], yaml_data['ceph_branch'], yaml_data['ceph_branch'], suite)
-                #general.eval_returns(cmd)
+                cmd = 'ssh %s mkdir -p %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
+                general.eval_returns(cmd)
+                cmd = 'ssh %s tar --strip-components=4 -C %s -xvf /tmp/%s.tar.gz ceph-%s/qa/workunits/%s' % \
+                (os.environ["CLIENTNODE"], yaml_data['test_dir'], yaml_data['ceph_branch'], yaml_data['ceph_branch'], suite)
+                general.eval_returns(cmd)
             cmd = 'ssh %s ls %s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'])
             stdout, stderr = general.eval_returns(cmd)
             excluded_scripts = workunit[suite]['excludes']
