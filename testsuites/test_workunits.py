@@ -74,6 +74,7 @@ def test_workunit():
                 log.info('Following tests will be executed -> \n%s' % str(test_scripts))
                 log.info('Following tests will not be executed -> \n%s' % str(excluded_scripts))
                 for script in test_scripts:
+                    log.info('\n************STARTING****************\n')
                     log.info('\n*********************************************************\n')
                     yield run_script(suite, script)
     except Exception:
@@ -90,7 +91,8 @@ def run_script(workunit, script_name):
     cmd = 'ssh %s %s/%s' % (os.environ["CLIENTNODE"], yaml_data['test_dir'], script_name)
     stdout, stderr = general.eval_returns(cmd)
     log.info('test output stdout -> %s' % (stdout))
-    log.info('test output stderr -> %s' % (stderr))
+    log.info('\n************FINISHED****************\n')
+    #log.info('test output stderr -> %s' % (stderr))
 
 
 def teardown_module():
@@ -100,4 +102,4 @@ def teardown_module():
     else:
         log.info('starting teardown in teardown_module')
         #general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
-        cephdeploy.cleanupNodes(yaml_data['allnodes'], 'ceph')
+        #cephdeploy.cleanupNodes(yaml_data['allnodes'], 'ceph')
