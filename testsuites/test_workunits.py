@@ -77,7 +77,7 @@ def test_workunit():
                 for script in test_scripts:
                     log.info('\n************STARTING****************\n')
                     log.info('\n*********************************************************\n')
-                    yield run_script(suite, script)
+                    yield run_script, suite, script
     except Exception:
         exc_type, exc_value, exc_traceback = sys.exc_info()
         log.error(str(exc_type)+" : "+str(exc_value)+" : "+str(exc_traceback))
