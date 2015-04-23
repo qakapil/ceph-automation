@@ -39,5 +39,5 @@ rgws:
 test_dir: /home/jenkins/cephtest
 ceph_branch: firefly
 workunits:
-#- rados: {excludes: ['permission.sh', 'etc.sh']}
+- rados: {excludes: ['test_hang.sh']}
 - rbd: {excludes: ['concurrent.sh', 'qemu-iotests.sh', 'permissions.sh', 'test_librbd_python.sh', 'kernel.sh']}
