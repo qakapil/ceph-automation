@@ -41,8 +41,8 @@ def setup_module():
         operations.createCephCluster(yaml_data, cfg_data)
     status = monitoring.isClusterReady(300)
     assert status is True, "Ceph cluster was not ready. Failing the test suite"
-    #for pkg in ['ceph-test','ceph-devel','ceph-devel']:
-     #   zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph')
+    for pkg in ['ceph-test','ceph-devel','ceph-devel']:
+       zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph')
 
 
 def test_workunit():
