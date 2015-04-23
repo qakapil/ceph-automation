@@ -73,6 +73,7 @@ def test_workunit():
                 test_scripts = test_scripts[:len(test_scripts)-1]
                 log.info('Following tests will be executed -> \n%s' % str(test_scripts))
                 log.info('Following tests will not be executed -> \n%s' % str(excluded_scripts))
+                log.info(str(test_scripts))
                 for script in test_scripts:
                     log.info('\n************STARTING****************\n')
                     log.info('\n*********************************************************\n')
