@@ -161,7 +161,7 @@ def cleanupNodes(listNodes, reponame, media2_repo=None):
            
     
 def getExpectedVersion(url):
-    url = url+'src'
+    url = url+'noarch'
     cmd = 'ssh %s wget -q -O- %s | grep ceph-deploy | sed -e "s|.*ceph-deploy-\\(.*\\).src.rpm.*|\\1|"' \
      % (os.environ["CLIENTNODE"], url)
     rc,stdout,stderr = launch(cmd=cmd)
