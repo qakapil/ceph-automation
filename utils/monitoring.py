@@ -43,7 +43,7 @@ def getCephStatus():
     
 def getExpectedVersion(url):
     url = url+'x86_64'
-    cmd = 'ssh %s wget -q -O- %s | grep ceph-0 | sed -e "s|.*ceph-\\(.*\\).src.rpm.*|\\1|"' % (os.environ["CLIENTNODE"], url)
+    cmd = 'ssh %s wget -q -O- %s | grep ceph-0 | sed -e "s|.*ceph-\\(.*\\).x86_64.rpm.*|\\1|"' % (os.environ["CLIENTNODE"], url)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. \
