@@ -67,13 +67,11 @@ def getActuaVersion():
 
 def printRPMVersions(url):
     ceph_ver = getExpectedVersion(url)
-    log.info("The rpm version of ceph is "+ ceph_ver)
-    print ("The rpm version of ceph is "+ ceph_ver)
-    
+    log.info("The expected rpm version of ceph is "+ ceph_ver)
+
     cephdeploy_ver = cephdeploy.getExpectedVersion(url)
-    log.info("The rpm version of ceph is "+ cephdeploy_ver)
-    print ("The rpm version of ceph is ' "+ cephdeploy_ver)
-    
+    log.info("The expected rpm version of ceph-deploy is "+ cephdeploy_ver)
+
     f = open('rpm_versions.txt', 'w')
     f.write('ceph rpm version is - '+ceph_ver+'\n')
     f.write('ceph-deploy rpm version is - '+cephdeploy_ver+'\n')
