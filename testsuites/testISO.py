@@ -136,7 +136,7 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.info('cluster health is OK and PGs are active+clean') 
     
-    """
+
     def test11_restartCeph(self):
         for node in self.ctx['initmons']:
             operations.restartCeph(node)
@@ -279,7 +279,7 @@ class TestSanity(basetest.Basetest):
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeSwiftTests()
-    """
+    
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         
