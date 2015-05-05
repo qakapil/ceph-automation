@@ -25,6 +25,8 @@ class TestSanity(basetest.Basetest):
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
 
+        general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug','ceph_extras'])
+
         url = cls.config.get('env','repo_baseurl')
         for node in cls.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)

@@ -47,10 +47,11 @@ def removeRepo(reponame, node):
     rc,stdout,stderr = launch(cmd=cmd)
     if rc == 0 and stderr.strip() == "":
         log.info("repo '%s' was removed" % (reponame))
+        zypperRefresh(node)
         return True
     else:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    zypperRefresh()
+
     
     
     

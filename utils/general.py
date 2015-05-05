@@ -263,7 +263,8 @@ def removeOldxcdFiles():
     if rc != 0:
         log.warning("Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr))
-  
+
+
 def installStartLighthttp(node):
     zypperutils.installPkg('lighttpd', node)
     cmd = 'ssh %s sudo /etc/init.d/lighttpd start' % (node)
@@ -271,10 +272,6 @@ def installStartLighthttp(node):
     if rc != 0:
         log.warning("Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr))
-
-
-
-
 
 
 def verifycleanup(listNodes):
@@ -297,8 +294,6 @@ def verifycleanup(listNodes):
         rc,stdout,stderr = launch(cmd=cmd)
         if rc == 0:
             raise Exception, "/etc/ceph dir still exists on node %s" % node 
-
-
 
 
 def perNodeCleanUp(listNodes, reponame):
@@ -331,11 +326,17 @@ def perNodeCleanUp(listNodes, reponame):
         assert(rc == 0), stderr
         cmd = "ssh %s 'rm ceph*'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
-     
+
     verifycleanup(listNodes)
 
 
-
+def removeOldRepos(listNodes, listRepos):
+    for node in listNodes:
+        for repo in listRepos:
+            isRepo = zypperutils.isRepoPresent(repo, node)
+            if isRepo:
+                zypperutils.removeAllPkgsFromRepo(repo, node)
+                zypperutils.removeRepo(repo, node)
 
 
 def updateCephConf_NW(public_nw, cluster_nw):
@@ -422,7 +423,6 @@ def downloadISOAddRepo(url, media, reponame, node, iso_name=None):
     return build_version
 
 
-
 def mount_extISO(iso_path, mount_dir):
     cmd = 'ssh %s sudo mkdir -p %s' % (os.environ["CLIENTNODE"], mount_dir)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -473,8 +473,6 @@ def mount_extISO(iso_path, mount_dir):
                   Error message: '%s'" % (cmd, stderr)
 
 
-
-
 def printISOurl(iso_name, url):
     f = open('iso_versions.txt', 'w')
     f.write('ISO URL is - '+url+'\n')
@@ -485,7 +483,6 @@ def printISOurl(iso_name, url):
     f.close()
 
 
-
 def runInstallCheck(node, baserepo, targetrepo):
     cmd = 'ssh %s installcheck x86_64  --withobsoletes /var/cache/zypp/solv/%s/solv --nocheck /var/cache/zypp/solv/%s/solv' % (node, targetrepo, baserepo)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -493,7 +490,6 @@ def runInstallCheck(node, baserepo, targetrepo):
         raise Exception, "InstallCheck Unsuccessfull. Error executing command '%s'. \
                   \nError message: \n '%s' \n '%s' " % (cmd, stdout, stderr)
     log.info('install check for repo %s against base repo %s was successfull' % (targetrepo, baserepo))
-
 
 
 def findDupPackages(node, baserepo, targetrepo):
