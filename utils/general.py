@@ -392,7 +392,7 @@ def downloadISOAddRepo(url, media, reponame, node, iso_name=None):
     iso_path = '/tmp/%s' % (iso_name)
     log.info('ISO path  is - '+iso_path)
 
-    cmd = 'ssh %s rm /tmp/*iso' %(node, iso_path)
+    cmd = 'ssh %s rm /tmp/*iso' %(node)
     rc,stdout,stderr = launch(cmd=cmd)
 
     cmd = 'ssh %s ls %s' %(node, iso_path)
