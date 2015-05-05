@@ -4,6 +4,7 @@ from utils import cephdeploy
 from utils import monitoring
 from utils import operations
 from utils import general
+from utils import rbd_operations
 from utils import rgw_tasks
 import logging,time,re, os, sys
 from nose.exc import SkipTest
@@ -184,11 +185,11 @@ class TestSanity(basetest.Basetest):
      
     def test16_CreateImages(self):
         for image in self.ctx['images']:
-            operations.createRBDImage(image)
+            rbd_operations.createRBDImage(image)
     
     def test17_RemoveImages(self):
         for image in self.ctx['images']:
-            operations.rbdRemovePoolImage(image)
+            rbd_operations.rbdRemovePoolImage(image)
 
     def test18_ValidateMonStat(self):
         mon_stat = monitoring.getMonStat()

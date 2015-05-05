@@ -1,0 +1,44 @@
+workingdir: /home/jenkins/cephdeploy-cluster
+clientnode:
+- host-44-0-3-216
+#clientnode_ip: 10.160.223.10
+allnodes:
+- host-44-0-3-216
+- host-44-0-3-217
+- host-44-0-3-218
+- host-44-0-3-219
+initmons:
+- host-44-0-3-217
+- host-44-0-3-218
+- host-44-0-3-219
+osd_zap:
+- host-44-0-3-217:vdb
+- host-44-0-3-218:vdb
+- host-44-0-3-219:vdb
+osd_prepare:
+- host-44-0-3-217:vdb
+- host-44-0-3-218:vdb
+- host-44-0-3-219:vdb
+osd_activate:
+- host-44-0-3-217:vdb1
+- host-44-0-3-218:vdb1
+- host-44-0-3-219:vdb1
+default_pgs: 192
+images:
+- {name: im1, size: 1024, pool: rbd}
+- {name: im2, size: 1024, pool: rbd}
+- {name: im3, size: 512, pool: data}
+radosobjects:
+- {objname: test-obj-1, pool: data}
+createpools:
+- {poolname: test-pool-1, pg-num: 64, size: 2}
+librbd_images:
+- {poolname: rbd, imagename: librbdimg, size_mb: 300}
+snapshots:
+- { pool: rbd, snapname: snap, name: im1}
+qemu:
+- { pool: rbd, name: qemu1, size: 1000}
+- { pool: rbd, name: qemu2, size: 500}
+- { pool: data, name: qemu2, size: 500}
+rgws:
+- {rgw-host: host-44-0-3-216, rgw-name: gateway1, rgw-port: 80}

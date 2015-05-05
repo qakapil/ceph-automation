@@ -51,7 +51,6 @@ def removeRepo(reponame, node):
         return True
     else:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-
     
     
     
@@ -83,7 +82,7 @@ def installPkgFromRepo(pkgName, node, repo):
     cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet install -r %s %s"  % (node, repo, pkgName)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
-        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr+stdout)
 
 
 def removePkg(pkgName, node):

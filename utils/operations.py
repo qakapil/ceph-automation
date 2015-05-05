@@ -1,6 +1,9 @@
 from launch import launch
 import logging
 import os, time
+import monitoring
+from utils import zypperutils
+from utils import cephdeploy
 
 log = logging.getLogger(__name__)
 
@@ -9,35 +12,6 @@ log = logging.getLogger(__name__)
 def restartCluster():
     pass
 
-
-def createRBDImage(dictImg):
-    name = dictImg.get('name', None)
-    size = dictImg.get('size', None)
-    pool = dictImg.get('pool', 'rbd')
-    imglist = rbdGetPoolImages(pool)
-    if name in imglist:
-        rbdRemovePoolImage(dictImg)
-    cmd = "ssh %s rbd create %s --size %s --pool %s" % (os.environ["CLIENTNODE"],name,size,pool)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert (rc == 0), "Error while executing the command %s.\
-    Error message: %s" % (cmd, stderr)
-
-
-def rbdGetPoolImages(poolname):
-    cmd = "ssh %s rbd -p %s ls" % (os.environ["CLIENTNODE"],poolname)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert (rc == 0), "Error while executing the command %s.\
-    Error message: %s" % (cmd, stderr)
-    return stdout.strip().split('\n')
-
-def rbdRemovePoolImage(dictImg):
-    imgname = dictImg.get('name', None)
-    poolname = dictImg.get('pool', 'rbd')
-    cmd = "ssh %s rbd -p %s rm %s" % (os.environ["CLIENTNODE"],poolname,imgname)
-    rc,stdout,stderr = launch(cmd=cmd)
-    assert (rc == 0), "Error while executing the command %s.\
-    Error message: %s" % (cmd, stderr)
-    
 
 def createValidateObject(dictObject):
     name = dictObject.get('objname', None)
@@ -119,6 +93,15 @@ def createPool(dictPool):
     log.info("created the pool - %s " % (poolname))
 
 
+def changePoolReplica(dictPool):
+    poolname = dictPool.get('poolname', None)
+    size = dictPool.get('size', None)
+    cmd = "ssh %s ceph osd pool set %s size %s" % (os.environ["CLIENTNODE"], poolname, size)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+    log.info("changed the pool - %s to replica size %s" % (poolname, size))
+
 
 def validatePool(dictPool):
     poolname = dictPool.get('poolname', None)
@@ -153,6 +136,7 @@ def deletePool(dictPool):
     poollist = stdout#.split(',')
     assert (poolname not in poollist), "pool %s was not deleted in %s" % (poolname,poollist)
 
+
 def restartCeph(node):
     cmd = "ssh %s sudo ls /etc/init.d/ceph" % (node)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -163,6 +147,7 @@ def restartCeph(node):
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
     Error message: %s" % (cmd, stderr)
+
 
 def restartRadosGW(node):
     cmd = "ssh %s sudo ls /etc/init.d/ceph" % (node)
@@ -219,7 +204,22 @@ def setPGNUM(pg_num):
         rc,stdout,stderr = launch(cmd=cmd)
         assert (rc == 0), "Error while executing the command %s.Error message: %s" % (cmd, stderr)
     actual_pgs = monitoring.getTotalPGs()
+    #from utils import monitoring
     assert (int(actual_pgs) == int(total_pgs)), "All PGs were not created"
 
+
+def createCephCluster(yaml_data, cfg_data):
+    url = cfg_data.get('env', 'repo_baseurl')
+    for node in yaml_data['allnodes']:
+        zypperutils.addRepo('ceph', url, node)
+    zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
+    cephdeploy.declareInitialMons(yaml_data['initmons'])
+    cephdeploy.installNodes(yaml_data['allnodes'])
+    cephdeploy.createInitialMons(yaml_data['initmons'])
+    if yaml_data['osd_zap'] is not None:
+        cephdeploy.osdZap(yaml_data['osd_zap'])
+    cephdeploy.osdPrepare(yaml_data['osd_prepare'])
+    cephdeploy.osdActivate(yaml_data['osd_activate'])
+    cephdeploy.addAdminNodes(yaml_data['clientnode'])
 
 
