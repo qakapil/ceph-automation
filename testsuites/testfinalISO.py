@@ -267,14 +267,18 @@ class TestSanity(basetest.Basetest):
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
 
+    def test28_restartRadosGW(self):
+        for rgw in self.ctx['rgws']:
+            operations.restartRadosGW(rgw['rgw-host'])
 
-    def test28_S3Tests(self):
+
+    def test29_S3Tests(self):
         rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
         rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeS3Tests()
 
-    def test29_SwiftTests(self):
+    def test30_SwiftTests(self):
         rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
@@ -283,8 +287,6 @@ class TestSanity(basetest.Basetest):
     
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
-        
-        
          
     @classmethod
     def teardown_class(self):

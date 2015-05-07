@@ -178,6 +178,36 @@ def restartRadosGW(node):
         Error message: %s" % (cmd, stderr)
 
 
+def actionOnCephService(node, action):
+    #action - start|stop|restart
+    cmd = "ssh %s sudo ls /etc/init.d/ceph" % (node)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        log.info('performing action on ceph service with systemd')
+        cmd = "ssh %s sudo systemctl list-units --type service  | grep ceph | grep -v failed" % (node)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert (rc == 0), "Error while executing the command %s.\
+        Error message: %s" % (cmd, stderr)
+
+        all_services = stdout.split("\n")
+        list_services = []
+        for service in all_services:
+            list_services.append(service.split(" ")[0])
+
+        assert (len(list_services) > 1), "no systemd service found for ceph"
+        for i in range(len(list_services)-1):
+            cmd = "ssh %s sudo %s systemctl %s" % (node, action, list_services[i])
+            rc,stdout,stderr = launch(cmd=cmd)
+            assert (rc == 0), "Error while executing the command %s.\
+            Error message: %s" % (cmd, stderr)
+    else:
+        log.info('performing action on ceph services with sysV')
+        cmd = "ssh %s sudo /etc/init.d/ceph %s" % (node, action)
+        rc,stdout,stderr = launch(cmd=cmd)
+        assert (rc == 0), "Error while executing the command %s.\
+        Error message: %s" % (cmd, stderr)
+
+
 def validateLibRbdTests():
         cmd = "cat librbd_tests.py | ssh %s python" % (os.environ["CLIENTNODE"])
         rc,stdout,stderr = launch(cmd=cmd)
