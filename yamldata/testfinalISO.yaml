@@ -3,7 +3,6 @@ clientnode:
 - teuthida-10
 clientnode_ip: 10.160.223.10
 allnodes:
-- teuthida-8
 - teuthida-10
 - teuthida-4
 - teuthida-2
