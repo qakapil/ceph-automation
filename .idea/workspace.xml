@@ -35,31 +35,19 @@
       <file leaf-file-name="testUpgrade.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/testsuites/testUpgrade.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3512195" vertical-offset="1440" max-vertical-offset="4608">
-              <caret line="105" column="40" selection-start-line="105" selection-start-column="40" selection-end-line="105" selection-end-column="40" />
+            <state vertical-scroll-proportion="0.33333334" vertical-offset="1554" max-vertical-offset="4626">
+              <caret line="110" column="45" selection-start-line="110" selection-start-column="45" selection-end-line="110" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="operations.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/operations.py">
+      <file leaf-file-name="monitoring.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utils/monitoring.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3039" max-vertical-offset="4608">
-              <caret line="198" column="44" selection-start-line="198" selection-start-column="44" selection-end-line="198" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1005" max-vertical-offset="3078">
+              <caret line="77" column="51" selection-start-line="77" selection-start-column="51" selection-end-line="77" selection-end-column="51" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testISO.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/testsuites/testISO.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4614" max-vertical-offset="5562">
-              <caret line="286" column="7" selection-start-line="286" selection-start-column="7" selection-end-line="286" selection-end-column="7" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -68,7 +56,7 @@
         <entry file="file://$PROJECT_DIR$/utils/zypperutils.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0" vertical-offset="1646" max-vertical-offset="2466">
-              <caret line="131" column="51" selection-start-line="131" selection-start-column="51" selection-end-line="131" selection-end-column="51" />
+              <caret line="127" column="13" selection-start-line="127" selection-start-column="4" selection-end-line="127" selection-end-column="13" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -90,10 +78,10 @@
         <option value="$PROJECT_DIR$/utils/general.py" />
         <option value="$PROJECT_DIR$/testsuites/testfinalISO.py" />
         <option value="$PROJECT_DIR$/testsuites/testsanity.py" />
-        <option value="$PROJECT_DIR$/utils/monitoring.py" />
         <option value="$PROJECT_DIR$/testsuites/testISO.py" />
-        <option value="$PROJECT_DIR$/utils/zypperutils.py" />
         <option value="$PROJECT_DIR$/utils/operations.py" />
+        <option value="$PROJECT_DIR$/utils/monitoring.py" />
+        <option value="$PROJECT_DIR$/utils/zypperutils.py" />
         <option value="$PROJECT_DIR$/testsuites/testUpgrade.py" />
       </list>
     </option>
@@ -579,17 +567,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/monitoring.py">
+    <entry file="file://$PROJECT_DIR$/utils/operations.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6707317" vertical-offset="2258" max-vertical-offset="3078">
-          <caret line="160" column="0" selection-start-line="160" selection-start-column="0" selection-end-line="160" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.5304878" vertical-offset="3039" max-vertical-offset="4608">
+          <caret line="198" column="44" selection-start-line="198" selection-start-column="44" selection-end-line="198" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testsuites/testISO.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4614" max-vertical-offset="5562">
+        <state vertical-scroll-proportion="0.6512195" vertical-offset="4614" max-vertical-offset="5562">
           <caret line="286" column="7" selection-start-line="286" selection-start-column="7" selection-end-line="286" selection-end-column="7" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
@@ -597,10 +585,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/operations.py">
+    <entry file="file://$PROJECT_DIR$/utils/monitoring.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3039" max-vertical-offset="4608">
-          <caret line="198" column="44" selection-start-line="198" selection-start-column="44" selection-end-line="198" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1005" max-vertical-offset="3078">
+          <caret line="77" column="51" selection-start-line="77" selection-start-column="51" selection-end-line="77" selection-end-column="51" />
           <folding />
         </state>
       </provider>
@@ -608,7 +596,7 @@
     <entry file="file://$PROJECT_DIR$/utils/zypperutils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1646" max-vertical-offset="2466">
-          <caret line="131" column="51" selection-start-line="131" selection-start-column="51" selection-end-line="131" selection-end-column="51" />
+          <caret line="127" column="13" selection-start-line="127" selection-start-column="4" selection-end-line="127" selection-end-column="13" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
@@ -617,8 +605,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testsuites/testUpgrade.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3512195" vertical-offset="1440" max-vertical-offset="4608">
-          <caret line="105" column="40" selection-start-line="105" selection-start-column="40" selection-end-line="105" selection-end-column="40" />
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="1554" max-vertical-offset="4626">
+          <caret line="110" column="45" selection-start-line="110" selection-start-column="45" selection-end-line="110" selection-end-column="45" />
           <folding />
         </state>
       </provider>

@@ -125,8 +125,8 @@ def getPkgParamValue(pkgname, paramname, node):
     return paramdict[paramname]
 
 
-def zypperDup(node):
-    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup" % (node)
+def zypperDup(node, repo):
+    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup --repo %s" % (node, repo)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception,"Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)

@@ -108,7 +108,7 @@ class TestSanity(basetest.Basetest):
                 operations.actionOnCephService(node, 'stop')
             zypperutils.removeRepo('ceph', node)
             zypperutils.addRepo('ceph', self.ctx['url2'], node)
-            zypperutils.zypperDup(node)
+            zypperutils.zypperDup(node, 'ceph')
             if node != os.environ["CLIENTNODE"]:
                 operations.actionOnCephService(node, 'start')
 
@@ -128,6 +128,7 @@ class TestSanity(basetest.Basetest):
                 active_clean = True
                 continue
             if (counter > 20):
+                os.environ["CLUSTER_FAILED"] = "Yes"
                 raise Exception, 'PGs did not reach active+clean state \
                                    after 5 mins'
             log.debug('waiting for 5 seconds for ceph status to update')
