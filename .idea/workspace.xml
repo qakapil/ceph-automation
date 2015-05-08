@@ -31,8 +31,8 @@
       <file leaf-file-name="testsanity.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testsuites/testsanity.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4204" max-vertical-offset="5166">
-              <caret line="272" column="37" selection-start-line="251" selection-start-column="3" selection-end-line="272" selection-end-column="37" />
+            <state vertical-scroll-proportion="-3.7857144" vertical-offset="2" max-vertical-offset="5328">
+              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -41,8 +41,8 @@
       <file leaf-file-name="testISO.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testsuites/testISO.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2242" max-vertical-offset="5544">
-              <caret line="138" column="0" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3078" max-vertical-offset="5562">
+              <caret line="199" column="26" selection-start-line="199" selection-start-column="12" selection-end-line="199" selection-end-column="26" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -50,11 +50,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testfinalISO.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="testfinalISO.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/testsuites/testfinalISO.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4510" max-vertical-offset="5526">
-              <caret line="271" column="33" selection-start-line="271" selection-start-column="33" selection-end-line="271" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.50487804" vertical-offset="3240" max-vertical-offset="5544">
+              <caret line="203" column="26" selection-start-line="203" selection-start-column="26" selection-end-line="203" selection-end-column="26" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -62,10 +62,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="operations.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="operations.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/operations.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8425" vertical-offset="2998" max-vertical-offset="4608">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2998" max-vertical-offset="4608">
               <caret line="209" column="0" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
               <folding />
             </state>
@@ -87,9 +87,9 @@
         <option value="$PROJECT_DIR$/utils/general.py" />
         <option value="$PROJECT_DIR$/testsuites/testsanity.py" />
         <option value="$PROJECT_DIR$/utils/zypperutils.py" />
-        <option value="$PROJECT_DIR$/testsuites/testfinalISO.py" />
-        <option value="$PROJECT_DIR$/testsuites/testISO.py" />
         <option value="$PROJECT_DIR$/utils/operations.py" />
+        <option value="$PROJECT_DIR$/testsuites/testISO.py" />
+        <option value="$PROJECT_DIR$/testsuites/testfinalISO.py" />
       </list>
     </option>
   </component>
@@ -340,7 +340,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21611375" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1971564" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -522,14 +522,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testsuites/testsanity.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4204" max-vertical-offset="5166">
-          <caret line="272" column="37" selection-start-line="251" selection-start-column="3" selection-end-line="272" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/basetest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2925" vertical-offset="0" max-vertical-offset="990">
@@ -540,10 +532,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/utils/operations.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2998" max-vertical-offset="4608">
+          <caret line="209" column="0" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testsuites/testsanity.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.7857144" vertical-offset="2" max-vertical-offset="5328">
+          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/testsuites/testISO.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2242" max-vertical-offset="5544">
-          <caret line="138" column="0" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="3078" max-vertical-offset="5562">
+          <caret line="199" column="26" selection-start-line="199" selection-start-column="12" selection-end-line="199" selection-end-column="26" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
@@ -552,19 +560,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testsuites/testfinalISO.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4510" max-vertical-offset="5526">
-          <caret line="271" column="33" selection-start-line="271" selection-start-column="33" selection-end-line="271" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.50487804" vertical-offset="3240" max-vertical-offset="5544">
+          <caret line="203" column="26" selection-start-line="203" selection-start-column="26" selection-end-line="203" selection-end-column="26" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/operations.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8425" vertical-offset="2998" max-vertical-offset="4608">
-          <caret line="209" column="0" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
