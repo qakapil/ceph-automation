@@ -94,7 +94,7 @@ def getActuaVersion():
     ceph_version = stdout.strip()
     matchObj = re.match( r'ceph version (.*) .*', ceph_version, re.M|re.I)
     ceph_version = matchObj.group(1)
-    log.info("Ceph actual version is -'%s'")% str(ceph_version)
+    log.info("Ceph actual version is -'"+str(ceph_version)+"'")
     assert (ceph_version != ''), "ceph -v returned blank"
     assert (ceph_version != None), "ceph -v returned None"
     return ceph_version
