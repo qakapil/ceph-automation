@@ -46,44 +46,44 @@ class TestSanity(basetest.Basetest):
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
     
-    def test02_InstallCephDeploy(self):
+    def test01_InstallCephDeploy(self):
         zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
     
     
-    def test03_DeclareInitialMons(self):
+    def test02_DeclareInitialMons(self):
         cephdeploy.declareInitialMons(self.ctx['initmons'])
     
     
     
-    def test04_InstallCeph(self):
+    def test03_InstallCeph(self):
         cephdeploy.installNodes(self.ctx['allnodes']) 
     
     
-    def test05_CreateInitialMons(self):
+    def test04_CreateInitialMons(self):
         cephdeploy.createInitialMons(self.ctx['initmons'])
     
     
     
-    def test06_ZapOSDs(self):
+    def test05_ZapOSDs(self):
         if self.ctx['osd_zap'] == None:
             log.info('No disks to zap. Skipping')
             return
         cephdeploy.osdZap(self.ctx['osd_zap'])
     
     
-    def test07_PrepareOSDs(self):
+    def test06_PrepareOSDs(self):
         cephdeploy.osdPrepare(self.ctx['osd_prepare'])
     
-    def test08_ActivateOSDs(self):
+    def test07_ActivateOSDs(self):
         cephdeploy.osdActivate(self.ctx['osd_activate'])
     
     
-    def test09_AdminNodes(self):
+    def test08_AdminNodes(self):
         cephdeploy.addAdminNodes(self.ctx['clientnode'])
     
     
                
-    def test10_ValidateCephStatus(self):
+    def test09_ValidateCephStatus(self):
         time.sleep(10)
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
@@ -114,12 +114,12 @@ class TestSanity(basetest.Basetest):
             log.warning('cluster health is OK and PGs are active+clean') 
     
 
-    def test11_restartCeph(self):
+    def test10_restartCeph(self):
         for node in self.ctx['initmons']:
             operations.restartCeph(node)
     
 
-    def test12_ValidateCephStatus(self):
+    def test11_ValidateCephStatus(self):
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
         if fsid not in status:
@@ -149,7 +149,7 @@ class TestSanity(basetest.Basetest):
 
 
     
-    def test13_ValidateCephDeployVersion(self):
+    def test12_ValidateCephDeployVersion(self):
         expVersion = cephdeploy.getExpectedVersion(
                                 self.config.get('env','repo_baseurl'))
         actVersion = cephdeploy.getActuaVersion()
@@ -158,7 +158,7 @@ class TestSanity(basetest.Basetest):
                               did not match" % (expVersion,actVersion)
      
 
-    def test14_ValidateCephVersion(self):
+    def test13_ValidateCephVersion(self):
         expVersion = monitoring.getExpectedVersion(
                      self.config.get('env','repo_baseurl'))
         actVersion = monitoring.getActuaVersion()
@@ -166,20 +166,29 @@ class TestSanity(basetest.Basetest):
             raise Exception, "expected '%s' and actual '%s' \
                 versions did not match" % (expVersion,actVersion)
     
-    def test15_ValidateDefaultPools(self):
+    def test14_ValidateDefaultPools(self):
         def_pools = monitoring.getDefaultPools()
-        assert ('0 data,1 metadata,2 rbd,' in def_pools),"The default \
+        assert ('0 rbd,' in def_pools),"The default \
         pools were %s" % def_pools
-     
-    def test16_CreateImages(self):
+    
+    def test15_CreatePools(self):
+        for pool in self.ctx['createpools']:
+            operations.createPool(pool)
+
+    def test16_ValidatePools(self):
+        for pool in self.ctx['createpools']:
+            operations.validatePool(pool)
+
+ 
+    def test17_CreateImages(self):
         for image in self.ctx['images']:
             rbd_operations.createRBDImage(image)
     
-    def test17_RemoveImages(self):
+    def test18_RemoveImages(self):
         for image in self.ctx['images']:
             rbd_operations.rbdRemovePoolImage(image)
 
-    def test18_ValidateMonStat(self):
+    def test19_ValidateMonStat(self):
         mon_stat = monitoring.getMonStat()
         log.info("the mon stat is "+ str(mon_stat))
         matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
@@ -191,13 +200,13 @@ class TestSanity(basetest.Basetest):
         "the monlist in quorum was not as expected"
 
     
-    def test19_ValidateOSDStat(self):
+    def test20_ValidateOSDStat(self):
         osd_stat = monitoring.getOSDStat()
         n = len(self.ctx['osd_activate'])
         expStr = "%s osds: %s up, %s in" % (n,n,n)
         assert(expStr in osd_stat),"osd stat validation failed" 
     
-    def test20_RadosObjects(self):
+    def test21_RadosObjects(self):
         for radosobject in self.ctx['radosobjects']:
             operations.createValidateObject(radosobject)
         for radosobject in self.ctx['radosobjects']:
@@ -205,56 +214,48 @@ class TestSanity(basetest.Basetest):
     
     
        
-    def test21_CreatePools(self):
-        for pool in self.ctx['createpools']:
-            operations.createPool(pool)
-        
-    def test22_ValidatePools(self):
-        for pool in self.ctx['createpools']:
-            operations.validatePool(pool)
-    
-    def test23_DeletePools(self):
+    def test22_DeletePools(self):
         for pool in self.ctx['createpools']:
             operations.deletePool(pool)
     
-    def test24_Validatelibrbd(self):
+    def test23_Validatelibrbd(self):
         operations.validateLibRbdTests()
         
     
-    def test25_ValidateDefaultOSDtree(self):
+    def test24_ValidateDefaultOSDtree(self):
         str_osd_tree = monitoring.getOSDtree()
         osd_tree = str_osd_tree.split('\n')
         for i in range(len(osd_tree)-1):
-            osd_tree[i] = osd_tree[i].split('\t')
-        indx = osd_tree[0].index('weight')
+            osd_tree[i] = osd_tree[i].split()
+        indx = osd_tree[0].index('WEIGHT')
         for i in range(len(osd_tree)-1):
             value = osd_tree[i][indx].strip()
             assert('0' != value),"the weight of the\
             osd was zero \n"+str_osd_tree
 
     
-    def test26_InvalidDiskOSDPrepare(self): 
+    def test25_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
     
-    def test27_CreateRGW(self):
+    def test26_CreateRGW(self):
         for rgw in self.ctx['rgws']:
             rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
 
-    def test28_restartRadosGW(self):
+    def test27_restartRadosGW(self):
         for rgw in self.ctx['rgws']:
             operations.restartRadosGW(rgw['rgw-host'])
 
 
-    def test29_S3Tests(self):
+    def test28_S3Tests(self):
         rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
         rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeS3Tests()
 
-    def test30_SwiftTests(self):
+    def test29_SwiftTests(self):
         rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
