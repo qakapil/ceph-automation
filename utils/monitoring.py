@@ -97,6 +97,7 @@ def getActuaVersion():
     log.info('Ceph actual version is - '+ceph_version)
     return ceph_version
 
+
 def printRPMVersions(url):
     ceph_ver = getExpectedVersion(url)
     log.info("The expected rpm version of ceph is "+ ceph_ver)
@@ -121,6 +122,7 @@ def getDefaultPools():
     log.info("the default pools are "+stdout.strip())
     return str(stdout).strip()
 
+
 def getMonStat():
     cmd = 'ssh %s ceph mon stat' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
@@ -129,6 +131,7 @@ def getMonStat():
     log.info("the mon stat is "+stdout.strip())
     return str(stdout).strip()
 
+
 def getOSDStat(): 
     cmd = 'ssh %s ceph osd stat' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
@@ -136,7 +139,8 @@ def getOSDStat():
     Error message: %s" % (cmd, stderr)
     log.info("the osd stat is "+stdout.strip())
     return str(stdout).strip()
- 
+
+
 def getquorum_status(): 
     cmd = 'ssh %s ceph quorum_status' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
@@ -153,6 +157,7 @@ def getOSDtree():
     Error message: %s" % (cmd, stderr)
     log.info("the osd tree is \n"+stdout.strip())
     return str(stdout).strip()
+
 
 def getTotalPGs(): 
     cmd = "ssh %s ceph pg stat| awk '{print $2;}'" % (os.environ["CLIENTNODE"])

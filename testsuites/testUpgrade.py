@@ -28,61 +28,50 @@ class TestSanity(basetest.Basetest):
 
         general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug','ceph_extras'])
 
-        url = cls.config.get('env','repo_baseurl')
+        cls.ctx['url1'] = os.environ.get("URL1")
+        cls.ctx['url2'] = os.environ.get("URL2")
+
         for node in cls.ctx['allnodes']:
-            zypperutils.addRepo('ceph', url, node)
+            zypperutils.addRepo('ceph', cls.ctx['url1'], node)
 
 
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
-            #cephdeploy.cleanupNodes(cls.ctx['allnodes'], 'ceph')
             general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
 
-    
     def setUp(self):
         if os.environ.get("CLUSTER_FAILED") == "Yes":
            raise SkipTest("ceph cluster was not active+clean") 
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
-    
     def test02_InstallCephDeploy(self):
         zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
-    
-    
+
     def test03_DeclareInitialMons(self):
         cephdeploy.declareInitialMons(self.ctx['initmons'])
-    
-    
-    
+
     def test04_InstallCeph(self):
         cephdeploy.installNodes(self.ctx['allnodes']) 
-    
-    
+
     def test05_CreateInitialMons(self):
         cephdeploy.createInitialMons(self.ctx['initmons'])
-    
-    
-    
+
     def test06_ZapOSDs(self):
         if self.ctx['osd_zap'] == None:
             log.info('No disks to zap. Skipping')
             return
         cephdeploy.osdZap(self.ctx['osd_zap'])
-    
-    
+
     def test07_PrepareOSDs(self):
         cephdeploy.osdPrepare(self.ctx['osd_prepare'])
     
     def test08_ActivateOSDs(self):
         cephdeploy.osdActivate(self.ctx['osd_activate'])
-    
-    
+
     def test09_AdminNodes(self):
         cephdeploy.addAdminNodes(self.ctx['clientnode'])
-    
-    
-               
+
     def test10_ValidateCephStatus(self):
         time.sleep(10)
         fsid = monitoring.getFSID()
@@ -92,6 +81,7 @@ class TestSanity(basetest.Basetest):
                               % (fsid,status)
         active_clean = False
         counter = 0
+        #default_pgs = str(self.ctx['default_pgs']).strip()
         default_pgs = monitoring.getTotalPGs()
         while not active_clean:
             if default_pgs +' active+clean' in status:
@@ -112,12 +102,15 @@ class TestSanity(basetest.Basetest):
                          ceph status')
         if 'health HEALTH_OK' in status:
             log.warning('cluster health is OK and PGs are active+clean') 
-    
 
-    def test11_restartCeph(self):
-        for node in self.ctx['initmons']:
-            operations.restartCeph(node)
-    
+    def test11_UpgradeCeph(self):
+        for node in self.ctx['allnodes']:
+            if node != os.environ["CLIENTNODE"]:
+                operations.actionOnCephService(node, 'stop')
+            zypperutils.removeRepo('ceph', node)
+            zypperutils.addRepo('ceph', self.ctx['url2'], node)
+            if node != os.environ["CLIENTNODE"]:
+                operations.actionOnCephService(node, 'start')
 
     def test12_ValidateCephStatus(self):
         fsid = monitoring.getFSID()
@@ -147,20 +140,15 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.warning('cluster health is OK and PGs are active+clean')
 
-
-    
     def test13_ValidateCephDeployVersion(self):
-        expVersion = cephdeploy.getExpectedVersion(
-                                self.config.get('env','repo_baseurl'))
+        expVersion = cephdeploy.getExpectedVersion(self.ctx['url2'])
         actVersion = cephdeploy.getActuaVersion()
         if (actVersion not in expVersion):
             raise Exception, "expected '%s' and actual '%s' versions \
-                              did not match" % (expVersion,actVersion)
-     
+                              did not match" % (expVersion, actVersion)
 
     def test14_ValidateCephVersion(self):
-        expVersion = monitoring.getExpectedVersion(
-                     self.config.get('env','repo_baseurl'))
+        expVersion = monitoring.getExpectedVersion(self.ctx['url2'])
         actVersion = monitoring.getActuaVersion()
         if actVersion not in expVersion:
             raise Exception, "expected '%s' and actual '%s' \
@@ -202,9 +190,7 @@ class TestSanity(basetest.Basetest):
             operations.createValidateObject(radosobject)
         for radosobject in self.ctx['radosobjects']:
             operations.removeObject(radosobject)
-    
-    
-       
+
     def test21_CreatePools(self):
         for pool in self.ctx['createpools']:
             operations.createPool(pool)
@@ -219,8 +205,7 @@ class TestSanity(basetest.Basetest):
     
     def test24_Validatelibrbd(self):
         operations.validateLibRbdTests()
-        
-    
+
     def test25_ValidateDefaultOSDtree(self):
         str_osd_tree = monitoring.getOSDtree()
         osd_tree = str_osd_tree.split('\n')
@@ -232,7 +217,6 @@ class TestSanity(basetest.Basetest):
             assert('0' != value),"the weight of the\
             osd was zero \n"+str_osd_tree
 
-    
     def test26_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
@@ -247,7 +231,6 @@ class TestSanity(basetest.Basetest):
         for rgw in self.ctx['rgws']:
             operations.restartRadosGW(rgw['rgw-host'])
 
-
     def test29_S3Tests(self):
         rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
         rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
@@ -260,12 +243,10 @@ class TestSanity(basetest.Basetest):
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeSwiftTests()
 
- 
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         
-        
-         
+
     @classmethod
     def teardown_class(self):
         after_cleanup = os.environ.get("AFTER_CLEANUP")
