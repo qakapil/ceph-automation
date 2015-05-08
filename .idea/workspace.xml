@@ -35,28 +35,28 @@
       <file leaf-file-name="testUpgrade.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testsuites/testUpgrade.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.428572" vertical-offset="3336" max-vertical-offset="4626">
-              <caret line="209" column="37" selection-start-line="209" selection-start-column="33" selection-end-line="209" selection-end-column="37" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2364" max-vertical-offset="4626">
+              <caret line="152" column="39" selection-start-line="152" selection-start-column="39" selection-end-line="152" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="monitoring.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="monitoring.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/utils/monitoring.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2067" max-vertical-offset="3078">
-              <caret line="134" column="4" selection-start-line="134" selection-start-column="4" selection-end-line="134" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.48658538" vertical-offset="1221" max-vertical-offset="3096">
+              <caret line="94" column="50" selection-start-line="94" selection-start-column="50" selection-end-line="94" selection-end-column="50" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="operations.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="operations.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/operations.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.49512196" vertical-offset="2870" max-vertical-offset="4662">
-              <caret line="187" column="107" selection-start-line="187" selection-start-column="107" selection-end-line="187" selection-end-column="107" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2906" max-vertical-offset="4788">
+              <caret line="189" column="86" selection-start-line="189" selection-start-column="86" selection-end-line="189" selection-end-column="86" />
               <folding />
             </state>
           </provider>
@@ -77,10 +77,10 @@
         <option value="$PROJECT_DIR$/testsuites/testfinalISO.py" />
         <option value="$PROJECT_DIR$/testsuites/testsanity.py" />
         <option value="$PROJECT_DIR$/testsuites/testISO.py" />
-        <option value="$PROJECT_DIR$/utils/monitoring.py" />
         <option value="$PROJECT_DIR$/utils/zypperutils.py" />
         <option value="$PROJECT_DIR$/testsuites/testUpgrade.py" />
         <option value="$PROJECT_DIR$/utils/operations.py" />
+        <option value="$PROJECT_DIR$/utils/monitoring.py" />
       </list>
     </option>
   </component>
@@ -585,26 +585,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/utils/operations.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2906" max-vertical-offset="4788">
+          <caret line="189" column="86" selection-start-line="189" selection-start-column="86" selection-end-line="189" selection-end-column="86" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/testsuites/testUpgrade.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.428572" vertical-offset="3336" max-vertical-offset="4626">
-          <caret line="209" column="37" selection-start-line="209" selection-start-column="33" selection-end-line="209" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2364" max-vertical-offset="4626">
+          <caret line="152" column="39" selection-start-line="152" selection-start-column="39" selection-end-line="152" selection-end-column="39" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/monitoring.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2067" max-vertical-offset="3078">
-          <caret line="134" column="4" selection-start-line="134" selection-start-column="4" selection-end-line="134" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/operations.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.49512196" vertical-offset="2870" max-vertical-offset="4662">
-          <caret line="187" column="107" selection-start-line="187" selection-start-column="107" selection-end-line="187" selection-end-column="107" />
+        <state vertical-scroll-proportion="0.48658538" vertical-offset="1221" max-vertical-offset="3096">
+          <caret line="94" column="50" selection-start-line="94" selection-start-column="50" selection-end-line="94" selection-end-column="50" />
           <folding />
         </state>
       </provider>

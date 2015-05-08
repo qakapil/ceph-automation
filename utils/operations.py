@@ -178,16 +178,23 @@ def restartRadosGW(node):
         Error message: %s" % (cmd, stderr)
 
 
+def manageAllCephServices(node, action):
+    cmd = "ssh %s sudo rcceph %s" % (node, action)
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+            Error message: %s" % (cmd, stderr)
+
+
 def actionOnCephService(node, action):
     #action - start|stop|restart
-    cmd = "ssh %s sudo ls /etc/init.d/ceph" % (node)
+    cmd = "ssh %s sudo ls /etc/init.d/ceph-dummy" % (node) #temporary dummy workaround
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.info('performing action on ceph service with systemd')
         if action != 'start':
-            cmd = "ssh %s sudo systemctl list-units --type service --all | grep ceph | grep 'inactive dead'" % (node)
+            cmd = "ssh %s sudo systemctl list-units --type service --all | grep ceph | grep -v failed" % (node)
         else:
-            cmd = "ssh %s sudo systemctl list-units --type service  | grep ceph | grep failed" % (node)
+            cmd = "ssh %s sudo systemctl list-units --type service  | grep ceph | grep inactive" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
         assert (rc == 0), "Error while executing the command %s.\
         Error message: %s" % (cmd, stderr)
