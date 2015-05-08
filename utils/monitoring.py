@@ -92,7 +92,7 @@ def getActuaVersion():
         raise Exception, "Error while executing the command '%s'. \
                           Error message: '%s'" % (cmd, stderr)
     ceph_version = stdout.strip()
-    assert (ceph_version != 'ceph version is blank')
+    assert (ceph_version != ''), 'ceph version is blank'
     matchObj = re.match( r'ceph version (.*) .*', ceph_version, re.M|re.I)
     ceph_version = matchObj.group(1)
     log.info('Ceph actual version is - '+ceph_version)
