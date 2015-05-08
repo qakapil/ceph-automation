@@ -100,7 +100,7 @@ class TestSanity(basetest.Basetest):
             log.warning('health HEALTH_WARN clock skew detected in\
                          ceph status')
         if 'health HEALTH_OK' in status:
-            log.warning('cluster health is OK and PGs are active+clean') 
+            log.warning('cluster health is OK and PGs are active+clean')
 
     def test11_UpgradeCeph(self):
         for node in self.ctx['allnodes']:
