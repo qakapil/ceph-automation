@@ -338,8 +338,12 @@ def perNodeCleanUp(listNodes, reponame):
         for mount in mounts:
             if mount.strip().find("ceph/osd") != -1:
                 cmd = "ssh %s sudo umount -f %s" % (node, mount)
-                rc,stdout,stderr = launch(cmd=cmd)
-                assert(rc == 0), "could not umount %s on %s" % (mount,node)
+                for i in range(5):
+                    rc,stdout,stderr = launch(cmd=cmd)
+                    if rc == 0:
+                        break
+                    time.sleep(1)
+                assert(rc == 0), "could not umount %s on %s error %s %s " % (mount,node,stdout,stderr)
 
         cmd = "ssh %s 'if test -d /etc/ceph; then sudo rm -rf /etc/ceph; fi'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
