@@ -196,7 +196,7 @@ def actionOnCephService(node, action):
 
         assert (len(list_services) > 1), "no systemd service found for ceph"
         for i in range(len(list_services)-1):
-            cmd = "ssh %s sudo %s systemctl %s" % (node, action, list_services[i])
+            cmd = "ssh %s sudo systemctl %s %s" % (node, action, list_services[i])
             rc,stdout,stderr = launch(cmd=cmd)
             assert (rc == 0), "Error while executing the command %s.\
             Error message: %s" % (cmd, stderr)

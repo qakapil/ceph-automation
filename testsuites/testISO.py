@@ -142,7 +142,7 @@ class TestSanity(basetest.Basetest):
         for node in self.ctx['initmons']:
             operations.restartCeph(node)
     
-
+    '''
     def test12_ValidateCephStatus(self):
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
@@ -284,7 +284,7 @@ class TestSanity(basetest.Basetest):
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeSwiftTests()
-
+    '''
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         

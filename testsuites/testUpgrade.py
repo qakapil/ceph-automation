@@ -81,7 +81,6 @@ class TestSanity(basetest.Basetest):
                               % (fsid,status)
         active_clean = False
         counter = 0
-        #default_pgs = str(self.ctx['default_pgs']).strip()
         default_pgs = monitoring.getTotalPGs()
         while not active_clean:
             if default_pgs +' active+clean' in status:
@@ -109,6 +108,7 @@ class TestSanity(basetest.Basetest):
                 operations.actionOnCephService(node, 'stop')
             zypperutils.removeRepo('ceph', node)
             zypperutils.addRepo('ceph', self.ctx['url2'], node)
+            zypperutils.zypperDup(node)
             if node != os.environ["CLIENTNODE"]:
                 operations.actionOnCephService(node, 'start')
 

@@ -123,3 +123,10 @@ def getPkgParamValue(pkgname, paramname, node):
         log.error("parameter name '%s' was not present for repo '%s'" % (paramname, pkgname))
         raise Exception, "parameter name '%s' was not present for repo '%s'" % (paramname, pkgname)
     return paramdict[paramname]
+
+
+def zypperDup(node):
+    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup" % (node)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception,"Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
