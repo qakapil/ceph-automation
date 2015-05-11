@@ -123,15 +123,15 @@ def cleanupNodes(listNodes, reponame, media2_repo=None):
     cmd = 'ssh %s ceph-deploy purge %s' % (os.environ["CLIENTNODE"], allnodes)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
-        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     cmd = 'ssh %s ceph-deploy purgedata %s' % (os.environ["CLIENTNODE"], allnodes)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
-        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     cmd = 'ssh %s ceph-deploy forgetkeys' % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
-        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     
     for node in listNodes:
         try:
