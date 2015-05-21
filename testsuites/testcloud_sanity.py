@@ -2,6 +2,7 @@ from utils import basetest
 from utils import monitoring
 from utils import operations
 import logging,time,re, os
+from utils import rbd_operations
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
@@ -78,13 +79,13 @@ class TestSanity(basetest.Basetest):
     
     def test04_CreateImages(self):
         for image in self.ctx['images']:
-            operations.createRBDImage(image)
+            rbd_operations.createRBDImage(image)
     
     
     
     def test05_RemoveImages(self):
         for image in self.ctx['images']:
-            operations.rbdRemovePoolImage(image)
+            rbd_operations.rbdRemovePoolImage(image)
         
         
         
