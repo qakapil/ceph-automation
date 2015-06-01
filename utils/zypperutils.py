@@ -32,7 +32,7 @@ def isRepoPresent(reponame, node):
     if rc == 0 and stderr.strip() == "":
         log.info("repo '%s' is present" % (reponame))
         return True
-    elif stderr.strip() == "Repository '%s' not found by its alias, number, or URI." % (reponame):
+    elif "Repository '%s' not found by its alias, number, or URI." % (reponame) in stderr.strip():
         log.info("repo '%s' is not present" % (reponame))
         return False
     else:
