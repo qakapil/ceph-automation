@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6d5272f-95e3-4041-972a-e95167ce50b9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/yamldata/testISCSI.yaml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testsuites/testISCSI.py" afterPath="$PROJECT_DIR$/testsuites/testISCSI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/yamldata/testISCSI.yaml" afterPath="$PROJECT_DIR$/yamldata/testISCSI.yaml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="qa-automation.iws" />
@@ -50,11 +50,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testISCSI.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="testISCSI.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testsuites/testISCSI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.37546012" vertical-offset="648" max-vertical-offset="2520">
-              <caret line="53" column="34" selection-start-line="53" selection-start-column="34" selection-end-line="53" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="648" max-vertical-offset="2556">
+              <caret line="67" column="22" selection-start-line="67" selection-start-column="22" selection-end-line="67" selection-end-column="22" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -62,12 +62,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testISCSI.yaml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="testISCSI.yaml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/yamldata/testISCSI.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-25.92" vertical-offset="0" max-vertical-offset="756">
-              <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.61518985" vertical-offset="0" max-vertical-offset="790">
+              <caret line="27" column="158" selection-start-line="27" selection-start-column="158" selection-end-line="27" selection-end-column="158" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="rbd_operations.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/utils/rbd_operations.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-9.357142" vertical-offset="3698" max-vertical-offset="9036">
+              <caret line="220" column="5" selection-start-line="220" selection-start-column="2" selection-end-line="220" selection-end-column="5" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -93,8 +105,8 @@
         <option value="$PROJECT_DIR$/testsuites/testUpgrade.py" />
         <option value="$PROJECT_DIR$/utils/cephdeploy.py" />
         <option value="$PROJECT_DIR$/utils/iscsi.py" />
-        <option value="$PROJECT_DIR$/yamldata/testISCSI.yaml" />
         <option value="$PROJECT_DIR$/testsuites/testISCSI.py" />
+        <option value="$PROJECT_DIR$/yamldata/testISCSI.yaml" />
       </list>
     </option>
   </component>
@@ -626,14 +638,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yamldata/testISCSI.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-25.92" vertical-offset="0" max-vertical-offset="756">
-          <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/iscsi.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1849" max-vertical-offset="2664">
@@ -652,13 +656,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/utils/rbd_operations.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-9.357142" vertical-offset="3698" max-vertical-offset="9036">
+          <caret line="220" column="5" selection-start-line="220" selection-start-column="2" selection-end-line="220" selection-end-column="5" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/testsuites/testISCSI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37546012" vertical-offset="648" max-vertical-offset="2520">
-          <caret line="53" column="34" selection-start-line="53" selection-start-column="34" selection-end-line="53" selection-end-column="34" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="648" max-vertical-offset="2556">
+          <caret line="67" column="22" selection-start-line="67" selection-start-column="22" selection-end-line="67" selection-end-column="22" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yamldata/testISCSI.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.61518985" vertical-offset="0" max-vertical-offset="790">
+          <caret line="27" column="158" selection-start-line="27" selection-start-column="158" selection-end-line="27" selection-end-column="158" />
+          <folding />
         </state>
       </provider>
     </entry>

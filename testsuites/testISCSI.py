@@ -51,10 +51,11 @@ class TestSanity(basetest.Basetest):
 
         cephdeploy.addAdminNodes(cls.ctx['clientnode'])
 
-        cls.validateCephStatus(cls)
+        cls.validateCephStatus()
 
         for image in cls.ctx['images']:
             rbd_operations.createRBDImage(image)
+            rbd_operations.mapImage(image)
 
 
     def setUp(self):
@@ -62,7 +63,8 @@ class TestSanity(basetest.Basetest):
            raise SkipTest("ceph cluster was not active+clean") 
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
-    def validateCephStatus(self):
+    @classmethod
+    def validateCephStatus(cls):
         time.sleep(10)
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()

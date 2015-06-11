@@ -15,22 +15,14 @@ osd_zap:
 - teuthida-4:sdb
 - teuthida-2:sdb
 - teuthida-1:sdb
-- teuthida-2:sdc
-- teuthida-1:sdc
-- teuthida-1:sdn
-- teuthida-2:sdd
-- teuthida-2:sdn
 osd_prepare:
 - teuthida-4:sdb
 - teuthida-2:sdb
 - teuthida-1:sdb
-- teuthida-2:sdc
-- teuthida-1:sdc:/dev/sdn
-- teuthida-2:sdd:/dev/sdn
 
 images:
 - {name: im1, size: 10240, pool: rbd}
 
 
 iscsi_targets:
-- {node: teuthida-1, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.1996-04.de.suse:01:cd52c4d99b', tpg: '1', client_node: teuthida-1}
+- {node: teuthida-10, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.1996-04.de.suse:01:cd52c4d99b', tpg: '1', client_node: teuthida-10}
