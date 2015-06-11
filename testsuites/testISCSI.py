@@ -114,24 +114,25 @@ class TestSanity(basetest.Basetest):
 
 
     def test02_workunits(self):
-        workunits = ['blogbench.sh', 'bonnie.sh', 'dbench-short.sh', 'dbench.sh', 'ffsb.sh', 'fio.sh', 'fsstress.sh'\
+        scripts = ['blogbench.sh', 'bonnie.sh', 'dbench-short.sh', 'dbench.sh', 'ffsb.sh', 'fio.sh', 'fsstress.sh'\
                      'fsx.sh', 'fsync-tester.sh', 'iogen.sh', 'iozone-sync.sh', 'iozone.sh', 'pjd.sh']
-        for workunit in workunits:
+        log.info(str(scripts))
+        for script in scripts:
             log.info('I am here')
-            yield self.run_script, workunit
+            yield self.run_script, script
 
 
-    def run_script(self, workunit):
-        log.info('Executing %s tests' % workunit)
+    def run_script(self, script_name):
+        log.info('Executing %s tests' % script_name)
         cmd = 'ssh %s "cd -- %s && wget https://github.com/SUSE/ceph/raw/%s/qa/workunits/suites/%s"' \
-              % ( os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], workunit)
+              % ( os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], script_name)
         general.eval_returns(cmd)
 
-        cmd = 'ssh %s sudo chmod 755 %s/%s' % (os.environ["CLIENTNODE"], self.ctx['test_dir'], workunit)
+        cmd = 'ssh %s sudo chmod 755 %s/%s' % (os.environ["CLIENTNODE"], self.ctx['test_dir'], script_name)
         general.eval_returns(cmd)
 
         cmd = 'ssh %s "cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/%s"' \
-              % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'], workunit)
+              % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'], script_name)
         general.eval_returns(cmd)
 
 
