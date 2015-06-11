@@ -51,7 +51,7 @@ class TestSanity(basetest.Basetest):
 
         cephdeploy.addAdminNodes(cls.ctx['clientnode'])
 
-        cls.validateCephStatus()
+        cls.validateCephStatus(cls)
 
         for image in cls.ctx['images']:
             rbd_operations.createRBDImage(image)

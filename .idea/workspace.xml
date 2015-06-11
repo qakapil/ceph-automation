@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b6d5272f-95e3-4041-972a-e95167ce50b9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testsuites/testISCSI.py" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/yamldata/testISCSI.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testsuites/testISCSI.py" afterPath="$PROJECT_DIR$/testsuites/testISCSI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="qa-automation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,8 +53,8 @@
       <file leaf-file-name="testISCSI.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/testsuites/testISCSI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.37546012" vertical-offset="1404" max-vertical-offset="2520">
-              <caret line="95" column="25" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.37546012" vertical-offset="648" max-vertical-offset="2520">
+              <caret line="53" column="34" selection-start-line="53" selection-start-column="34" selection-end-line="53" selection-end-column="34" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -653,8 +654,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testsuites/testISCSI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.37546012" vertical-offset="1404" max-vertical-offset="2520">
-          <caret line="95" column="25" selection-start-line="95" selection-start-column="25" selection-end-line="95" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.37546012" vertical-offset="648" max-vertical-offset="2520">
+          <caret line="53" column="34" selection-start-line="53" selection-start-column="34" selection-end-line="53" selection-end-column="34" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
