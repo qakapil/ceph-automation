@@ -30,8 +30,8 @@
       <file leaf-file-name="iscsi.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/utils/iscsi.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.63405335" vertical-offset="1391" max-vertical-offset="2772">
-              <caret line="105" column="78" selection-start-line="105" selection-start-column="78" selection-end-line="105" selection-end-column="78" />
+            <state vertical-scroll-proportion="0.45108005" vertical-offset="1931" max-vertical-offset="2772">
+              <caret line="127" column="48" selection-start-line="127" selection-start-column="48" selection-end-line="127" selection-end-column="48" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -665,8 +665,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/iscsi.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63405335" vertical-offset="1391" max-vertical-offset="2772">
-          <caret line="105" column="78" selection-start-line="105" selection-start-column="78" selection-end-line="105" selection-end-column="78" />
+        <state vertical-scroll-proportion="0.45108005" vertical-offset="1931" max-vertical-offset="2772">
+          <caret line="127" column="48" selection-start-line="127" selection-start-column="48" selection-end-line="127" selection-end-column="48" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

@@ -125,7 +125,7 @@ def partitionIBlock(node, block):
     drives = stdout.strip().split('\n')
     assert (len(drives) == 1), "the block %s was either not found or already partitioned - %s" % (block, drives)
 
-    cmd = 'ssh %s echo -e "o\nn\np\n1\n\n\nw" | fdisk /dev/%s' % (node, block)
+    cmd = 'ssh %s echo -e "o\\nn\\np\\n1\\n\\n\\nw" | fdisk /dev/%s' % (node, block)
     general.eval_returns(cmd)
    
     cmd = "ssh %s lsblk -io KNAME,TYPE,SIZE,MODEL | awk '{print $1}' | grep %s1" % (node, block)
