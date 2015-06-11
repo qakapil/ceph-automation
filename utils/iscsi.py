@@ -25,7 +25,7 @@ def addBlock(node, block_name, drive_name):
 
 
 def addIQNTPG(node, iqn, tpg):
-    cmd = 'ssh %s sudo lio_node --listtargetnames'
+    cmd = 'ssh %s sudo lio_node --listtargetnames' % node
     stdout, strderr = general.eval_returns(cmd)
     targets_list = stdout.split('\n')
     targets_list = map(str.strip, targets_list)
