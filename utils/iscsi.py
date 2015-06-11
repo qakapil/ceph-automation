@@ -35,7 +35,7 @@ def addIQNTPG(node, iqn, tpg):
         assert (rc != 0), "%s with %s already exist on node %s" % (iqn, tpg, node)
     cmd = 'ssh %s sudo lio_node --addtpg %s %s' % (node, iqn, tpg)
     general.eval_returns(cmd)
-    cmd = 'ssh %s sudo lio_node --listtargetnames'
+    cmd = 'ssh %s sudo lio_node --listtargetnames' % node
     stdout, strderr = general.eval_returns(cmd)
     targets_list = stdout.split('\n')
     targets_list = map(str.strip, targets_list)
