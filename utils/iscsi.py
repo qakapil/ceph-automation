@@ -80,7 +80,7 @@ def addLun(node, iqn, tpg, lun_num, lun_name, block_name):
 
 def demoModeWriteProtect(node, iqn, tpg):
     file_path = '/sys/kernel/config/target/iscsi/%s/tpgt_%s/attrib/demo_mode_write_protect' % (iqn, tpg)
-    cmd = 'ssh %s sudo sh -c "echo 0 >> %s"' % (node, file_path)
+    cmd = '''ssh %s "sudo sh -c 'echo 0 >> %s'"''' % (node, file_path)
     general.eval_returns(cmd)
     cmd = 'ssh %s cat %s' % (node, file_path)
     stdout, strderr = general.eval_returns(cmd)

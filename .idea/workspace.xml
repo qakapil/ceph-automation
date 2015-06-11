@@ -30,8 +30,8 @@
       <file leaf-file-name="iscsi.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/utils/iscsi.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.31003812" vertical-offset="1034" max-vertical-offset="2700">
-              <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.56162643" vertical-offset="1034" max-vertical-offset="2700">
+              <caret line="82" column="46" selection-start-line="82" selection-start-column="46" selection-end-line="82" selection-end-column="46" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -42,8 +42,8 @@
       <file leaf-file-name="testISCSI.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testsuites/testISCSI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.357142" vertical-offset="1556" max-vertical-offset="2556">
-              <caret line="101" column="24" selection-start-line="101" selection-start-column="24" selection-end-line="101" selection-end-column="24" />
+            <state vertical-scroll-proportion="-11.928572" vertical-offset="1556" max-vertical-offset="2556">
+              <caret line="105" column="24" selection-start-line="105" selection-start-column="18" selection-end-line="105" selection-end-column="24" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -64,7 +64,7 @@
       <file leaf-file-name="rbd_operations.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/rbd_operations.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.357142" vertical-offset="3698" max-vertical-offset="9036">
+            <state vertical-scroll-proportion="2.2142856" vertical-offset="4022" max-vertical-offset="9036">
               <caret line="220" column="5" selection-start-line="220" selection-start-column="2" selection-end-line="220" selection-end-column="5" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
@@ -635,12 +635,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils/rbd_operations.py">
+    <entry file="file://$PROJECT_DIR$/testsuites/testISCSI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.357142" vertical-offset="3698" max-vertical-offset="9036">
-          <caret line="220" column="5" selection-start-line="220" selection-start-column="2" selection-end-line="220" selection-end-column="5" />
+        <state vertical-scroll-proportion="-11.928572" vertical-offset="1556" max-vertical-offset="2556">
+          <caret line="105" column="24" selection-start-line="105" selection-start-column="18" selection-end-line="105" selection-end-column="24" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -653,20 +653,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testsuites/testISCSI.py">
+    <entry file="file://$PROJECT_DIR$/utils/rbd_operations.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.357142" vertical-offset="1556" max-vertical-offset="2556">
-          <caret line="101" column="24" selection-start-line="101" selection-start-column="24" selection-end-line="101" selection-end-column="24" />
+        <state vertical-scroll-proportion="2.2142856" vertical-offset="4022" max-vertical-offset="9036">
+          <caret line="220" column="5" selection-start-line="220" selection-start-column="2" selection-end-line="220" selection-end-column="5" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/iscsi.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31003812" vertical-offset="1034" max-vertical-offset="2700">
-          <caret line="71" column="0" selection-start-line="71" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.56162643" vertical-offset="1034" max-vertical-offset="2700">
+          <caret line="82" column="46" selection-start-line="82" selection-start-column="46" selection-end-line="82" selection-end-column="46" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
