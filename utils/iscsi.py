@@ -11,7 +11,7 @@ def targetService(node, action):
     status = {'start': 'Active: active', 'restart': 'Active: active', 'stop': 'Active: inactive'}
     cmd = 'ssh %s sudo systemctl %s target' % (node, action)
     stdout, strderr = general.eval_returns(cmd)
-    cmd = 'ssh %s sudo systemctl status target' % (node, action)
+    cmd = 'ssh %s sudo systemctl status target' % node
     stdout, strderr = general.eval_returns(cmd)
     assert (status[action] in stdout.strip()), "error with target service on node %s" % node
 
