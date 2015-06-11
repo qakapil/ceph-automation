@@ -113,14 +113,13 @@ class TestSanity(basetest.Basetest):
             iscsi.createFSMount(iscsi_target['client_node'], drive, 'xfs', self.ctx['test_dir'])
 
 
-    def test02_workingunits(self):
+    def test02_qarepo(self):
         log.info('I am here')
         scripts = ('blogbench.sh', 'bonnie.sh', 'dbench-short.sh', 'dbench.sh', 'ffsb.sh', 'fio.sh', 'fsstress.sh'\
                      'fsx.sh', 'fsync-tester.sh', 'iogen.sh', 'iozone-sync.sh', 'iozone.sh', 'pjd.sh')
         log.info(str(scripts))
         for script in scripts:
             log.info('I am here')
-            yield self.run_script, script
 
 
     def run_script(self, script_name):
