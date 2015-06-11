@@ -114,12 +114,13 @@ class TestSanity(basetest.Basetest):
 
 
     def test02_qarepo(self):
-        log.info('I am here')
+        log.info('I start here')
         scripts = ('blogbench.sh', 'bonnie.sh', 'dbench-short.sh', 'dbench.sh', 'ffsb.sh', 'fio.sh', 'fsstress.sh'\
                      'fsx.sh', 'fsync-tester.sh', 'iogen.sh', 'iozone-sync.sh', 'iozone.sh', 'pjd.sh')
         log.info(str(scripts))
         for script in scripts:
             log.info('I am here')
+            yield self.run_script, script
 
 
     def run_script(self, script_name):
