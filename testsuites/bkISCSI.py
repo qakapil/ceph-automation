@@ -113,9 +113,10 @@ class TestSanity(basetest.Basetest):
             iscsi.createFSMount(iscsi_target['client_node'], drive, 'xfs', self.ctx['test_dir'])
 
 
-    def test02_workunits(self):
-        scripts = ['blogbench.sh', 'bonnie.sh', 'dbench-short.sh', 'dbench.sh', 'ffsb.sh', 'fio.sh', 'fsstress.sh'\
-                     'fsx.sh', 'fsync-tester.sh', 'iogen.sh', 'iozone-sync.sh', 'iozone.sh', 'pjd.sh']
+    def test02_qarepo(self):
+        log.info('I start here')
+        scripts = ('blogbench.sh', 'bonnie.sh', 'dbench-short.sh', 'dbench.sh', 'ffsb.sh', 'fio.sh', 'fsstress.sh'\
+                     'fsx.sh', 'fsync-tester.sh', 'iogen.sh', 'iozone-sync.sh', 'iozone.sh', 'pjd.sh')
         log.info(str(scripts))
         for script in scripts:
             log.info('I am here')
@@ -134,45 +135,6 @@ class TestSanity(basetest.Basetest):
         cmd = 'ssh %s "cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/%s"' \
               % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'], script_name)
         general.eval_returns(cmd)
-
-
-    def _fio(self):
-        cmd = 'ssh %s "cd -- %s && wget https://github.com/SUSE/ceph/raw/%s/qa/workunits/suites/fio.sh"' \
-              % ( os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'])
-        general.eval_returns(cmd)
-
-        cmd = 'ssh %s sudo chmod 755 %s/fio.sh' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
-        general.eval_returns(cmd)
-
-        cmd = 'ssh %s "cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/fio.sh"' \
-              % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'])
-        general.eval_returns(cmd)
-
-
-    def _bonnie(self):
-        cmd = 'ssh %s "cd -- %s && wget https://github.com/SUSE/ceph/raw/%s/qa/workunits/suites/bonnie.sh"' \
-              % ( os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'])
-        general.eval_returns(cmd)
-
-        cmd = 'ssh %s sudo chmod 755 %s/bonnie.sh' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
-        general.eval_returns(cmd)
-
-        cmd = 'ssh %s "cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/bonnie.sh"' \
-              % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'])
-        general.eval_returns(cmd)
-
-    def _fsx(self):
-        cmd = 'ssh %s "cd -- %s && wget https://github.com/SUSE/ceph/raw/%s/qa/workunits/suites/fsx.sh"' \
-              % ( os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'])
-        general.eval_returns(cmd)
-
-        cmd = 'ssh %s sudo chmod 755 %s/fsx.sh' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
-        general.eval_returns(cmd)
-
-        cmd = 'ssh %s "cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/fsx.sh"' \
-              % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'])
-        general.eval_returns(cmd)
-
 
 
 
