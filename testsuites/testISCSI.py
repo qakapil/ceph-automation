@@ -25,7 +25,7 @@ class TestSanity(basetest.Basetest):
         cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
-
+        '''
         general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug', 'ceph_extras'])
 
         url = cls.config.get('env','repo_baseurl')
@@ -56,7 +56,7 @@ class TestSanity(basetest.Basetest):
         for image in cls.ctx['images']:
             rbd_operations.createRBDImage(image)
             rbd_operations.mapImage(image)
-
+        '''
 
     def setUp(self):
         if os.environ.get("CLUSTER_FAILED") == "Yes":
@@ -94,7 +94,7 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.warning('cluster health is OK and PGs are active+clean')
  
-
+    '''
     def test01_ISCSI(self):
         for iscsi_target in self.ctx['iscsi_targets']:
             iscsi.targetService(iscsi_target['node'], 'start')
@@ -111,16 +111,16 @@ class TestSanity(basetest.Basetest):
             block = iscsi.discoverLoginTarget(iscsi_target['client_node'], iscsi_target['node'], iscsi_target['iqn'], iscsi_target['tpg'], '3260')
             drive = iscsi.partitionIBlock(iscsi_target['client_node'], block)
             iscsi.createFSMount(iscsi_target['client_node'], drive, 'xfs', self.ctx['test_dir'])
-
+    '''
     def test02_fio(self):
-        cmd = 'ssh %s cd -- %s && wget https://github.com/SUSE/ceph/raw/%s/qa/workunits/suites/fio.sh' \
+        cmd = 'ssh %s "cd -- %s && wget https://github.com/SUSE/ceph/raw/%s/qa/workunits/suites/fio.sh"' \
               % ( os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'])
         general.eval_returns(cmd)
 
         cmd = 'ssh %s sudo chmod 755 %s/fio.sh' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
 
-        cmd = 'ssh %s cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/fio.sh' \
+        cmd = 'ssh %s "cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/fio.sh"' \
               % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'])
         general.eval_returns(cmd)
 
