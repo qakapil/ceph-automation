@@ -136,14 +136,14 @@ def partitionIBlock(node, block):
     return drives[0].strip()
 
 
-def createFSMount(node, drive, fs):
+def createFSMount(node, drive, fs, test_dir):
     cmd = 'ssh %s sudo mkfs.%s /dev/%s' % (node, fs, drive)
     general.eval_returns(cmd)
-    cmd = 'ssh %s rm -rf ~/iscsi_test' % node
+    cmd = 'ssh %s rm -rf %s' % (node, test_dir)
     general.eval_returns(cmd)
-    cmd = 'ssh %s mkdir ~/iscsi_test' % (node)
+    cmd = 'ssh %s mkdir %s' % (node, test_dir)
     general.eval_returns(cmd) 
-    cmd = 'ssh %s sudo mount /dev/%s ~/iscsi_test' % (node, drive)
+    cmd = 'ssh %s sudo mount /dev/%s %s' % (node, drive, test_dir)
     general.eval_returns(cmd)
-    cmd = 'ssh %s sudo chown jenkins:users ~/iscsi_test' % node
+    cmd = 'ssh %s sudo chown jenkins:users %s' % (node, test_dir)
     general.eval_returns(cmd)
