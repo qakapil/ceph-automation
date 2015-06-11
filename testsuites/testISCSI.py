@@ -117,6 +117,7 @@ class TestSanity(basetest.Basetest):
         workunits = ['blogbench.sh', 'bonnie.sh', 'dbench-short.sh', 'dbench.sh', 'ffsb.sh', 'fio.sh', 'fsstress.sh'\
                      'fsx.sh', 'fsync-tester.sh', 'iogen.sh', 'iozone-sync.sh', 'iozone.sh', 'pjd.sh']
         for workunit in workunits:
+            log.info('I am here')
             yield self.run_script, workunit
 
 
