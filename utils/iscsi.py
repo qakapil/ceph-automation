@@ -70,7 +70,7 @@ def enableTPG(node, iqn, tpg):
 
 
 def addLun(node, iqn, tpg, lun_num, lun_name, block_name):
-    cmd = 'ssh %s --addlun %s %s %s %s %s' % (node, iqn, tpg, lun_num, lun_name, block_name)
+    cmd = 'ssh %s sudo lio_node --addlun %s %s %s %s %s' % (node, iqn, tpg, lun_num, lun_name, block_name)
     general.eval_returns(cmd)
     lun_dir = '/sys/kernel/config/target/iscsi/%s/tpgt_%s/lun/lun_%s/%s' % (iqn, tpg, lun_num, lun_name)
     cmd = 'ssh %s ls %s' % (node, lun_dir)
