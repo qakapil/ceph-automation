@@ -1,6 +1,7 @@
 import logging
 import general
 from launch import launch
+import socket
 
 
 
@@ -87,26 +88,28 @@ def demoModeWriteProtect(node, iqn, tpg):
     assert (str(stdout.strip()) == '0'), "demo mode write protect was not set on node %s" % node
 
 
-def discoverLoginTarget(client_node, target_node_ip, iqn, tpg, port):
+def discoverLoginTarget(client_node, target_node, iqn, tpg, port):
+    target_node_ip = socket.gethostbyname(target_node)
     cmd = 'ssh %s sudo iscsiadm -m discovery -p %s:%s -t sendtargets' % (client_node, target_node_ip, port)
     stdout, strderr =  general.eval_returns(cmd)
     assert(len(stdout.strip().split('\n')) == 1), "more than one target found on %s for port %s" % (target_node_ip, port)
 
     target = stdout.split('\n')[0].strip()
+
     exp_target = '%s:%s,%s %s' % (target_node_ip, port, tpg, iqn)
     assert (target == exp_target), "actual target %s did not match expected %s" % (target, exp_target)
     
-    cmd = "ssh %s lsblk -io KNAME,TYPE,SIZE,MODEL | grep IBLOCK | awk '{print $1}'"
+    cmd = "ssh %s lsblk -io KNAME,TYPE,SIZE,MODEL | grep IBLOCK | awk '{print $1}'" % client_node
     stdout, strderr = general.eval_returns(cmd)
     curr_iblocks = stdout.split('/n')
    
-    cmd = 'ssh %s sudo iscsiadm -m node -T %s -p %s:%s --login' % (target_node_ip, iqn, target_node_ip, port)
+    cmd = 'ssh %s sudo iscsiadm -m node -T %s -p %s:%s --login' % (client_node, iqn, target_node_ip, port)
     stdout, strderr = general.eval_returns(cmd)
     
     validate_string = "Login to [iface: default, target: %s, portal: %s,%s] successful" % (iqn, target_node_ip, port)
     assert (validate_string in stdout), "could not login to target with iqn %s" % iqn
 
-    cmd = "ssh %s lsblk -io KNAME,TYPE,SIZE,MODEL | grep IBLOCK | awk '{print $1}'"
+    cmd = "ssh %s lsblk -io KNAME,TYPE,SIZE,MODEL | grep IBLOCK | awk '{print $1}'" % client_node
     stdout, strderr = general.eval_returns(cmd)
     new_iblocks = stdout.split('/n')
 
