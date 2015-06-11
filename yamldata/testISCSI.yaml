@@ -33,4 +33,4 @@ images:
 
 
 iscsi_targets:
-- {node: teuthida-1, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: iqn.1996-04.de.suse:01:cd52c4d99b, tpg: 1, client_node: teuthida-1}
+- {node: teuthida-1, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.1996-04.de.suse:01:cd52c4d99b', tpg: '1', client_node: teuthida-1}
