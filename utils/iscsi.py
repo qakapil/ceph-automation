@@ -147,3 +147,28 @@ def createFSMount(node, drive, fs, test_dir):
     general.eval_returns(cmd)
     cmd = 'ssh %s sudo chown jenkins:users %s' % (node, test_dir)
     general.eval_returns(cmd)
+
+
+def cleanupISCSI(client_node, target_node, iqn, port, block_name, drive_name):
+    target_node_ip = socket.gethostbyname(target_node)
+
+    cmd = 'ssh %s sudo iscsiadm -m node -T %s -p %s:%s --logout' % (client_node, iqn, target_node_ip, port)
+    stdout, strderr = general.eval_returns(cmd)
+
+    validate_string = "target: %s, portal: %s,%s] successful" % (iqn, target_node_ip, port)
+    assert (validate_string in stdout), "could not login to target with iqn %s" % iqn
+
+    cmd = 'ssh %s sudo lio_node --deliqn %s' % (target_node, iqn)
+    general.eval_returns(cmd)
+
+    cmd = 'ssh %s sudo tcm_node --freedev %s' % (target_node, block_name)
+    general.eval_returns(cmd)
+
+    cmd = 'ssh %s sudo rbd unmap %s' % (target_node, drive_name)
+    general.eval_returns(cmd)
+
+
+
+
+
+
