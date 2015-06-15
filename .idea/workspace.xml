@@ -4,6 +4,7 @@
     <list default="true" id="b6d5272f-95e3-4041-972a-e95167ce50b9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/utils/iscsi.py" afterPath="$PROJECT_DIR$/utils/iscsi.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/testsuites/testISCSI.py" afterPath="$PROJECT_DIR$/testsuites/testISCSI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/yamldata/testPerformance_backup.yaml" afterPath="$PROJECT_DIR$/yamldata/testPerformance_backup.yaml" />
     </list>
     <ignored path="qa-automation.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,36 +28,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="iscsi.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/iscsi.py">
+      <file leaf-file-name="testPerformance.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testsuites/testPerformance.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2407" max-vertical-offset="3240">
-              <caret line="151" column="77" selection-start-line="151" selection-start-column="4" selection-end-line="151" selection-end-column="77" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="3960">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <element signature="e#0#14#0" expanded="true" />
+                <element signature="e#0#26#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testISCSI.yaml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/yamldata/testISCSI.yaml">
+      <file leaf-file-name="testPerformance_backup.yaml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/yamldata/testPerformance_backup.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-20.88" vertical-offset="0" max-vertical-offset="648">
-              <caret line="29" column="11" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="11" />
+            <state vertical-scroll-proportion="0.7949367" vertical-offset="2216" max-vertical-offset="3798">
+              <caret line="158" column="17" selection-start-line="158" selection-start-column="17" selection-end-line="158" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testISCSI.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/testsuites/testISCSI.py">
+      <file leaf-file-name="testPerformance.yaml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/yamldata/testPerformance.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7128834" vertical-offset="4729" max-vertical-offset="5796">
-              <caret line="295" column="31" selection-start-line="295" selection-start-column="31" selection-end-line="295" selection-end-column="31" />
-              <folding>
-                <element signature="e#0#26#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="2.16" vertical-offset="54" max-vertical-offset="972">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -85,6 +84,7 @@
         <option value="$PROJECT_DIR$/testsuites/test_workunits.py" />
         <option value="$PROJECT_DIR$/utils/iscsi.py" />
         <option value="$PROJECT_DIR$/testsuites/testISCSI.py" />
+        <option value="$PROJECT_DIR$/yamldata/testPerformance_backup.yaml" />
       </list>
     </option>
   </component>
@@ -608,13 +608,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yamldata/testsanity.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.2987342" vertical-offset="236" max-vertical-offset="1026">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/testsuites/testsanity.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5130">
@@ -651,20 +644,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yamldata/testPerformance.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.06835443" vertical-offset="54" max-vertical-offset="972">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/yamldata/testPerformance_backup.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.035443" vertical-offset="4520" max-vertical-offset="5310">
-          <caret line="74" column="16" selection-start-line="74" selection-start-column="16" selection-end-line="74" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/yamldata/testISCSI.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-20.88" vertical-offset="0" max-vertical-offset="648">
@@ -685,11 +664,45 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testsuites/testISCSI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7128834" vertical-offset="4729" max-vertical-offset="5796">
-          <caret line="295" column="31" selection-start-line="295" selection-start-column="31" selection-end-line="295" selection-end-column="31" />
+        <state vertical-scroll-proportion="0.94050634" vertical-offset="4621" max-vertical-offset="5742">
+          <caret line="298" column="68" selection-start-line="298" selection-start-column="68" selection-end-line="298" selection-end-column="68" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testsuites/testPerformance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3960">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yamldata/testPerformance.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.16" vertical-offset="54" max-vertical-offset="972">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yamldata/testsanity.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.26708862" vertical-offset="211" max-vertical-offset="1026">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yamldata/testPerformance_backup.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7949367" vertical-offset="2216" max-vertical-offset="3798">
+          <caret line="158" column="17" selection-start-line="158" selection-start-column="17" selection-end-line="158" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
