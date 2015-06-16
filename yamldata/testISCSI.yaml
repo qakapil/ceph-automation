@@ -1,0 +1,31 @@
+workingdir: /home/jenkins/cephdeploy-cluster
+clientnode:
+- teuthida-10
+clientnode_ip: 10.160.223.10
+allnodes:
+- teuthida-10
+- teuthida-4
+- teuthida-2
+- teuthida-1
+initmons:
+- teuthida-4
+- teuthida-2
+- teuthida-1
+osd_zap:
+- teuthida-4:sdb
+- teuthida-2:sdb
+- teuthida-1:sdb
+osd_prepare:
+- teuthida-4:sdb
+- teuthida-2:sdb
+- teuthida-1:sdb
+
+images:
+- {name: im1, size: 10240, pool: rbd}
+
+
+iscsi_targets:
+- {node: teuthida-10, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.1996-04.de.suse:01:cd52c4d99b', tpg: '1', client_node: teuthida-10}
+
+ceph_branch: hammer
+test_dir: /home/jenkins/iscsi_test

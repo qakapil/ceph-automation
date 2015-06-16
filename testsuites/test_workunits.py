@@ -2,7 +2,6 @@ from utils import monitoring
 from utils import operations
 from utils import baseconfig
 from utils import general
-from utils import cephdeploy
 from utils import zypperutils
 import inspect
 from ConfigParser import SafeConfigParser
