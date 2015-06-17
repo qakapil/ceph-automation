@@ -27,9 +27,9 @@ default_pgs: 192
 images:
 - {name: im1, size: 1024, pool: rbd}
 - {name: im2, size: 1024, pool: rbd}
-- {name: im3, size: 512, pool: data}
+- {name: im3, size: 512, pool: rbd}
 radosobjects:
-- {objname: test-obj-1, pool: data}
+- {objname: test-obj-1, pool: rbd}
 createpools:
 - {poolname: test-pool-1, pg-num: 64, size: 2}
 librbd_images:
