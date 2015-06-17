@@ -25,17 +25,17 @@ osd_activate:
 - host-44-0-3-219:vdb1
 default_pgs: 192
 images:
-- {name: im1, size: 1024, pool: rbd}
-- {name: im2, size: 1024, pool: rbd}
-- {name: im3, size: 512, pool: rbd}
+- {name: im1_rbd, size: 1024, pool: rbd}
+- {name: im2_rbd, size: 1024, pool: rbd}
+- {name: im3_rbd, size: 512, pool: rbd}
 radosobjects:
-- {objname: test-obj-1, pool: rbd}
+- {objname: test-obj-1_rbd, pool: rbd}
 createpools:
-- {poolname: test-pool-1, pg-num: 64, size: 2}
+- {poolname: test-pool-1_rbd, pg-num: 64, size: 2}
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_mb: 300}
 snapshots:
-- { pool: rbd, snapname: snap, name: im1}
+- { pool: rbd, snapname: snap, name: im1_rbd}
 qemu:
 - { pool: rbd, name: qemu1, size: 1000}
 - { pool: rbd, name: qemu2, size: 500}
