@@ -8,6 +8,7 @@ from utils import rbd_operations
 from utils import rgw_tasks
 import logging,time,re, os, sys
 from nose.exc import SkipTest
+from nose.tools import nottest
 
 log = logging.getLogger(__name__)
 
@@ -158,6 +159,7 @@ class TestSanity(basetest.Basetest):
                               did not match" % (expVersion,actVersion)
      
 
+    @nottest
     def test13_ValidateCephVersion(self):
         expVersion = monitoring.getExpectedVersion(
                      self.config.get('env','repo_baseurl'))
@@ -244,17 +246,20 @@ class TestSanity(basetest.Basetest):
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
 
+    @nottest
     def test27_restartRadosGW(self):
         for rgw in self.ctx['rgws']:
             operations.restartRadosGW(rgw['rgw-host'])
 
 
+    @nottest
     def test28_S3Tests(self):
         rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
         rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeS3Tests()
 
+    @nottest
     def test29_SwiftTests(self):
         rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
