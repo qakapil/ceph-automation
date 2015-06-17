@@ -240,6 +240,7 @@ class TestSanity(basetest.Basetest):
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
     
+    @nottest
     def test26_CreateRGW(self):
         for rgw in self.ctx['rgws']:
             rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
