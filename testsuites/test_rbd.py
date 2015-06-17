@@ -2,6 +2,7 @@ from utils import monitoring
 from utils import operations
 from utils import baseconfig
 from utils import rbd_operations
+from utils import rados_operations
 from utils import general
 from utils import zypperutils
 import inspect
@@ -47,6 +48,7 @@ def setup_module():
 def test_image():
     global vErrors
     try:
+        rados_operations.mkpool("data")
         delete_all_images()
         # For further testing without jenkins
         create_images_without_removal()
