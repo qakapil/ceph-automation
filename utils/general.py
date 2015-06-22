@@ -652,7 +652,7 @@ def convStringToJson(string):
     return op
 
 def doesFileExist(filepath, node):
-    cmd = 'ssh %s test -e %s' % (filepath, node)
+    cmd = 'ssh %s test -e %s' % (node, filepath)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc == 0:
         return True
@@ -660,7 +660,7 @@ def doesFileExist(filepath, node):
 
 
 def doesRegularFileExist(filepath, node):
-    cmd = 'ssh %s test -f %s' % (filepath, node)
+    cmd = 'ssh %s test -f %s' % (node, filepath)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc == 0:
         return True
