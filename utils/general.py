@@ -651,6 +651,29 @@ def convStringToJson(string):
     assert(type(op) == type({})), "string could not be converted to json doct"
     return op
 
+def doesFileExist(filepath, node):
+    cmd = 'ssh %s test -e %s' % (filepath, node)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        return True
+    return False
+
+
+def doesRegularFileExist(filepath, node):
+    cmd = 'ssh %s test -f %s' % (filepath, node)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        return True
+    return False
+
+
+def doesCommandPass(cmd):
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        return True
+    return False
+
+    
 
 class ListExceptions:
     excList = []

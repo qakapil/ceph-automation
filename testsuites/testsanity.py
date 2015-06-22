@@ -260,6 +260,15 @@ class TestSanity(basetest.Basetest):
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeSwiftTests()
 
+    def test31_ValidateLogrotate(self):
+        if general.doesFileExist('/usr/sbin/logrotate', os.environ["CLIENTNODE"]) != True:
+            assert(False), '/usr/sbin/logrotate was not present'
+        if  general.doesRegularFileExist('/etc/logrotate.d/ceph', os.environ["CLIENTNODE"]) != True:
+            assert(False), '/etc/logrotate.d/ceph was not present'
+        cmd = 'ssh %s /usr/sbin/logrotate -f /etc/logrotate.d/ceph' % os.environ["CLIENTNODE"]
+        if general.doesCommandPass(cmd) != True:
+            assert(False), 'command /usr/sbin/logrotate -f /etc/logrotate.d/ceph failed'
+
  
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
