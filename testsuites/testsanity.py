@@ -265,7 +265,7 @@ class TestSanity(basetest.Basetest):
             assert(False), '/usr/sbin/logrotate was not present'
         if  general.doesRegularFileExist('/etc/logrotate.d/ceph', os.environ["CLIENTNODE"]) != True:
             assert(False), '/etc/logrotate.d/ceph was not present'
-        cmd = 'ssh %s /usr/sbin/logrotate -f /etc/logrotate.d/ceph' % os.environ["CLIENTNODE"]
+        cmd = 'ssh %s sudo /usr/sbin/logrotate -f /etc/logrotate.d/ceph' % os.environ["CLIENTNODE"]
         if general.doesCommandPass(cmd) != True:
             assert(False), 'command /usr/sbin/logrotate -f /etc/logrotate.d/ceph failed'
 
