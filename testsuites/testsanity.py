@@ -161,7 +161,7 @@ class TestSanity(basetest.Basetest):
                               did not match" % (expVersion,actVersion)
      
 
-    @nottest
+    @SkipTest
     def test13_ValidateCephVersion(self):
         expVersion = monitoring.getExpectedVersion(
                      self.config.get('env','repo_baseurl'))
