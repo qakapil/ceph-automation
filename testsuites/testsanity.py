@@ -7,8 +7,10 @@ from utils import general
 from utils import rbd_operations
 from utils import rgw_tasks
 import logging,time,re, os, sys
-from nose.exc import SkipTest
-from nose.tools import nottest
+from nose.plugins.skip import SkipTest
+
+#from nose.exc import SkipTest
+#from nose.tools import nottest
 
 log = logging.getLogger(__name__)
 
@@ -240,27 +242,27 @@ class TestSanity(basetest.Basetest):
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
     
-    @nottest
+    @SkipTest
     def test26_CreateRGW(self):
         for rgw in self.ctx['rgws']:
             rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
 
-    @nottest
+    @SkipTest
     def test27_restartRadosGW(self):
         for rgw in self.ctx['rgws']:
             operations.restartRadosGW(rgw['rgw-host'])
 
 
-    @nottest
+    @SkipTest
     def test28_S3Tests(self):
         rgw_tasks.prepareS3Conf(self.ctx['rgws'][0])
         rgw_tasks.createS3TestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeS3Tests()
 
-    @nottest
+    @SkipTest
     def test29_SwiftTests(self):
         rgw_tasks.prepareSwiftConf(self.ctx['rgws'][0])
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
