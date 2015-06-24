@@ -27,6 +27,11 @@ class TestInstallCheck(basetest.Basetest):
         base_url = os.environ.get("BASE_REPOURL", "http://dist.suse.de/ibs/SUSE:/SLE-12:/GA/standard/")
 
         zypperutils.addRepo(base_reponame, base_url, node)
+
+        if os.environ.get("BASE_REPONAME2"):
+            base_reponame2 = os.environ.get("BASE_REPONAME2")
+            base_url2 = os.environ.get("BASE_REPOURL2")
+            zypperutils.addRepo(base_reponame2, base_url2, node)
         
         if os.environ.get("ISO1"):
             sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node, os.environ.get("ISO1"))
