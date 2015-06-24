@@ -56,8 +56,8 @@ class TestInstallCheck(basetest.Basetest):
     
     def testInstallCheck(self):
         try:
-            general.runInstallCheck(self.node, self.base_reponame, 'ceph')
-            general.runInstallCheck(self.node, self.base_reponame, 'ceph-debug')
+            general.runInstallCheck(self.node, self.base_reponame, 'ceph', self.base_reponame2)
+            general.runInstallCheck(self.node, self.base_reponame, 'ceph-debug', self.base_reponame2)
             general.findDupPackages(self.node, self.base_reponame, 'ceph')
         except  Exception as e:
             self.printData['InstallCheck_error'] = str(e)
