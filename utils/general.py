@@ -655,5 +655,28 @@ def convStringToJson(string):
     return op
 
 
+
+def doesFileExist(filepath, node):
+    cmd = 'ssh %s test -e %s' % (node, filepath)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        return True
+    return False
+
+
+def doesRegularFileExist(filepath, node):
+    cmd = 'ssh %s test -f %s' % (node, filepath)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        return True
+    return False
+
+
+def doesCommandPass(cmd):
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        return True
+    return False
+
 class ListExceptions:
     excList = []
