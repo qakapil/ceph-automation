@@ -142,7 +142,6 @@ class TestSanity(basetest.Basetest):
         for node in self.ctx['initmons']:
             operations.restartCeph(node)
     
-    '''
     def test12_ValidateCephStatus(self):
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
@@ -192,18 +191,28 @@ class TestSanity(basetest.Basetest):
     
     def test15_ValidateDefaultPools(self):
         def_pools = monitoring.getDefaultPools()
-        assert ('0 data,1 metadata,2 rbd,' in def_pools),"The default \
+        assert ('0 rbd,' in def_pools),"The default \
         pools were %s" % def_pools
+
+
+    def test16_CreatePools(self):
+        for pool in self.ctx['createpools']:
+            operations.createPool(pool)
+
+    def test17_ValidatePools(self):
+        for pool in self.ctx['createpools']:
+            operations.validatePool(pool)
+
      
-    def test16_CreateImages(self):
+    def test18_CreateImages(self):
         for image in self.ctx['images']:
             rbd_operations.createRBDImage(image)
     
-    def test17_RemoveImages(self):
+    def test19_RemoveImages(self):
         for image in self.ctx['images']:
             rbd_operations.rbdRemovePoolImage(image)
 
-    def test18_ValidateMonStat(self):
+    def test20_ValidateMonStat(self):
         mon_stat = monitoring.getMonStat()
         log.info("the mon stat is "+ str(mon_stat))
         matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
@@ -215,27 +224,17 @@ class TestSanity(basetest.Basetest):
         "the monlist in quorum was not as expected"
 
     
-    def test19_ValidateOSDStat(self):
+    def test21_ValidateOSDStat(self):
         osd_stat = monitoring.getOSDStat()
         n = len(self.ctx['osd_activate'])
         expStr = "%s osds: %s up, %s in" % (n,n,n)
         assert(expStr in osd_stat),"osd stat validation failed" 
     
-    def test20_RadosObjects(self):
+    def test22_RadosObjects(self):
         for radosobject in self.ctx['radosobjects']:
             operations.createValidateObject(radosobject)
         for radosobject in self.ctx['radosobjects']:
             operations.removeObject(radosobject)
-    
-    
-       
-    def test21_CreatePools(self):
-        for pool in self.ctx['createpools']:
-            operations.createPool(pool)
-        
-    def test22_ValidatePools(self):
-        for pool in self.ctx['createpools']:
-            operations.validatePool(pool)
     
     def test23_DeletePools(self):
         for pool in self.ctx['createpools']:
@@ -284,7 +283,7 @@ class TestSanity(basetest.Basetest):
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeSwiftTests()
-    '''
+    
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         

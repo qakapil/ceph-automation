@@ -31,6 +31,9 @@ radosobjects:
 - {objname: test-obj-1, pool: data}
 createpools:
 - {poolname: test-pool-1, pg-num: 64, size: 2}
+- {poolname: data, pg-num: 64, size: 2}
+- {poolname: metadata, pg-num: 64, size: 2}
+
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
 rgws:
