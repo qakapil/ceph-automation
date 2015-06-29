@@ -248,8 +248,8 @@ class TestSanity(basetest.Basetest):
         str_osd_tree = monitoring.getOSDtree()
         osd_tree = str_osd_tree.split('\n')
         for i in range(len(osd_tree)-1):
-            osd_tree[i] = osd_tree[i].split('\t')
-        indx = osd_tree[0].index('weight')
+            osd_tree[i] = osd_tree[i].split()
+        indx = osd_tree[0].index('WEIGHT')
         for i in range(len(osd_tree)-1):
             value = osd_tree[i][indx].strip()
             assert('0' != value),"the weight of the\
