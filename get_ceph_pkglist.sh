@@ -25,5 +25,6 @@ for i in $pkgs_list; do
 done
 
 export pkgs_arr
+echo If suite passes, following packages will be copypac\'d:${pkgs_arr[@]}
 popd
 
