@@ -7,7 +7,8 @@ if [ ! -d ~/workspace/Devel:Storage:2.0:Staging ] ; then
 fi
 
 #pkgs_list=$($iosc ls Devel:Storage:2.0:Staging | grep -v ^_)
-pkgs_list="ceph ceph-deploy python-remoto python-execnet python-itsdangerous"
+pkgs_list="ceph ceph-deploy python-remoto python-execnet python-itsdangerous fio gfio ceph-radosgw ceph-radosgw-debuginfo ceph-test\
+           ses-release"
 
 pushd ~/workspace/Devel:Storage:2.0:Staging
 $iosc up
