@@ -323,11 +323,18 @@ def verifycleanup(listNodes):
 
 
 def perNodeCleanUp(listNodes, reponame):
+    diff_pkgs = ['python-cephfs', 'python-rbd', 'python-rados']
     for node in listNodes:
         try:
             zypperutils.removeAllPkgsFromRepo(reponame, node)
         except Exception as e:
             log.warning("Error while removing packages...."+str(sys.exc_info()[1]))
+        for pkg in diff_pkgs:
+            try:
+                zypperutils.removePkg(pkg, node)
+            except:
+                log.warning("Error while removing pkg %s on node %s" % (pkg, node))
+
         cmd = "ssh %s df | awk '{print $6}'" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
