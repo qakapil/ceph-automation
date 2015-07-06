@@ -165,9 +165,13 @@ class TestSanity(basetest.Basetest):
         expVersion = monitoring.getExpectedVersion(
                      self.config.get('env','repo_baseurl'))
         actVersion = monitoring.getActuaVersion()
-        if actVersion not in expVersion:
-            raise Exception, "expected '%s' and actual '%s' \
-                versions did not match" % (expVersion,actVersion)
+        #if actVersion not in expVersion:
+            #raise Exception, "expected '%s' and actual '%s' \
+                #versions did not match" % (expVersion,actVersion)
+        if '0.94-'not in actVersion:
+            raise Exception, "actual version of ceph '%s' did not include '0.94.' " % actVersion
+        if '0.94.1'not in expVersion:
+            raise Exception, "expected version of ceph '%s' did not include '0.94.1' " % expVersion
     
     def test14_ValidateDefaultPools(self):
         def_pools = monitoring.getDefaultPools()
