@@ -269,6 +269,15 @@ class TestSanity(basetest.Basetest):
         if general.doesCommandPass(cmd) != True:
             assert(False), 'command /usr/sbin/logrotate -f /etc/logrotate.d/ceph failed'
 
+    def test32_Validate50rbdrules(self):
+        if  general.doesRegularFileExist('/usr/lib/udev/rules.d/50-rbd.rules', os.environ["CLIENTNODE"]) != True:
+            assert(False), '/usr/lib/udev/rules.d/50-rbd.rules'
+        srcpkg = general.getFileSource('/usr/lib/udev/rules.d/50-rbd.rules', os.environ["CLIENTNODE"])
+        if 'ceph-common' not in srcpkg:
+            assert(False), 'ceph-common was not the source package'
+
+
+
  
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
