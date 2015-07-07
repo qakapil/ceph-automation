@@ -5,6 +5,7 @@ import zypperutils
 import time
 import json
 import ast
+import general
 log = logging.getLogger(__name__)
 
 
@@ -684,6 +685,13 @@ def doesCommandPass(cmd):
     if rc == 0:
         return True
     return False
+
+def getFileSource(filepath, node):
+    cmd = 'ssh %s rpm -qf %s' % (node, filepath)
+    stdout, stderr = general.eval_returns(cmd)
+    return stdout.strip()
+
+
 
 class ListExceptions:
     excList = []
