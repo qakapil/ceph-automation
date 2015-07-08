@@ -261,7 +261,7 @@ class TestSanity(basetest.Basetest):
         cmd = 'ssh %s "cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/iogen.sh"' \
               % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'])
         general.eval_returns(cmd)
-
+    '''
     def test12_iozone(self):
         cmd = 'ssh %s rm -rf %s/*' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
@@ -289,7 +289,7 @@ class TestSanity(basetest.Basetest):
         cmd = 'ssh %s "cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/iozone-sync.sh"' \
               % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'])
         general.eval_returns(cmd)
-
+    '''
     def test14_ISCSICLEANUP(self):
         for iscsi_target in self.ctx['iscsi_targets']:
             iscsi.cleanupISCSI(iscsi_target['client_node'], iscsi_target['node'], iscsi_target['iqn'], \
