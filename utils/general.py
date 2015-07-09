@@ -366,6 +366,46 @@ def perNodeCleanUp(listNodes, reponame):
         rc,stdout,stderr = launch(cmd=cmd)
 
     verifycleanup(listNodes)
+    zypperDUPReboot(listNodes)
+
+
+
+
+def zypperDUPReboot(listNodes):
+    for node in listNodes:
+        zypperutils.zypperDupAll(node)
+        cmd = "ssh root@%s sudo reboot" % (node)
+        rc, stdout, stderr = launch(cmd=cmd)
+        assert(rc == 0), stderr
+
+    reboot_nodes = listNodes
+
+    counter = 0
+    while len(reboot_nodes) > 0:
+        for node in reboot_nodes:
+            log.info("pinging "+ node)
+            response = os.system("ping -c 4 " + node)
+            if response == 0:
+                log.info("ping was successfull")
+                reboot_nodes.remove(node)
+            if len(reboot_nodes) == 0:
+                log.info("all the nodes rebooted successfully")
+                break
+            counter += 1
+            if counter > 120:
+                log.info("All nodes did not reboot after 30 mins ")
+                raise Exception, "Following nodes did not reboot after 30 mins "\
+                + str(reboot_nodes)
+            log.info("still waiting for nodes - "+reboot_nodes)
+            time.sleep(5)
+    exp_str = 'No processes using deleted files found'
+    for node in listNodes:
+        cmd = "ssh %s sudo zypper ps" % (node)
+        rc, stdout, stderr = launch(cmd=cmd)
+        assert(rc == 0), stderr
+        assert(exp_str in stdout.strip()), "processes were found running deleted files "+ stdout
+
+
 
 
 def removeOldRepos(listNodes, listRepos):

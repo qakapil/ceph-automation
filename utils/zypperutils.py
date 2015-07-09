@@ -130,3 +130,10 @@ def zypperDup(node, repo):
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception,"Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
+
+
+def zypperDupAll(node):
+    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup" % (node, repo)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        raise Exception,"Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
