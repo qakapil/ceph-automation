@@ -376,7 +376,7 @@ def zypperDUPReboot(listNodes, reponame):
         zypperutils.zypperDup(node, reponame)
         cmd = "ssh root@%s sudo reboot" % (node)
         rc, stdout, stderr = launch(cmd=cmd)
-        assert(rc == 0), stderr
+        assert(rc == 255), stderr
 
     reboot_nodes = listNodes
 
