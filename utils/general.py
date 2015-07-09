@@ -366,14 +366,14 @@ def perNodeCleanUp(listNodes, reponame):
         rc,stdout,stderr = launch(cmd=cmd)
 
     verifycleanup(listNodes)
-    zypperDUPReboot(listNodes)
+    zypperDUPReboot(listNodes, reponame)
 
 
 
 
-def zypperDUPReboot(listNodes):
+def zypperDUPReboot(listNodes, reponame):
     for node in listNodes:
-        zypperutils.zypperDupAll(node)
+        zypperutils.zypperDup(node, reponame)
         cmd = "ssh root@%s sudo reboot" % (node)
         rc, stdout, stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
