@@ -133,7 +133,7 @@ def zypperDup(node, repo):
 
 
 def zypperDupAll(node):
-    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup" % (node, repo)
+    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup" % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception,"Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
