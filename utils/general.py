@@ -396,7 +396,7 @@ def zypperDUPReboot(listNodes, reponame):
                 log.info("All nodes did not reboot after 30 mins ")
                 raise Exception, "Following nodes did not reboot after 30 mins "\
                 + str(reboot_nodes)
-            log.info("still waiting for nodes - "+reboot_nodes)
+            log.info("still waiting for nodes - "+str(reboot_nodes))
             time.sleep(5)
     exp_str = 'No processes using deleted files found'
     for node in listNodes:
