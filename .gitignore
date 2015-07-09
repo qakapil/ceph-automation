@@ -8,4 +8,6 @@
 nosetests.xml
 rpm_versions.txt
 setup.cfg
+/.idea/workspace.xml
+\.idea/workspace.xml
 *~

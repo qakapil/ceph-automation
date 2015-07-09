@@ -378,7 +378,7 @@ def zypperDUPReboot(listNodes, reponame):
         rc, stdout, stderr = launch(cmd=cmd)
         assert(rc == 255), stderr
 
-    reboot_nodes = listNodes
+    reboot_nodes = list(listNodes)
 
     counter = 0
     while len(reboot_nodes) > 0:
