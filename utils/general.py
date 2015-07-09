@@ -396,7 +396,7 @@ def zypperDUPReboot(listNodes, reponame):
                 log.info("All nodes did not reboot after 30 mins ")
                 raise Exception, "Following nodes did not reboot after 30 mins "\
                 + str(reboot_nodes)
-            log.info("still waiting for nodes - "+reboot_nodes)
+            log.info("still waiting for nodes - "+str(reboot_nodes))
             time.sleep(5)
     exp_str = 'No processes using deleted files found'
     for node in listNodes:
@@ -566,8 +566,11 @@ def printISOurl(iso_name, url):
     f.close()
 
 
-def runInstallCheck(node, baserepo, targetrepo):
-    cmd = 'ssh %s installcheck x86_64  --withobsoletes /var/cache/zypp/solv/%s/solv --nocheck /var/cache/zypp/solv/%s/solv' % (node, targetrepo, baserepo)
+def runInstallCheck(node, baserepo, targetrepo, baserepo2=None):
+    if baserepo2:
+        cmd = 'ssh %s installcheck x86_64  --withobsoletes /var/cache/zypp/solv/%s/solv --nocheck /var/cache/zypp/solv/%s/solv /var/cache/zypp/solv/%s/solv' % (node, targetrepo, baserepo, baserepo2)
+    else:
+        cmd = 'ssh %s installcheck x86_64  --withobsoletes /var/cache/zypp/solv/%s/solv --nocheck /var/cache/zypp/solv/%s/solv' % (node, targetrepo, baserepo)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "InstallCheck Unsuccessfull. Error executing command '%s'. \
@@ -699,6 +702,8 @@ def convStringToJson(string):
     assert(type(op) == type({})), "string could not be converted to json doct"
     return op
 
+
+
 def doesFileExist(filepath, node):
     cmd = 'ssh %s test -e %s' % (node, filepath)
     rc,stdout,stderr = launch(cmd=cmd)
@@ -721,11 +726,11 @@ def doesCommandPass(cmd):
         return True
     return False
 
-    
 def getFileSource(filepath, node):
     cmd = 'ssh %s rpm -qf %s' % (node, filepath)
     stdout, stderr = general.eval_returns(cmd)
     return stdout.strip()
+
 
 
 class ListExceptions:
