@@ -46,17 +46,19 @@ class TestSanity(basetest.Basetest):
                 media2_iso_name = 'SUSE-'+sMedia2+'-Media2.iso'
 
 
-        general.mount_extISO('/tmp/'+media1_iso_name, '/tmp/media1')
-        general.mount_extISO('/tmp/'+media2_iso_name, '/tmp/media2')
-        
-        general.runXCDCHK(media1_iso_name, '/tmp/media1', 'Media1')
-        general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
+
 
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
             #cephdeploy.cleanupNodes(cls.ctx['allnodes'],'ceph', 'ceph-debug')
             general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
+
+        general.mount_extISO('/tmp/'+media1_iso_name, '/tmp/media1')
+        general.mount_extISO('/tmp/'+media2_iso_name, '/tmp/media2')
+
+        general.runXCDCHK(media1_iso_name, '/tmp/media1', 'Media1')
+        general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
 
         general.printISOurl(media1_iso_name, url)
     
@@ -183,8 +185,7 @@ class TestSanity(basetest.Basetest):
     
     
     def test14_ValidateCephVersion(self):
-        expVersion = monitoring.getExpectedVersion(
-                  self.config.get('env','repo_baseurl'))
+        expVersion = general.getCephExpVersionISO('/tmp/media1')
         actVersion = monitoring.getActuaVersion()
         #if actVersion not in expVersion:
             #raise Exception, "expected '%s' and actual '%s' \
