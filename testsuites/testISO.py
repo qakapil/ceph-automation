@@ -191,9 +191,9 @@ class TestSanity(basetest.Basetest):
             #raise Exception, "expected '%s' and actual '%s' \
                 #versions did not match" % (expVersion,actVersion)
         if '0.94-'not in actVersion:
-            raise Exception, "actual version of ceph '%s' did not include '0.94.' " % actVersion
-        if '0.94.1'not in expVersion:
-            raise Exception, "expected version of ceph '%s' did not include '0.94.1' " % expVersion
+            raise Exception, "actual version of ceph '%s' did not include '0.94-' " % actVersion
+        if '0.94.'not in expVersion:
+            raise Exception, "expected version of ceph '%s' did not include '0.94.' " % expVersion
     
     def test15_ValidateDefaultPools(self):
         def_pools = monitoring.getDefaultPools()
