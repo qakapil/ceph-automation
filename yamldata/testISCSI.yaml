@@ -21,7 +21,7 @@ osd_prepare:
 - teuthida-1:sdb
 
 images:
-- {name: im1, size: 10240, pool: rbd}
+- {name: im1, size: 50540, pool: rbd}
 
 
 iscsi_targets:
