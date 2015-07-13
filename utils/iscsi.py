@@ -167,6 +167,14 @@ def cleanupISCSI(client_node, target_node, iqn, port, block_name, drive_name):
     cmd = 'ssh %s sudo rbd unmap %s' % (target_node, drive_name)
     general.eval_returns(cmd)
 
+    cmd = "ssh %s lsblk -io KNAME,TYPE,SIZE,MODEL | grep IBLOCK | awk '{print $1}'" % (target_node)
+    stdout, strderr = general.eval_returns(cmd)
+    iblocks = stdout.strip().split('\n')
+    for iblock in iblocks:
+        if iblock != '':
+            cmd = 'ssh %s sudo umount /dev/%s1' % (target_node, iblock)
+            general.eval_returns(cmd)
+
 
 
 
