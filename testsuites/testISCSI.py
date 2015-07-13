@@ -112,7 +112,7 @@ class TestSanity(basetest.Basetest):
             drive = iscsi.partitionIBlock(iscsi_target['client_node'], block)
             iscsi.createFSMount(iscsi_target['client_node'], drive, 'xfs', self.ctx['test_dir'])
 
-
+    '''
     def test02_fio(self):
         cmd = 'ssh %s rm -rf %s/*' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
@@ -261,7 +261,7 @@ class TestSanity(basetest.Basetest):
         cmd = 'ssh %s "cd -- %s && CEPH_CLI_TEST_DUP_COMMAND=1 CEPH_REF=%s TESTDIR="%s" CEPH_ID="0" %s/iogen.sh"' \
               % (os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'], self.ctx['test_dir'], self.ctx['test_dir'])
         general.eval_returns(cmd)
-    '''
+
     def test12_iozone(self):
         cmd = 'ssh %s rm -rf %s/*' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
