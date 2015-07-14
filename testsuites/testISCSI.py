@@ -49,7 +49,7 @@ class TestSanity(basetest.Basetest):
 
         cephdeploy.osdPrepare(cls.ctx['osd_prepare'])
 
-        cephdeploy.osdActivate(self.ctx['osd_activate'])
+        cephdeploy.osdActivate(cls.ctx['osd_activate'])
 
         cephdeploy.addAdminNodes(cls.ctx['clientnode'])
 
