@@ -19,6 +19,10 @@ osd_prepare:
 - teuthida-4:sdb
 - teuthida-2:sdb
 - teuthida-1:sdb
+osd_activate:
+- teuthida-4:sdb1
+- teuthida-2:sdb1
+- teuthida-1:sdb1
 
 images:
 - {name: im1, size: 50540, pool: rbd}
