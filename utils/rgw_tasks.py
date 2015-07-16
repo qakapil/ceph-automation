@@ -148,7 +148,7 @@ def executeS3Tests():
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
-        cmd = "git clone -b firefly-original https://github.com/SUSE/s3-tests.git s3tests/cloned"
+        cmd = "git clone -b hammer https://github.com/SUSE/s3-tests.git s3tests/cloned"
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
