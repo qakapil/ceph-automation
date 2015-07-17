@@ -65,10 +65,8 @@ def initializeCalamari():
     
 
 def runUnitTests():
-    cmd = "ssh %s sudo \
-      CALAMARI_CONFIG=/etc/calamari/calamari.conf \
-      DJANGO_SETTINGS_MODULE=calamari_web.settings \
-      nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/cthulhu/tests" % (os.environ["CALAMARI_NODE"])
+
+    cmd = "ssh %s /usr/lib/python2.7/site-packages/calamari-server-test/run-unit-tests" % (os.environ["CALAMARI_NODE"])
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -139,10 +137,8 @@ def cleanupStaleNodes(listNodes):
 
 
 def runServerTests():
-    cmd = "ssh %s sudo \
-    CALAMARI_CONFIG=/etc/calamari/calamari.conf \
-    DJANGO_SETTINGS_MODULE=calamari_web.settings \
-    nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/tests" % (os.environ["CALAMARI_NODE"])
+
+    cmd = "ssh %s /usr/lib/python2.7/site-packages/calamari-server-test/run-server-tests"
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
