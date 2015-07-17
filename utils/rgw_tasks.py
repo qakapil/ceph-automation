@@ -7,15 +7,17 @@ log = logging.getLogger(__name__)
 
 def create_rgw(rgw_host, rgw_name):
     deleteOldRgwData(rgw_host)
-    cmd = "ssh %s ceph-deploy --overwrite-conf rgw create %s:%s"\
-    % (os.environ["CLIENTNODE"], rgw_host, rgw_name)
+    port = '8080'
+    fqdn = rgw_host+'.suse.de'
+    cmd = "ssh %s ceph-deploy --overwrite-conf rgw create %s:%s:%s:%s"\
+    % (os.environ["CLIENTNODE"], rgw_host, rgw_name, fqdn, port)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.error("error while creating rgw %s on %s " % (rgw_name, rgw_host))
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
     log.info("created rgw %s on %s " % (rgw_name, rgw_host))
     time.sleep(20)
-    cmd = "curl %s"% (rgw_host)
+    cmd = "curl %s:%s"% (rgw_host, port)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
