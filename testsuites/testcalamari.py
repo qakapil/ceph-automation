@@ -48,10 +48,10 @@ class TestSanity(basetest.Basetest):
         calamari_tasks.runUnitTests()
         
     
-        
+    '''
     def test04_AllAPITests(self):
         calamari_tasks.runRestAPITests()
-    
+    '''
     
     
     def test05_ServerTests(self):
