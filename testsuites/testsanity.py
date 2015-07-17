@@ -247,7 +247,7 @@ class TestSanity(basetest.Basetest):
     
     def test26_CreateRGW(self):
         for rgw in self.ctx['rgws']:
-            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
+            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'], rgw['rgw-port'])
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
 

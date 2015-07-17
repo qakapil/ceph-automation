@@ -5,9 +5,8 @@ from ConfigParser import SafeConfigParser
 
 log = logging.getLogger(__name__)
 
-def create_rgw(rgw_host, rgw_name):
+def create_rgw(rgw_host, rgw_name, port='7480'):
     deleteOldRgwData(rgw_host)
-    port = '8080'
     fqdn = rgw_host+'.suse.de'
     cmd = "ssh %s ceph-deploy --overwrite-conf rgw create %s:%s:%s:%s"\
     % (os.environ["CLIENTNODE"], rgw_host, rgw_name, fqdn, port)
