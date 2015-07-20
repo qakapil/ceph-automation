@@ -5,7 +5,7 @@ allnodes:
 - teuthida-1
 clientnode_ip: 10.160.223.10
 master_fqdn:
-   teuthida-10.suse.de
+   teuthida-6.suse.de
 cluster:
    jenkins@teuthida-4.suse.de:
        roles:
