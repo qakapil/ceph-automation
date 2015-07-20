@@ -142,38 +142,33 @@ class TestSanity(basetest.Basetest):
         for node in self.ctx['initmons']:
             operations.restartCeph(node)
     
-    '''
-    def test12_ValidateCephStatus(self):
+
+    def test12_ValidateCephHealth(self):
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
         if fsid not in status:
             raise Exception, "fsid %s was not found in ceph status %s"\
                               % (fsid,status)
-        active_clean = False
+        health_ok = False
         counter = 0
-        #default_pgs = str(self.ctx['default_pgs']).strip()
-        default_pgs = monitoring.getTotalPGs()
-        while not active_clean:
-            if default_pgs +' active+clean' in status:
-                log.info('placement groups in ceph status were \
-                          active+clean')
-                active_clean = True
-                continue
-            if (counter > 20):
-                raise Exception, 'PGs did not reach active+clean state \
-                                   after 5 mins'
+        while not health_ok:
+            if (counter > 40):
+                raise Exception, 'cluster health was no OK'
             log.debug('waiting for 5 seconds for ceph status to update')
-            time.sleep(5)
+            time.sleep(10)
             counter += 1
             status = monitoring.getCephStatus()
-        if 'health HEALTH_WARN clock skew detected' in status:
-            log.warning('health HEALTH_WARN clock skew detected in\
-                         ceph status')
-        if 'health HEALTH_OK' in status:
-            log.warning('cluster health is OK and PGs are active+clean')
+            if 'health HEALTH_WARN clock skew detected' in status:
+                log.warning('health HEALTH_WARN clock skew detected in\
+                             ceph status')
+            if 'health HEALTH_OK' in status:
+                health_ok = True
+                log.warning('cluster health is OK and PGs are active+clean')
+            for node in self.ctx['initmons']:
+                operations.restartCeph(node)
 
 
-    
+    '''
     def test13_ValidateCephDeployVersion(self):
         expVersion = general.getCephDeployExpVersionISO('/tmp/media1')
         actVersion = cephdeploy.getActuaVersion()
