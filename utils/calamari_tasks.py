@@ -35,6 +35,11 @@ def cleanupCalamari():
         
 
 def initializeCalamari():
+    cmd = "ssh %s sudo systemctl restart apache2.service" % (os.environ["CALAMARI_NODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+
     cmd = "scp utils/expect %s:~" % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
