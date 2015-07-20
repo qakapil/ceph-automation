@@ -143,8 +143,9 @@ class TestSanity(basetest.Basetest):
             if 'health HEALTH_OK' in status:
                 health_ok = True
                 log.warning('cluster health is OK and PGs are active+clean')
-            for node in self.ctx['initmons']:
-                operations.restartCeph(node)
+            else:
+                for node in self.ctx['initmons']:
+                    operations.restartCeph(node)
 
 
     
