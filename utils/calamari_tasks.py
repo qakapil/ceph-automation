@@ -30,11 +30,21 @@ def cleanupCalamari():
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+
+    cmd = "ssh %s sudo rm -rf /etc/salt/*" % (node)
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc != 0:
+        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
         
         
         
 
 def initializeCalamari():
+    cmd = "ssh %s sudo systemctl restart apache2.service" % (os.environ["CALAMARI_NODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    assert (rc == 0), "Error while executing the command %s.\
+    Error message: %s" % (cmd, stderr)
+
     cmd = "scp utils/expect %s:~" % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -65,8 +75,10 @@ def initializeCalamari():
     
 
 def runUnitTests():
-
-    cmd = "ssh %s sudo /usr/lib/python2.7/site-packages/calamari-server-test/run-unit-tests" % (os.environ["CALAMARI_NODE"])
+    cmd = "ssh %s sudo \
+      CALAMARI_CONFIG=/etc/calamari/calamari.conf \
+      DJANGO_SETTINGS_MODULE=calamari_web.settings \
+      nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/cthulhu/tests" % (os.environ["CALAMARI_NODE"])
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
@@ -127,7 +139,7 @@ def cleanupStaleNodes(listNodes):
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
-        cmd = "ssh %s sudo rm /etc/salt/pki/minion/minion_master.pub" % (node)
+        cmd = "ssh %s sudo rm -rf /etc/salt/*" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
@@ -137,8 +149,10 @@ def cleanupStaleNodes(listNodes):
 
 
 def runServerTests():
-
-    cmd = "ssh %s sudo /usr/lib/python2.7/site-packages/calamari-server-test/run-server-tests" % (os.environ["CALAMARI_NODE"])
+    cmd = "ssh %s sudo \
+    CALAMARI_CONFIG=/etc/calamari/calamari.conf \
+    DJANGO_SETTINGS_MODULE=calamari_web.settings \
+    nosetests -v /usr/lib/python2.7/site-packages/calamari-server-test/tests" % (os.environ["CALAMARI_NODE"])
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
