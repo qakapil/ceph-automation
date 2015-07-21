@@ -148,7 +148,7 @@ def cleanupStaleNodes(listNodes):
 
 def runServerTests():
 
-    cmd = "ssh %s sudo /usr/lib/python2.7/site-packages/calamari-server-test/run-server-tests"
+    cmd = "ssh %s sudo /usr/lib/python2.7/site-packages/calamari-server-test/run-server-tests" % % (os.environ["CALAMARI_NODE"])
     
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.\
