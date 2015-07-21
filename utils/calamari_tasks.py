@@ -29,9 +29,9 @@ def cleanupCalamari():
     cmd = 'ssh %s sudo rm expect /tmp/calamari_cluster.yaml /tmp/test.conf' % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
-        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
+        log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, str(stderr).strip()))
 
-    cmd = "ssh %s sudo rm -rf /etc/salt/*" % (node)
+    cmd = "ssh %s sudo rm -rf /etc/salt/*" % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.warning("Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr))
