@@ -126,14 +126,14 @@ def getPkgParamValue(pkgname, paramname, node):
 
 
 def zypperDup(node, repo):
-    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup --repo %s" % (node, repo)
+    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup --replacefiles --repo %s" % (node, repo)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception,"Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
 def zypperDupAll(node):
-    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup" % (node)
+    cmd = "ssh %s sudo zypper --non-interactive --no-gpg-checks --quiet dup --replacefiles" % (node)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception,"Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
