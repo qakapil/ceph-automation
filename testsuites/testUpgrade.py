@@ -151,9 +151,13 @@ class TestSanity(basetest.Basetest):
     def test14_ValidateCephVersion(self):
         expVersion = monitoring.getExpectedVersion(self.ctx['url2'])
         actVersion = monitoring.getActuaVersion()
-        if actVersion not in expVersion:
-            raise Exception, "expected '%s' and actual '%s' \
-                versions did not match" % (expVersion,actVersion)
+        #if actVersion not in expVersion:
+            #raise Exception, "expected '%s' and actual '%s' \
+                #versions did not match" % (expVersion,actVersion)
+        if '0.94-'not in actVersion:
+            raise Exception, "actual version of ceph '%s' did not include '0.94.' " % actVersion
+        if '0.94.'not in expVersion:
+            raise Exception, "expected version of ceph '%s' did not include '0.94' " % expVersion
     
     def test15_ValidateDefaultPools(self):
         def_pools = monitoring.getDefaultPools()
@@ -224,7 +228,7 @@ class TestSanity(basetest.Basetest):
     
     def test27_CreateRGW(self):
         for rgw in self.ctx['rgws']:
-            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'])
+            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'], rgw['rgw-port'])
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
 
