@@ -7,6 +7,7 @@ from utils import operations
 from utils import rbd_operations
 from utils import general
 import logging,time,re, os
+from nose.plugins.skip import SkipTest
 #from nose import with_setup
 
 log = logging.getLogger(__name__)
