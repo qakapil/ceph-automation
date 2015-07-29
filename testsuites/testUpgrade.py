@@ -205,8 +205,8 @@ class TestSanity(basetest.Basetest):
             operations.validatePool(pool)
     
     def test23_DeletePools(self):
-        for pool in self.ctx['createpools']:
-            operations.deletePool(pool)
+        pool = self.ctx['createpools'][0]
+        operations.deletePool(pool)
     
     def test24_Validatelibrbd(self):
         operations.validateLibRbdTests()
