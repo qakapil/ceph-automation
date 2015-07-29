@@ -126,8 +126,11 @@ class TestSanity(basetest.Basetest):
     def test02_libiscsi(self):
         cmd = 'ssh %s rm -rf %s/*' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
-        cmd = 'ssh %s "cd -- %s && scp utils/libiscsi-test.sh"' \
-              % ( os.environ["CLIENTNODE"], self.ctx['test_dir'])
+
+        cmd = 'ssh %s mkdir -p %s' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
+        general.eval_returns(cmd)
+        
+        cmd = "scp utils/libiscsi-test.sh %s:%s" % (os.environ["CALAMARI_NODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
 
         cmd = 'ssh %s sudo chmod 755 %s/libiscsi-test.sh' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
