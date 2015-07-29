@@ -126,8 +126,8 @@ class TestSanity(basetest.Basetest):
     def test02_libiscsi(self):
         cmd = 'ssh %s rm -rf %s/*' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
-        cmd = 'ssh %s "cd -- %s && wget https://github.com/SUSE/ceph/raw/%s/qa/workunits/suites/libiscsi-test.sh"' \
-              % ( os.environ["CLIENTNODE"], self.ctx['test_dir'], self.ctx['ceph_branch'])
+        cmd = 'ssh %s "cd -- %s && scp utils/libiscsi-test.sh"' \
+              % ( os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
 
         cmd = 'ssh %s sudo chmod 755 %s/libiscsi-test.sh' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
