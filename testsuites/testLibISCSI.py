@@ -31,6 +31,7 @@ class TestSanity(basetest.Basetest):
 
         url = cls.config.get('env','repo_baseurl')
         url_lib_iscsi = cls.config.get('env','libiscsi_repo_baseurl')
+        
         for node in cls.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
             zypperutils.addRepo('home_dmdiss_libiscsi', url_lib_iscsi, node)
