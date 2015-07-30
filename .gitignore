@@ -5,6 +5,8 @@
 *.log
 .idea/workspace.xml
 .idea/
+cfg/
+/cfg
 nosetests.xml
 rpm_versions.txt
 setup.cfg
