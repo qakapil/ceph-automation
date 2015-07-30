@@ -25,7 +25,6 @@ class TestSanity(basetest.Basetest):
         cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
-        monitoring.printRPMVersions(cls.config.get('env','libiscsi_repo_baseurl'))
 
         general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug', 'ceph_extras', 'home_dmdiss_libiscsi'])
 
