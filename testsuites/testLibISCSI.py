@@ -29,7 +29,7 @@ class TestSanity(basetest.Basetest):
         general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug', 'ceph_extras', 'home_dmdiss_libiscsi'])
 
         url = cls.config.get('env','repo_baseurl')
-        url_lib_iscsi = cls.config.get('env','libiscsi_repo_baseurl')
+        url_lib_iscsi = cls.config.get('libiscsi','repo_baseurl')
 
         for node in cls.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
