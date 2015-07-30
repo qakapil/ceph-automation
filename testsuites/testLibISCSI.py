@@ -30,12 +30,12 @@ class TestSanity(basetest.Basetest):
         general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug', 'ceph_extras', 'home_dmdiss_libiscsi'])
 
         url = cls.config.get('env','repo_baseurl')
+        url_lib_iscsi = cls.config.get('env','libiscsi_repo_baseurl')
+        
         for node in cls.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
-
-        url_lib_iscsi = cls.config.get('libiscsi','repo_baseurl')
-        for node in cls.ctx['allnodes']:
             zypperutils.addRepo('home_dmdiss_libiscsi', url_lib_iscsi, node)
+
 
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup is not None:
@@ -130,7 +130,7 @@ class TestSanity(basetest.Basetest):
         cmd = 'ssh %s mkdir -p %s' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
         
-        cmd = "scp utils/libiscsi-test.sh %s:%s" % (os.environ["CALAMARI_NODE"], self.ctx['test_dir'])
+        cmd = "scp utils/libiscsi-test.sh %s:%s" % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
 
         cmd = 'ssh %s sudo chmod 755 %s/libiscsi-test.sh' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
