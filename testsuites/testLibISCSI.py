@@ -25,13 +25,13 @@ class TestSanity(basetest.Basetest):
         cls.setLogger(cls,'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
-        monitoring.printRPMVersions(cls.config.get('libiscsi','repo_baseurl'))
+        monitoring.printRPMVersions(cls.config.get('env','libiscsi_url'))
 
         general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug', 'ceph_extras', 'home_dmdiss_libiscsi'])
 
         url = cls.config.get('env','repo_baseurl')
         url_lib_iscsi = cls.config.get('env','libiscsi_repo_baseurl')
-        
+
         for node in cls.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
             zypperutils.addRepo('home_dmdiss_libiscsi', url_lib_iscsi, node)
