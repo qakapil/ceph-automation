@@ -26,10 +26,10 @@ class TestSanity(basetest.Basetest):
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
 
-        general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug', 'ceph_extras', 'home_dmdiss_libiscsi'])
+        general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug', 'ceph_extras'])   # 'home_dmdiss_libiscsi'])
 
         url = cls.config.get('env','repo_baseurl')
-        url_lib_iscsi = cls.config.get('libiscsi','repo_baseurl')
+        url_lib_iscsi = cls.config.get('libiscsi','libiscsi_repo_baseurl')
 
         for node in cls.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
