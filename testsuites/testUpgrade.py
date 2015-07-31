@@ -74,7 +74,7 @@ class TestSanity(basetest.Basetest):
 
     def test10_ValidateCephStatus(self):
         actVersion = monitoring.getActuaVersion()
-        log.info('ceph version is: %s') % (actVersion)
+        log.info('ceph version is: %s' % actVersion)
         time.sleep(10)
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
@@ -116,7 +116,7 @@ class TestSanity(basetest.Basetest):
 
     def test12_ValidateCephStatus(self):
         actVersion = monitoring.getActuaVersion()
-        log.info('ceph version is: %s') % (actVersion)
+        log.info('ceph version is: %s' % actVersion)
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
         if fsid not in status:
