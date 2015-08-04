@@ -33,7 +33,8 @@ class TestSanity(basetest.Basetest):
         #-- which *it does* exist. So, having it manually/static *for now only* until we fix/understand it.
         #-- we ended up always with: http://dist.suse.de/install/SLP/SUSE-Enterprise-Storage-2.0-Alpha3/x86_64/DVD1/suse//
         #-- for the iscsi repo.
-        ''' [libiscsi]
+        '''
+            [libiscsi]
             loglevel=debug
             libiscsi_repo_baseurl="http://download.opensuse.org/repositories/home:/dmdiss:/libiscsi/SLE_12/"
             libiscsi_gpg_url="http://download.opensuse.org/repositories/home:/dmdiss:/libiscsi/SLE_12/repodata/repomd.xml.key"
@@ -54,6 +55,7 @@ class TestSanity(basetest.Basetest):
 
         zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
         zypperutils.installPkg('libiscsi-test', os.environ["CLIENTNODE"])
+        zypperutils.installPkg('libiscsi-utils', os.environ["CLIENTNODE"])
 
         cephdeploy.declareInitialMons(cls.ctx['initmons'])
 
@@ -131,7 +133,6 @@ class TestSanity(basetest.Basetest):
             iscsi.createFSMount(iscsi_target['client_node'], drive, 'xfs', self.ctx['test_dir'])
 
 
-
     def test02_libiscsi(self):
         cmd = 'ssh %s rm -rf %s/*' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
@@ -175,4 +176,5 @@ class TestSanity(basetest.Basetest):
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
                                'ceph')
         log.info('++++++++++++++Completed teardown_class++++++++++++')
+
 
