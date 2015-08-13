@@ -73,16 +73,23 @@ def osdActivate(listOSDs):
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
 
-def PrepareActivateOSDs(listOSDs):
+def PrepareActivateOSDs(listOSDs, dmcrypt=False):
     if len(listOSDs) < 1:
         log.error("OSDs list not provided in the yaml file")
         raise Exception, "OSDs list not provided in the yaml file"
     for osd in listOSDs:
-        cmd = 'ssh %s ceph-deploy osd prepare %s' % (os.environ["CLIENTNODE"], osd)
+        if dmcrypt:
+            cmd = 'ssh %s ceph-deploy osd --dmcrypt prepare %s' % (os.environ["CLIENTNODE"], osd)
+        else:
+            cmd = 'ssh %s ceph-deploy osd prepare %s' % (os.environ["CLIENTNODE"], osd)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-        cmd = 'ssh %s ceph-deploy osd activate %s' % (os.environ["CLIENTNODE"], osd)
+
+        if dmcrypt:
+            cmd = 'ssh %s ceph-deploy osd --dmcrypt activate %s' % (os.environ["CLIENTNODE"], osd)
+        else:
+            cmd = 'ssh %s ceph-deploy osd activate %s' % (os.environ["CLIENTNODE"], osd)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
