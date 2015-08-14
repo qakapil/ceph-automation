@@ -26,10 +26,21 @@ class TestSanity(basetest.Basetest):
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         monitoring.printRPMVersions(cls.config.get('env','repo_baseurl'))
 
-        general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug', 'ceph_extras', 'home_dmdiss_libiscsi'])
+        general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug', 'ceph_extras'])   # 'home_dmdiss_libiscsi'])
 
         url = cls.config.get('env','repo_baseurl')
-        url_lib_iscsi = cls.config.get('libiscsi','repo_baseurl')
+        #-- No working as it should. Not finding "libiscsi_repo_baseurl", in the "libiscsi"
+        #-- which *it does* exist. So, having it manually/static *for now only* until we fix/understand it.
+        #-- we ended up always with: http://dist.suse.de/install/SLP/SUSE-Enterprise-Storage-2.0-Alpha3/x86_64/DVD1/suse//
+        #-- for the iscsi repo.
+        '''
+            [libiscsi]
+            loglevel=debug
+            libiscsi_repo_baseurl="http://download.opensuse.org/repositories/home:/dmdiss:/libiscsi/SLE_12/"
+            libiscsi_gpg_url="http://download.opensuse.org/repositories/home:/dmdiss:/libiscsi/SLE_12/repodata/repomd.xml.key"
+        '''
+        #url_lib_iscsi = cls.config.get('libiscsi','libiscsi_repo_baseurl')
+        url_lib_iscsi = "http://download.opensuse.org/repositories/home:/dmdiss:/libiscsi/SLE_12/"
 
         for node in cls.ctx['allnodes']:
             zypperutils.addRepo('ceph', url, node)
@@ -44,6 +55,7 @@ class TestSanity(basetest.Basetest):
 
         zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
         zypperutils.installPkg('libiscsi-test', os.environ["CLIENTNODE"])
+        zypperutils.installPkg('libiscsi-utils', os.environ["CLIENTNODE"])
 
         cephdeploy.declareInitialMons(cls.ctx['initmons'])
 
@@ -121,7 +133,6 @@ class TestSanity(basetest.Basetest):
             iscsi.createFSMount(iscsi_target['client_node'], drive, 'xfs', self.ctx['test_dir'])
 
 
-
     def test02_libiscsi(self):
         cmd = 'ssh %s rm -rf %s/*' % (os.environ["CLIENTNODE"], self.ctx['test_dir'])
         general.eval_returns(cmd)
@@ -165,4 +176,5 @@ class TestSanity(basetest.Basetest):
         cephdeploy.cleanupNodes(self.ctx['allnodes'], 
                                'ceph')
         log.info('++++++++++++++Completed teardown_class++++++++++++')
+
 
