@@ -117,7 +117,7 @@ class TestSanity(basetest.Basetest):
             if node in self.ctx['initmons']:
                 service_name = 'ceph-mon@%s.service' % node
                 mon_service_starttime_post = general.getServiceStartTime(node, service_name)
-                assert(mon_service_starttime_pre==mon_service_starttime_post),"status of service \
+                assert(mon_service_starttime_pre==mon_service_starttime_post), "status of service \
                 %s was changed after upgrade" % service_name
             if node != os.environ["CLIENTNODE"]:
                 operations.actionOnCephService(node, 'start')
