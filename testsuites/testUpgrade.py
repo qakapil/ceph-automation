@@ -106,11 +106,19 @@ class TestSanity(basetest.Basetest):
 
     def test11_UpgradeCeph(self):
         for node in self.ctx['allnodes']:
+            if node in self.ctx['initmons']:
+                service_name = 'ceph-mon@%s.service' % node
+                mon_service_starttime_pre = general.getServiceStartTime(node, service_name)
             if node != os.environ["CLIENTNODE"]:
                 operations.actionOnCephService(node, 'stop')
             zypperutils.removeRepo('ceph', node)
             zypperutils.addRepo('ceph', self.ctx['url2'], node)
             zypperutils.zypperDup(node, 'ceph')
+            if node in self.ctx['initmons']:
+                service_name = 'ceph-mon@%s.service' % node
+                mon_service_starttime_post = general.getServiceStartTime(node, service_name)
+                assert(mon_service_starttime_pre==mon_service_starttime_post),"status of service \
+                %s was changed after upgrade" % service_name
             if node != os.environ["CLIENTNODE"]:
                 operations.actionOnCephService(node, 'start')
 

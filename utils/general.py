@@ -731,6 +731,10 @@ def getFileSource(filepath, node):
     stdout, stderr = general.eval_returns(cmd)
     return stdout.strip()
 
+def getServiceStartTime(node, service_name):
+    cmd = 'ssh %s systemctl show --property=ExecMainStartTimestamp %s' % (node, service_name)
+    stdout, stderr = general.eval_returns(cmd)
+    return stdout.strip()
 
 
 class ListExceptions:
