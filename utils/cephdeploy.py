@@ -5,18 +5,19 @@ import logging, sys, os
 
 log = logging.getLogger(__name__)
 
-def declareInitialMons(listMons):
+def declareInitialMons(listMons, keyserver=False):
     if len(listMons) < 1:
         log.error("initial mons list not provided in the yaml file")
         raise Exception, "initial mons list not provided in the yaml file"
     monlist = " ".join(listMons)
-    cmd = 'ssh %s ceph-deploy new %s' % (os.environ["CLIENTNODE"], monlist)
+    suffix = ''
+    if keyserver:
+        suffix = '--dmcrypt-key-server ' + str(keyserver)
+    cmd = 'ssh %s ceph-deploy new %s %s' % (os.environ["CLIENTNODE"], suffix, monlist)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    
-    
-    
+
 
 def installNodes(listNodes):
     if len(listNodes) < 1:
@@ -52,22 +53,28 @@ def osdZap(listOSDs):
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
-def osdPrepare(listOSDs):
+def osdPrepare(listOSDs, dmcrypt=False):
     if len(listOSDs) < 1:
         log.error("OSDs list not provided in the yaml file")
         raise Exception, "OSDs list not provided in the yaml file"
     for osd in listOSDs:
-        cmd = 'ssh %s ceph-deploy osd prepare %s' % (os.environ["CLIENTNODE"], osd)
+        if dmcrypt:
+            cmd = 'ssh %s ceph-deploy osd --dmcrypt prepare %s' % (os.environ["CLIENTNODE"], osd)
+        else:
+            cmd = 'ssh %s ceph-deploy osd prepare %s' % (os.environ["CLIENTNODE"], osd)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
-def osdActivate(listOSDs):
+def osdActivate(listOSDs, dmcrypt=False):
     if len(listOSDs) < 1:
         log.error("OSDs list not provided in the yaml file")
         raise Exception, "OSDs list not provided in the yaml file"
     for osd in listOSDs:
-        cmd = 'ssh %s ceph-deploy osd activate %s' % (os.environ["CLIENTNODE"], osd)
+        if dmcrypt:
+            cmd = 'ssh %s ceph-deploy osd --dmcrypt activate %s' % (os.environ["CLIENTNODE"], osd)
+        else:
+            cmd = 'ssh %s ceph-deploy osd activate %s' % (os.environ["CLIENTNODE"], osd)
         rc,stdout,stderr = launch(cmd=cmd)
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
