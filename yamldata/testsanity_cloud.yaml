@@ -35,4 +35,4 @@ createpools:
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
 rgws:
-- {rgw-host: host-44-0-1-248, rgw-name: gateway1, rgw-port: 80}
+- {rgw-host: host-44-0-1-248, rgw-name: gateway1, rgw-port: 7480}

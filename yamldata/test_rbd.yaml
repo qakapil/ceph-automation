@@ -40,4 +40,4 @@ qemu:
 - { pool: rbd, name: qemu1, size: 1000}
 - { pool: rbd, name: qemu2, size: 500}
 rgws:
-- {rgw-host: host-44-0-3-216, rgw-name: gateway1, rgw-port: 80}
+- {rgw-host: host-44-0-3-216, rgw-name: gateway1, rgw-port: 7480}
