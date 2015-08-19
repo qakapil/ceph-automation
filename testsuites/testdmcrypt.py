@@ -5,6 +5,7 @@ from utils import monitoring
 from utils import operations
 from utils import general
 from utils import rbd_operations
+from utils import dmcrypt_operations
 from utils import rgw_tasks
 import logging,time,re, os, sys
 from nose.plugins.skip import SkipTest
@@ -39,7 +40,7 @@ class TestSanity(basetest.Basetest):
 
     def setUp(self):
         if os.environ.get("CLUSTER_FAILED") == "Yes":
-           raise SkipTest("ceph cluster was not active+clean")
+            raise SkipTest("ceph cluster was not active+clean")
         log.info('++++++starting %s ++++++' % self._testMethodName)
 
     def test01_InstallCephDeploy(self):
@@ -74,8 +75,8 @@ class TestSanity(basetest.Basetest):
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
         if fsid not in status:
-            raise Exception, "fsid %s was not found in ceph status %s"\
-                              % (fsid,status)
+            raise Exception, "fsid %s was not found in ceph status %s" \
+                             % (fsid,status)
         active_clean = False
         counter = 0
         default_pgs = monitoring.getTotalPGs()
@@ -107,8 +108,8 @@ class TestSanity(basetest.Basetest):
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
         if fsid not in status:
-            raise Exception, "fsid %s was not found in ceph status %s"\
-                              % (fsid,status)
+            raise Exception, "fsid %s was not found in ceph status %s" \
+                             % (fsid,status)
         health_ok = False
         counter = 0
         while not health_ok:
@@ -130,11 +131,11 @@ class TestSanity(basetest.Basetest):
 
     def test13_ValidateCephVersion(self):
         expVersion = monitoring.getExpectedVersion(
-                     self.config.get('env','repo_baseurl'))
+            self.config.get('env','repo_baseurl'))
         actVersion = monitoring.getActuaVersion()
         #if actVersion not in expVersion:
-            #raise Exception, "expected '%s' and actual '%s' \
-                #versions did not match" % (expVersion,actVersion)
+        #raise Exception, "expected '%s' and actual '%s' \
+        #versions did not match" % (expVersion,actVersion)
         if '0.94-'not in actVersion:
             raise Exception, "actual version of ceph '%s' did not include '0.94.' " % actVersion
         if '0.94.'not in expVersion:
@@ -165,12 +166,12 @@ class TestSanity(basetest.Basetest):
         mon_stat = monitoring.getMonStat()
         log.info("the mon stat is "+ str(mon_stat))
         matchObj = re.match( r'.*:(.*) mons at .* quorum (.*?) (.*)', mon_stat, re.M|re.I)
-        assert(len(self.ctx['initmons']) == int(matchObj.group(1))),\
-        "the number of mons active were not as expected"
-        assert(len(self.ctx['initmons']) == len(matchObj.group(2).split(','))),\
-        "the number of mons in quorum were not as expected"
-        assert(sorted(self.ctx['initmons']) == sorted(matchObj.group(3).split(','))),\
-        "the monlist in quorum was not as expected"
+        assert(len(self.ctx['initmons']) == int(matchObj.group(1))), \
+            "the number of mons active were not as expected"
+        assert(len(self.ctx['initmons']) == len(matchObj.group(2).split(','))), \
+            "the number of mons in quorum were not as expected"
+        assert(sorted(self.ctx['initmons']) == sorted(matchObj.group(3).split(','))), \
+            "the monlist in quorum was not as expected"
 
     def test20_ValidateOSDStat(self):
         osd_stat = monitoring.getOSDStat()
@@ -222,6 +223,9 @@ class TestSanity(basetest.Basetest):
         if 'ceph-common' not in srcpkg:
             assert(False), 'ceph-common was not the source package'
 
+    def test33_validate_partition_type(self):
+        dmcrypt_operations.validate_partition_type()
+
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
 
@@ -233,5 +237,5 @@ class TestSanity(basetest.Basetest):
             return
         log.info('++++++++++++++starting teardown_class+++++++++++++')
         cephdeploy.cleanupNodes(self.ctx['allnodes'],
-                               'ceph')
+                                'ceph')
         log.info('++++++++++++++Completed teardown_class++++++++++++')

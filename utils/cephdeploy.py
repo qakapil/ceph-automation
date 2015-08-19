@@ -5,18 +5,19 @@ import logging, sys, os
 
 log = logging.getLogger(__name__)
 
-def declareInitialMons(listMons):
+def declareInitialMons(listMons, keyserver=False):
     if len(listMons) < 1:
         log.error("initial mons list not provided in the yaml file")
         raise Exception, "initial mons list not provided in the yaml file"
     monlist = " ".join(listMons)
-    cmd = 'ssh %s ceph-deploy new %s' % (os.environ["CLIENTNODE"], monlist)
+    suffix = ''
+    if keyserver:
+        suffix = '--dmcrypt-key-server ' + str(keyserver)
+    cmd = 'ssh %s ceph-deploy new %s %s' % (os.environ["CLIENTNODE"], suffix, monlist)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
-    
-    
-    
+
 
 def installNodes(listNodes):
     if len(listNodes) < 1:
