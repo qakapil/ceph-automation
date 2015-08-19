@@ -9,7 +9,7 @@ def create_rgw(rgw_host, rgw_name, port='7480'):
     deleteOldRgwData(rgw_host)
     fqdn = rgw_host+'.suse.de'
     cmd = "ssh %s ceph-deploy --overwrite-conf rgw create %s:%s:%s:%s"\
-    % (os.environ["CLIENTNODE"], rgw_host, rgw_name, fqdn, port)
+    % (os.environ["CLIENTNODE"], rgw_host, rgw_name, rgw_host, port)
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         log.error("error while creating rgw %s on %s " % (rgw_name, rgw_host))
@@ -169,10 +169,6 @@ def executeS3Tests():
         log.info("cleaning up s3tests dir ..") 
         cmd = "rm -rf s3tests && rm /tmp/s3-tests.conf"
         rc,stdout,stderr = launch(cmd=cmd)
-
-
-
-
 
 
 def executeSwiftTests():

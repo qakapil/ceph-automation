@@ -109,11 +109,14 @@ class TestSanity(basetest.Basetest):
             if node in self.ctx['initmons']:
                 service_name = 'ceph-mon@%s.service' % node
                 mon_service_starttime_pre = general.getServiceStartTime(node, service_name)
-            if node != os.environ["CLIENTNODE"]:
+            if node != os.environ['CLIENTNODE']:
                 operations.actionOnCephService(node, 'stop')
             zypperutils.removeRepo('ceph', node)
             zypperutils.addRepo('ceph', self.ctx['url2'], node)
-            zypperutils.zypperDup(node, 'ceph')
+            if os.environ['ZYPPER_UPGRADE'] == 'up':
+                zypperutils.zypperUp(node, 'ceph')
+            else:
+                zypperutils.zypperDup(node, 'ceph')
             if node in self.ctx['initmons']:
                 service_name = 'ceph-mon@%s.service' % node
                 mon_service_starttime_post = general.getServiceStartTime(node, service_name)
