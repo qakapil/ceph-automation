@@ -48,4 +48,4 @@ createpools:
 librbd_images:
 - {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
 rgws:
-- {rgw-host: teuthida-1, rgw-name: gateway1, rgw-port: 80, apache: Yes}
+- {rgw-host: teuthida-4, rgw-name: gateway4, rgw-port: 80, apache: Yes}
