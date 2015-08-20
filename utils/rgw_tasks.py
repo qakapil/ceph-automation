@@ -1,4 +1,4 @@
-import os, sys, time
+import os, sys, time, socket
 from launch import launch
 import logging
 from ConfigParser import SafeConfigParser
@@ -7,13 +7,13 @@ log = logging.getLogger(__name__)
 
 def create_rgw(rgw_host, rgw_name, port='7480', apache=None):
     deleteOldRgwData(rgw_host)
-    fqdn = rgw_host+'.suse.de'
+    fqdn = socket.getfqdn(rgw_host)
     if apache:
         apache = '--cgi'
     else:
         apache = ''
     cmd = "ssh %s ceph-deploy --overwrite-conf rgw create %s:%s:%s:%s %s"\
-    % (os.environ["CLIENTNODE"], rgw_host, rgw_name, rgw_host, port, apache)
+    % (os.environ["CLIENTNODE"], rgw_host, rgw_name, fqdn, port, apache)
     cmd = cmd.strip()
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
