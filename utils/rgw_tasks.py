@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 def create_rgw(rgw_host, rgw_name, port='7480', apache=None):
     deleteOldRgwData(rgw_host)
     fqdn = rgw_host+'.suse.de'
-    if apache and apache.lower()=='yes':
+    if apache:
         apache = '--cgi'
     else:
         apache = ''
