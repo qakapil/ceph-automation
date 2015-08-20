@@ -270,7 +270,7 @@ class TestSanity(basetest.Basetest):
     def test27_CreateRGW(self):
         for rgw in self.ctx['rgws']:
             apache = rgw.get('apache', None)
-            log.info('APACHE '+apache)
+            log.info('APACHE '+str(apache))
             rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'], rgw['rgw-port'], apache=apache)
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
