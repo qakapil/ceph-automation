@@ -28,7 +28,7 @@ def create_rgw(rgw_host, rgw_name, port='7480', apache=None):
     anonymus_op = '<?xml version="1.0" encoding="UTF-8"?><ListAllMyBucketsResult \
 xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Owner><ID>anonymous</ID>\
 <DisplayName></DisplayName></Owner><Buckets></Buckets></ListAllMyBucketsResult>'
-    assert (stdout.strip()==anonymus_op), "gateway did not give proper response"
+    assert (stdout.strip()==anonymus_op), "gateway gave bad response - "+ stdout +'----'+ stderr
 
 
 def deleteOldRgwData(rgw_host):
