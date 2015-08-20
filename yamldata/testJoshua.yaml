@@ -37,4 +37,4 @@ librbd_images:
 snapshots:
 - { poolname: rbd, snapname: snap, imagename: librbdimg}
 rgws:
-- {rgw-host: host-44-0-1-111, rgw-name: gateway1, rgw-port: 80}
+- {rgw-host: host-44-0-1-111, rgw-name: gateway1, rgw-port: 7480}
