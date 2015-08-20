@@ -16,6 +16,7 @@ def create_rgw(rgw_host, rgw_name, port='7480', apache=None):
     % (os.environ["CLIENTNODE"], rgw_host, rgw_name, fqdn, port, apache)
     cmd = cmd.strip()
     rc,stdout,stderr = launch(cmd=cmd)
+    log.info(stdout +'----'+ stderr)
     if rc != 0:
         log.error("error while creating rgw %s on %s " % (rgw_name, rgw_host))
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
