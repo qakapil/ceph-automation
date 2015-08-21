@@ -223,9 +223,6 @@ class TestSanity(basetest.Basetest):
         if 'ceph-common' not in srcpkg:
             assert(False), 'ceph-common was not the source package'
 
-    def test33_validate_partition_type(self):
-        dmcrypt_operations.validate_partition_type()
-
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
 

@@ -36,9 +36,9 @@ osd_activate:
 - teuthida-2:sdd1:/dev/sdn1
 default_pgs: 192
 images:
-- {name: im1, size: 1024, pool: rbd}
-- {name: im2, size: 1024}
-- {name: im3, size: 512, pool: data}
+- {name: im1_rbd, size: 1024, pool: rbd}
+- {name: im2_rbd, size: 1024}
+- {name: im3_rbd, size: 512, pool: data}
 radosobjects:
 - {objname: test-obj-1, pool: data}
 createpools:
