@@ -1,16 +1,22 @@
-import os, sys, time
+import os, sys, time, socket
 from launch import launch
 import logging
 from ConfigParser import SafeConfigParser
 
 log = logging.getLogger(__name__)
 
-def create_rgw(rgw_host, rgw_name, port='7480'):
+def create_rgw(rgw_host, rgw_name, port='7480', apache=None):
     deleteOldRgwData(rgw_host)
-    fqdn = rgw_host+'.suse.de'
-    cmd = "ssh %s ceph-deploy --overwrite-conf rgw create %s:%s:%s:%s"\
-    % (os.environ["CLIENTNODE"], rgw_host, rgw_name, rgw_host, port)
+    fqdn = socket.getfqdn(rgw_host)
+    if apache:
+        apache = '--cgi'
+    else:
+        apache = ''
+    cmd = "ssh %s ceph-deploy --overwrite-conf rgw create %s:%s:%s:%s %s"\
+    % (os.environ["CLIENTNODE"], rgw_host, rgw_name, fqdn, port, apache)
+    cmd = cmd.strip()
     rc,stdout,stderr = launch(cmd=cmd)
+    log.info(stdout +'----'+ stderr)
     if rc != 0:
         log.error("error while creating rgw %s on %s " % (rgw_name, rgw_host))
         raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
@@ -23,7 +29,7 @@ def create_rgw(rgw_host, rgw_name, port='7480'):
     anonymus_op = '<?xml version="1.0" encoding="UTF-8"?><ListAllMyBucketsResult \
 xmlns="http://s3.amazonaws.com/doc/2006-03-01/"><Owner><ID>anonymous</ID>\
 <DisplayName></DisplayName></Owner><Buckets></Buckets></ListAllMyBucketsResult>'
-    assert (stdout.strip()==anonymus_op), "gateway did not give proper response"
+    assert (stdout.strip()==anonymus_op), "gateway gave bad response - "+ stdout +'----'+ stderr
 
 
 def deleteOldRgwData(rgw_host):

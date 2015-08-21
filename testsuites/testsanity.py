@@ -241,10 +241,13 @@ class TestSanity(basetest.Basetest):
     def test25_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
-    
     def test26_CreateRGW(self):
+        time.sleep(20)
         for rgw in self.ctx['rgws']:
-            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'], rgw['rgw-port'])
+            log.info(str(rgw))
+            apache = rgw.get('apache', None)
+            log.info('APACHE '+str(apache))
+            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'], rgw['rgw-port'], apache=apache)
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
 
@@ -264,7 +267,6 @@ class TestSanity(basetest.Basetest):
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeSwiftTests()
-
 
     def test31_ValidateLogrotate(self):
         if general.doesFileExist('/usr/sbin/logrotate', os.environ["CLIENTNODE"]) != True:
