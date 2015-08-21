@@ -345,6 +345,7 @@ def perNodeCleanUp(listNodes, reponame):
         mounts = stdout.split("\n")
         for mount in mounts:
             if mount.strip().find("ceph/osd") != -1:
+                log.warning("Unmounting: %s - %s" % (node, mount))
                 cmd = "ssh %s sudo umount -lfr %s" % (node, mount)
                 for i in range(5):
                     rc,stdout,stderr = launch(cmd=cmd)
