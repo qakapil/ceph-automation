@@ -241,7 +241,6 @@ class TestSanity(basetest.Basetest):
     def test25_InvalidDiskOSDPrepare(self): 
         rc = cephdeploy.prepareInvalidOSD(self.ctx['osd_activate'])
         assert (rc == 1), "OSD Prepare for invalid disk did not fail"
-
     '''
     def test26_CreateRGW(self):
         time.sleep(20)
