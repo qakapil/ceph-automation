@@ -80,6 +80,7 @@ def test_image():
         delete_all_images()
         # Remove the image
         validate_images_presence(False)
+        rados_operations.rmpool("data")
         # Assume that the image is not present anymore
     except:
         sError = str(sys.exc_info()[0])+" : "+str(sys.exc_info()[1])
