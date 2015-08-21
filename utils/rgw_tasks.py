@@ -37,7 +37,7 @@ def deleteOldRgwData(rgw_host):
     rc,stdout,stderr = launch(cmd=cmd)
 
     cmd = "ssh %s sudo rm -rf /var/run/ceph-radosgw" % (rgw_host)
-    rc,stdout,stderr = launch(cmd=cmd)
+    #rc,stdout,stderr = launch(cmd=cmd)
 
 def verifyRGWList(rgw_host, rgw_name):
     cmd = "ssh %s ceph-deploy rgw list" % (os.environ["CLIENTNODE"])
