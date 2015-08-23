@@ -169,7 +169,6 @@ class TestSanity(basetest.Basetest):
                     operations.restartCeph(node)
 
 
-    '''
     def test13_ValidateCephDeployVersion(self):
         expVersion = general.getCephDeployExpVersionISO('/tmp/media1')
         actVersion = cephdeploy.getActuaVersion()
@@ -280,7 +279,7 @@ class TestSanity(basetest.Basetest):
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeSwiftTests()
-    '''
+
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         
