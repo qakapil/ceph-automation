@@ -29,7 +29,7 @@ def deleteOldRgwData(rgw_host):
     cmd = "ssh %s sudo rm -rf /srv/www/radosgw" % (rgw_host)
     rc,stdout,stderr = launch(cmd=cmd)
 
-    cmd = "ssh %s sudo rm -rf /var/run/ceph-radosgw" % (rgw_host)
+    cmd = "ssh %s sudo rm -rf /var/run/ceph-radosgw/*" % (rgw_host)
     rc,stdout,stderr = launch(cmd=cmd)
 
 def verifyRGWList(rgw_host, rgw_name):
