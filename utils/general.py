@@ -459,9 +459,9 @@ def updateCephConf_dmcrypt(dmcrypt_type, key_server=None):
     data = f.read()
     f.close()
     data = data[:len(data)-2]
-    dmcrypt_type = 'osd dmcrypt type = %s'%(dmcrypt_type)
+    dmcrypt_type = 'osd_dmcrypt_type = %s'%(dmcrypt_type)
     if key_server:
-        key_server = 'dmcrypt key server = %s'%(key_server)
+        key_server = 'dmcrypt_key_server = %s'%(key_server)
         data = data + '\n' + dmcrypt_type + '\n' + key_server + '\n'
     else:
         data = data+'\n'+dmcrypt_type+'\n'
