@@ -447,6 +447,37 @@ def updateCephConf_NW(public_nw, cluster_nw):
                               Error message: '%s'" % (cmd, stderr)
 
 
+def updateCephConf_dmcrypt(dmcrypt_type, key_server=None):
+    cmd = 'scp %s:ceph.conf .'% (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                              Error message: '%s'" % (cmd, stderr)
+    f = file('ceph.conf','r')
+    data = f.read()
+    f.close()
+    data = data[:len(data)-2]
+    dmcrypt_type = 'osd dmcrypt type = %s'%(dmcrypt_type)
+    if key_server:
+        key_server = 'dmcrypt key server = %s'%(key_server)
+        data = data + '\n' + dmcrypt_type + '\n' + key_server + '\n'
+    else:
+        data = data+'\n'+dmcrypt_type+'\n'
+    f = file('ceph.conf','w')
+    f.write(data)
+    f.close()
+
+    cmd = 'scp ceph.conf %s:' % (os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+    if rc == 0:
+        rc,stdout,stderr = launch(cmd=cmd)
+        if rc != 0:
+            raise Exception, "Error while executing the command '%s'. \
+                              Error message: '%s'" % (cmd, stderr)
+
+
 def downloadISOAddRepo(url, media, reponame, node, iso_name=None, iso_internal=False):
     build_version=iso_name
     url = url.strip()
