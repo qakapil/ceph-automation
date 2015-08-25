@@ -53,7 +53,7 @@ class TestSanity(basetest.Basetest):
         cephdeploy.installNodes(self.ctx['allnodes'])
 
     def test04_CreateInitialMons(self):
-        general.updateCephConf_dmcrypt('luks', '44.0.1.42')
+        general.updateCephConf_dmcrypt('luks', '44.0.1.42', 'ftps')
         cephdeploy.createInitialMons(self.ctx['initmons'])
 
     def test05_ZapOSDs(self):

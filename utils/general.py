@@ -447,7 +447,7 @@ def updateCephConf_NW(public_nw, cluster_nw):
                               Error message: '%s'" % (cmd, stderr)
 
 
-def updateCephConf_dmcrypt(dmcrypt_type, key_server=None):
+def updateCephConf_dmcrypt(dmcrypt_type, key_server=None, service_type=None):
     cmd = 'scp %s:ceph.conf .'% (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     if rc == 0:
@@ -460,9 +460,10 @@ def updateCephConf_dmcrypt(dmcrypt_type, key_server=None):
     f.close()
     data = data[:len(data)-2]
     dmcrypt_type = 'osd_dmcrypt_type = %s'%(dmcrypt_type)
-    if key_server:
+    if service_type:
+        service_type = 'key_store_service = %s'%(service_type)
         key_server = 'dmcrypt_key_server = %s'%(key_server)
-        data = data + '\n' + dmcrypt_type + '\n' + key_server + '\n'
+        data = data + '\n' + dmcrypt_type + '\n' + key_server + '\n' + service_type + '\n'
     else:
         data = data+'\n'+dmcrypt_type+'\n'
     f = file('ceph.conf','w')
