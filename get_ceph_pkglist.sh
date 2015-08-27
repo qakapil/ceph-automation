@@ -7,7 +7,7 @@ if [ ! -d ~/workspace/Devel:Storage:2.0:Staging ] ; then
 fi
 
 #pkgs_list=$($iosc ls Devel:Storage:2.0:Staging | grep -v ^_)
-pkgs_list="ceph ceph-deploy python-remoto python-execnet fio kernel-debug gperftools\
+pkgs_list="ceph ceph-deploy python-remoto python-execnet fio kernel-debug gperftools \
 kernel-default kernel-docs kernel-ec2 kernel-obs-build kernel-obs-qa kernel-source kernel-syms \
 kernel-vanilla kernel-xen patterns-ses python-radosgw-agent ses-manual_en supportutils-plugin-ses"
 
