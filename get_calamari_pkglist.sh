@@ -7,7 +7,7 @@ if [ ! -d ~/workspace/Devel:Storage:1.0:Staging ] ; then
 fi
 
 #pkgs_list=$($iosc ls Devel:Storage:1.0:Staging | grep -v ^_)
-pkgs_list="calamari-server diamond salt graphite-web python-carbon python-whisper python-djangorestframework calamari-clients"
+pkgs_list="calamari-server diamond salt graphite-web python-carbon python-whisper python-djangorestframework calamari-clients python-Jinja2 python-MarkupSafe python-Twisted python-requests"
 
 pushd ~/workspace/Devel:Storage:1.0:Staging
 $iosc up
