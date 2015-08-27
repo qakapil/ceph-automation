@@ -53,8 +53,8 @@ class TestSanity(basetest.Basetest):
         cephdeploy.installNodes(self.ctx['allnodes'])
 
     def test04_CreateInitialMons(self):
+        general.updateCephConf_dmcrypt('plain')
         cephdeploy.createInitialMons(self.ctx['initmons'])
-        general.updateCephConf_dmcrypt('plain', '44.0.1.42')
 
     def test05_ZapOSDs(self):
         if self.ctx['osd_zap'] == None:

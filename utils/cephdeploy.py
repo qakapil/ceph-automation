@@ -101,7 +101,7 @@ def PrepareActivateOSDs(listOSDs, dmcrypt=False):
         if rc != 0:
             raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
 
-def CreateOSDs(listOSDs):   
+def CreateOSDs(listOSDs):
     if len(listOSDs) < 1:
         log.error("OSDs list not provided in the yaml file")
         raise Exception, "OSDs list not provided in the yaml file"
