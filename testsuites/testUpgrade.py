@@ -243,9 +243,13 @@ class TestSanity(basetest.Basetest):
     
     def test27_CreateRGW(self):
         for rgw in self.ctx['rgws']:
-            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'], rgw['rgw-port'])
+            log.info(str(rgw))
+            apache = rgw.get('apache', None)
+            log.info('APACHE '+str(apache))
+            rgw_tasks.create_rgw(rgw['rgw-host'], rgw['rgw-name'], rgw['rgw-port'], apache=apache)
         for rgw in self.ctx['rgws']:
             rgw_tasks.verifyRGWList(rgw['rgw-host'], rgw['rgw-name'])
+
 
     def test28_restartRadosGW(self):
         for rgw in self.ctx['rgws']:

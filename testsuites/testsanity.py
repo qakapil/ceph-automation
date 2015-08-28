@@ -244,7 +244,6 @@ class TestSanity(basetest.Basetest):
 
 
     def test26_CreateRGW(self):
-        time.sleep(20)
         for rgw in self.ctx['rgws']:
             log.info(str(rgw))
             apache = rgw.get('apache', None)
