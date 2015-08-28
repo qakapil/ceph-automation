@@ -198,7 +198,7 @@ def actionOnCephService(node, action):
         if action != 'start':
             cmd = "ssh %s sudo systemctl list-units --type service | grep ceph | grep -v failed" % (node)
         else:
-            cmd = "ssh %s sudo systemctl list-units --type service --all | grep ceph | grep inactive | grep -v ceph-disk" % (node)
+            cmd = "ssh %s sudo systemctl list-units --type service --all | grep ceph | grep inactive | grep -v ceph-disk | grep -v not-found" % (node)
         rc,stdout,stderr = launch(cmd=cmd)
         assert (rc == 0), "Error while executing the command %s.\
         Error message: %s" % (cmd, stderr)
