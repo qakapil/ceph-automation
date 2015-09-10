@@ -36,6 +36,8 @@ class TestInstallCheck(basetest.Basetest):
             sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node)
         if os.environ.get("ISO_INTERNAL"):
             sMedia3 = general.downloadISOAddRepo(url, 'Media', 'ceph-internal', node, iso_internal=True)
+            cls.internal_iso = 'ceph-internal'
+
         cls.node = node
         cls.base_reponame = 'SLES12-12-0'
         cls.base_reponame2 = 'SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Updates'
@@ -50,8 +52,8 @@ class TestInstallCheck(basetest.Basetest):
     
     def testInstallCheck(self):
         try:
-            general.runInstallCheck(self.node, self.base_reponame, 'ceph', self.base_reponame2)
-            general.runInstallCheck(self.node, self.base_reponame, 'ceph-debug', self.base_reponame2)
+            general.runInstallCheck(self.node, self.base_reponame, 'ceph', self.base_reponame2, self.internal_iso)
+            general.runInstallCheck(self.node, self.base_reponame, 'ceph-debug', self.base_reponame2, self.internal_iso)
             general.findDupPackages(self.node, self.base_reponame, 'ceph')
         except  Exception as e:
             self.printData['InstallCheck_error'] = str(e)

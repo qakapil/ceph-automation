@@ -488,7 +488,7 @@ def downloadISOAddRepo(url, media, reponame, node, iso_name=None, iso_internal=F
         if (uname or passwd) ==  None:
             if iso_internal:
                 cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media.\' \
-                | grep -i  Internal | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
+                | grep -i  Internal-x86_64 | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
             else:
                 cmd = 'ssh %s wget -q -O- %s | grep \'Storage.*Media.\' \
                 | grep -v -i  Internal | sed -e "s|.*SUSE-\\(.*\\)-Media.*|\\1|"' % (node, url)
