@@ -34,7 +34,8 @@ class TestInstallCheck(basetest.Basetest):
             sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node, os.environ.get("ISO2"))
         else:
             sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node)
-        
+        if os.environ.get("ISO_INTERNAL"):
+            sMedia3 = general.downloadISOAddRepo(url, 'Media', 'ceph-internal', node, iso_internal=True)
         cls.node = node
         cls.base_reponame = 'SLES12-12-0'
         cls.base_reponame2 = 'SUSE_Linux_Enterprise_Server_12_x86_64:SLES12-Updates'

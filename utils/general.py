@@ -599,11 +599,15 @@ def printISOurl(iso_name, url):
     f.close()
 
 
-def runInstallCheck(node, baserepo, targetrepo, baserepo2=None):
+def runInstallCheck(node, baserepo, targetrepo, baserepo2=None, internal_iso=None):
     if baserepo2:
         cmd = 'ssh %s installcheck x86_64  --withobsoletes /var/cache/zypp/solv/%s/solv --nocheck /var/cache/zypp/solv/%s/solv /var/cache/zypp/solv/%s/solv' % (node, targetrepo, baserepo, baserepo2)
     else:
         cmd = 'ssh %s installcheck x86_64  --withobsoletes /var/cache/zypp/solv/%s/solv --nocheck /var/cache/zypp/solv/%s/solv' % (node, targetrepo, baserepo)
+
+    if internal_iso:
+        cmd = '%s --nocheck /var/cache/zypp/solv/%s/solv' % (cmd, internal_iso)
+
     rc,stdout,stderr = launch(cmd=cmd)
     if rc != 0:
         raise Exception, "InstallCheck Unsuccessfull. Error executing command '%s'. \
