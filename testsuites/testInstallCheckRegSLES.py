@@ -22,7 +22,10 @@ class TestInstallCheck(basetest.Basetest):
            zypperutils.removeRepo('ceph', node)
         if zypperutils.isRepoPresent('ceph-debug', node):
            zypperutils.removeRepo('ceph-debug', node)
-        
+        if zypperutils.isRepoPresent('ceph-internal', node):
+           zypperutils.removeRepo('ceph-internal', node)
+
+        general.cleanupDirContent(node, '/tmp/*.iso')
 
 
         if os.environ.get("ISO1"):

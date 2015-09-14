@@ -773,6 +773,8 @@ def getServiceStartTime(node, service_name):
     stdout, stderr = general.eval_returns(cmd)
     return stdout.strip()
 
+def cleanupDirContent(node, del_string):
+    cmd = 'ssh %s rm -rf %s' % (node, del_string)
 
 class ListExceptions:
     excList = []
