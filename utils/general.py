@@ -405,7 +405,16 @@ def zypperDUPReboot(listNodes, reponame):
         rc, stdout, stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
         assert(exp_str in stdout.strip()), "processes were found running deleted files "+ stdout
+        resetNTPTime(node)
 
+
+def resetNTPTime(node):
+    cmd = "ssh %s sudo systemctl stop ntpd" % (node)
+    general.eval_returns(cmd)
+    cmd = "ssh %s sudo ntpdate ntp.suse.de" % (node)
+    general.eval_returns(cmd)
+    cmd = "ssh %s sudo systemctl start ntpd" % (node)
+    general.eval_returns(cmd)
 
 
 
