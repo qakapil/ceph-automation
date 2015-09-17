@@ -184,11 +184,11 @@ class TestSanity(basetest.Basetest):
         for pool in self.ctx['createpools']:
             operations.validatePool(pool)
 
- 
     def test17_CreateImages(self):
         for image in self.ctx['images']:
             rbd_operations.createRBDImage(image)
-    
+
+
     def test18_RemoveImages(self):
         for image in self.ctx['images']:
             rbd_operations.rbdRemovePoolImage(image)
@@ -287,6 +287,8 @@ class TestSanity(basetest.Basetest):
         if 'ceph-common' not in srcpkg:
             assert(False), 'ceph-common was not the source package'
 
+    def test33_krbd(self):
+        rbd_operations.test_krbd_operations()
 
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)

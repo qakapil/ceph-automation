@@ -477,16 +477,22 @@ def validate_qemu_image_format(dictQemu, expected_format='qcow2'):
 
 
 def test_krbd_operations(krbd_pool='krbd_pool', krbd_img='krbd_img'):
-    cmd = "sudo rbd map %s/%s" % (krbd_pool, krbd_img)
+    cmd = "ssh %s sudo modprobe rbd" % (os.environ["CLIENTNODE"])
+    general.eval_returns(cmd)
+    cmd = "ssh %s sudo rbd map %s/%s" % (os.environ["CLIENTNODE"],krbd_pool, krbd_img)
     stdout, strderr = general.eval_returns(cmd)
     mapped_block = stdout.strip()
-    cmd = "test -L /dev/rbd/%s/%s" % (krbd_pool, krbd_img)
+    cmd = "ssh %s test -L /dev/rbd/%s/%s" % (os.environ["CLIENTNODE"],krbd_pool, krbd_img)
     stdout, strderr = general.eval_returns(cmd)
-    cmd = "rbd showmapped | grep %s | grep %s" % (krbd_pool, krbd_img)
+    cmd = "ssh %s rbd showmapped | grep %s | grep %s" % (os.environ["CLIENTNODE"],krbd_pool, krbd_img)
     stdout, strderr = general.eval_returns(cmd)
     assert(krbd_pool in stdout.strip()), "block device was not mapped properly - %s" % stdout.strip()
     assert(krbd_img in stdout.strip()), "block device was not mapped properly - %s" % stdout.strip()
     assert(mapped_block in stdout.strip()), "block device was not mapped properly - %s" % stdout.strip()
+    cmd = "ssh %s test -L /dev/rbd/%s/%s" % (os.environ["CLIENTNODE"],krbd_pool, krbd_img)
+    stdout, strderr = general.eval_returns(cmd)
+    cmd = "ssh %s rbd -p %s rm %s" % (os.environ["CLIENTNODE"], krbd_pool, krbd_img)
+    general.eval_returns(cmd)
 
 
 def flatten_image_clone():
