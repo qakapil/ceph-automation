@@ -370,8 +370,6 @@ def perNodeCleanUp(listNodes, reponame):
     zypperDUPReboot(listNodes, reponame)
 
 
-
-
 def zypperDUPReboot(listNodes, reponame):
     for node in listNodes:
         zypperutils.zypperDup(node, reponame)
@@ -415,7 +413,6 @@ def resetNTPTime(node):
     general.eval_returns(cmd)
     cmd = "ssh %s sudo systemctl start ntpd" % (node)
     general.eval_returns(cmd)
-
 
 
 def removeOldRepos(listNodes, listRepos):
