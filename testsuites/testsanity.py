@@ -287,8 +287,8 @@ class TestSanity(basetest.Basetest):
         if 'ceph-common' not in srcpkg:
             assert(False), 'ceph-common was not the source package'
 
-    #def test33_krbd(self):
-        #rbd_operations.test_krbd_operations()
+    def test33_krbd(self):
+        rbd_operations.test_krbd_operations()
 
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
