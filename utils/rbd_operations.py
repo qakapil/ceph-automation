@@ -493,7 +493,7 @@ def test_krbd_operations(krbd_pool='krbd_pool', krbd_img='krbd_img'):
     assert(krbd_pool in stdout.strip()), "block device was not mapped properly - %s" % stdout.strip()
     assert(krbd_img in stdout.strip()), "block device was not mapped properly - %s" % stdout.strip()
     assert(mapped_block in stdout.strip()), "block device was not mapped properly - %s" % stdout.strip()
-    cmd = "ssh %s rbd unmap /dev/rbd/%s/%s" % (os.environ["CLIENTNODE"],krbd_pool, krbd_img)
+    cmd = "ssh %s sudo rbd unmap /dev/rbd/%s/%s" % (os.environ["CLIENTNODE"],krbd_pool, krbd_img)
     stdout, strderr = general.eval_returns(cmd)
     cmd = "ssh %s rbd -p %s rm %s" % (os.environ["CLIENTNODE"], krbd_pool, krbd_img)
     general.eval_returns(cmd)
