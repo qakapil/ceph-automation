@@ -479,6 +479,10 @@ def validate_qemu_image_format(dictQemu, expected_format='qcow2'):
 def test_krbd_operations(krbd_pool='krbd_pool', krbd_img='krbd_img'):
     cmd = "ssh %s sudo modprobe rbd" % (os.environ["CLIENTNODE"])
     general.eval_returns(cmd)
+    cmd = "ssh %s ceph osd pool create %s 64" % (os.environ["CLIENTNODE"],krbd_pool)
+    general.eval_returns(cmd)
+    cmd = "ssh %s rbd create -p %s %s --size 1024" % (os.environ["CLIENTNODE"],krbd_pool, krbd_img)
+    general.eval_returns(cmd)
     cmd = "ssh %s sudo rbd map %s/%s" % (os.environ["CLIENTNODE"],krbd_pool, krbd_img)
     stdout, strderr = general.eval_returns(cmd)
     mapped_block = stdout.strip()
