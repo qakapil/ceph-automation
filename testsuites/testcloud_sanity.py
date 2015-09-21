@@ -9,8 +9,8 @@ log = logging.getLogger(__name__)
 class TestSanity(basetest.Basetest):
 
     @classmethod
-    def setup_class(cls):        
-        filename = os.environ.get("CFG_FILE", "setup.cfg")    
+    def setup_class(cls):
+        filename = os.environ.get("CFG_FILE", "setup.cfg")
         cls.fetchIniData(cls, filename)
         yamlfile = os.environ.get("YAMLDATA_FILE")
         if yamlfile == None:
@@ -19,14 +19,10 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls, 'cephauto.log')
         os.environ["CLIENTNODE"] = cls.ctx['clientnode']
-        
-    
-    
+
     def setUp(self):
         log.info('++++++starting %s ++++++' % self._testMethodName)
-        
-    
-        
+
     def test01_ValidateCephStatus(self):
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
@@ -54,40 +50,27 @@ class TestSanity(basetest.Basetest):
             log.warning('health HEALTH_WARN clock skew detected in\
                          ceph status')
         if 'health HEALTH_OK' in status:
-            log.warning('cluster health is OK and PGs are active+clean') 
-    
-     
-    
-    
+            log.warning('cluster health is OK and PGs are active+clean')
+
     def test02_ValidateCephVersion(self):
         expVersion = self.ctx['ceph_version']
         actVersion = monitoring.getActuaVersion()
         if expVersion not in actVersion:
             raise Exception, "expected '%s' and actual '%s' \
                 versions did not match" % (expVersion,actVersion)
-        
-    
-    
-    
+
     def test03_ValidateDefaultPools(self):
         def_pools = monitoring.getDefaultPools()
         assert ('0 data,1 metadata,2 rbd,' in def_pools),"The default \
         pools were %s" % def_pools
-        
-     
-    
+
     def test04_CreateImages(self):
         for image in self.ctx['images']:
             operations.createRBDImage(image)
-    
-    
-    
+
     def test05_RemoveImages(self):
         for image in self.ctx['images']:
             operations.rbdRemovePoolImage(image)
-        
-        
-        
 
     def test06_ValidateMonStat(self):
         mon_stat = monitoring.getMonStat()
@@ -100,45 +83,30 @@ class TestSanity(basetest.Basetest):
         assert(sorted(self.ctx['initmons']) == sorted(matchObj.group(3).split(','))),\
         "the monlist in quorum was not as expected"
 
-
-    
     def test07_ValidateOSDStat(self):
         osd_stat = monitoring.getOSDStat()
         n = len(self.ctx['osds'])
         expStr = "%s osds: %s up, %s in" % (n,n,n)
         assert(expStr in osd_stat),"osd stat validation failed"
-        
-        
-    
+
     def test08_RadosObjects(self):
         for radosobject in self.ctx['radosobjects']:
             operations.createValidateObject(radosobject)
         for radosobject in self.ctx['radosobjects']:
             operations.removeObject(radosobject)
-    
-    
-    
-       
+
     def test09_CreatePools(self):
         for pool in self.ctx['createpools']:
             operations.createPool(pool)
-    
-            
-            
-        
+
     def test10_ValidatePools(self):
         for pool in self.ctx['createpools']:
             operations.validatePool(pool)
-            
-    
-        
-    
+
     def test11_DeletePools(self):
         for pool in self.ctx['createpools']:
             operations.deletePool(pool)
-        
-        
-    
+
     def test12_Validatelibrbd(self):
         operations.validateLibRbdTests()
         '''
@@ -171,7 +139,7 @@ class TestSanity(basetest.Basetest):
             log.info("removed the image")
             librbd_tasks.close_cluster(cluster, pool_ctx)
         '''
-    
+
     def test13_ValidateDefaultOSDtree(self):
         str_osd_tree = monitoring.getOSDtree()
         osd_tree = str_osd_tree.split('\n')
@@ -182,13 +150,9 @@ class TestSanity(basetest.Basetest):
             value = osd_tree[i][indx].strip()
             assert('0' != value),"the weight of the\
             osd was zero \n"+str_osd_tree
-    
-    
-    
+
     def test14_restartRadosGW(self):
         operations.restartRadosGW(self.ctx['radosgw_node'])
-        
-        
-    
+
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
