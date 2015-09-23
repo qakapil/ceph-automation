@@ -293,7 +293,7 @@ class TestSanity(basetest.Basetest):
 
     def test34_DeleteRGW(self):
         for rgw in self.ctx['rgws']:
-            log.info('deleting rgw - 'str(rgw))
+            log.info('deleting rgw - '+str(rgw))
             rgw_tasks.delete_rgw(rgw['rgw-host'], rgw['rgw-name'])
 
 
