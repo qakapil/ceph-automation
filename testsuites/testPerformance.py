@@ -174,7 +174,7 @@ class TestSanity(basetest.Basetest):
         i = datetime.now()
         archdir = i.strftime('%Y/%m/%d %H:%M:%S')
         archdir = archdir.replace("/","-").replace(" ","-").replace(":","-")
-        archpath = os.path.join("/srv/www/htdocs/teuth-logs/perf-data/perf-data",archdir)
+        archpath = os.path.join("/abuild/srv/www/htdocs/teuth-logs/perf-data/perf-data",archdir)
         clusterinfopath = os.path.join(archpath,"clusterinfo")
         shutil.copytree("clusterinfo", clusterinfopath)
 
