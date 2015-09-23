@@ -42,7 +42,7 @@ def setup_module():
     #general.downloadISOAddRepo(ceph_internal_url, 'Media', 'ceph-internal',
                                #os.environ["CLIENTNODE"], iso_name=None, iso_internal=True)
     for pkg in ['qemu-block-rbd','qemu-tools']:
-        zypperutils.installPkgFromRepo(pkg, os.environ["CLIENTNODE"], 'ceph-internal')
+        zypperutils.installPkg(pkg, os.environ["CLIENTNODE"])
 
 
 def test_image():
