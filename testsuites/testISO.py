@@ -292,6 +292,11 @@ class TestSanity(basetest.Basetest):
         rgw_tasks.createSwiftTestsUsers(self.ctx['rgws'][0]['rgw-host'],
                               self.ctx['rgws'][0]['rgw-name'])
         rgw_tasks.executeSwiftTests()
+
+    def test31_DeleteRGW(self):
+        for rgw in self.ctx['rgws']:
+            log.info('deleting rgw - '+str(rgw))
+            rgw_tasks.delete_rgw(rgw['rgw-host'], rgw['rgw-name'])
     
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
