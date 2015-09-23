@@ -208,3 +208,8 @@ def executeSwiftTests():
         log.info("cleaning up swifttests dir ..")
         cmd = "rm -rf swifttests && rm /tmp/swift-tests.conf"
         rc,stdout,stderr = launch(cmd=cmd)
+
+def delete_rgw(rgw_host, rgw_name):
+    cmd = "ssh %s ceph-deploy --overwrite-conf rgw delete %s:%s" % (rgw_host, rgw_name, os.environ["CLIENTNODE"])
+    rc,stdout,stderr = launch(cmd=cmd)
+

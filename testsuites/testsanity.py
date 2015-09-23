@@ -290,6 +290,13 @@ class TestSanity(basetest.Basetest):
     def test33_krbd(self):
         rbd_operations.test_krbd_operations()
 
+
+    def test34_DeleteRGW(self):
+        for rgw in self.ctx['rgws']:
+            log.info('deleting rgw - 'str(rgw))
+            rgw_tasks.delete_rgw(rgw['rgw-host'], rgw['rgw-name'])
+
+
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         
