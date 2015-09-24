@@ -371,8 +371,8 @@ def unmap_images():
 
 def teardown_module():
     log.info('++++++completed rbd test suite ++++++')
-    rados_operations.rmpool("data")
-    rbd_operations.remove_image('rbd', 'im1')
+    #rados_operations.rmpool("data")
+    #rbd_operations.remove_image('rbd', 'im1')
     if vErrors:
         log.info('test suite failed with these errors - '+str(vErrors))
     else:
