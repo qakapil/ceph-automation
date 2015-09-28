@@ -18,6 +18,7 @@ vErrors = []
 
 
 def setup_module():
+    log.info('++++++starting rados test suite ++++++')
     global cfg_data
     global yaml_data
     filename = os.environ.get("CFG_FILE", "setup.cfg")
@@ -243,9 +244,12 @@ def test_locks():
 
 
 def teardown_module():
-    log.info('++++++completed rbd test suite ++++++')
+    log.info('++++++completed rados test suite ++++++')
     if vErrors:
         log.info('test suite failed with these errors - '+str(vErrors))
-    else:
-        log.info('starting teardown in teardown_module')
-        general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
+    after_cleanup = os.environ.get("AFTER_CLEANUP")
+    if after_cleanup == None:
+        log.info('skipping teardown for after_cleanup')
+        return
+    log.info('starting teardown in teardown_module')
+    general.perNodeCleanUp(yaml_data['allnodes'], 'ceph')
