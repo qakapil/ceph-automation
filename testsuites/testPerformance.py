@@ -108,36 +108,31 @@ class TestSanity(basetest.Basetest):
     def test10_ModifyPGNUM(self):
         operations.setPGNUM(self.ctx['set_pg_num'])  
                
-    def test11_ValidateCephStatus(self):
-        time.sleep(10)
+    def test11_ValidateCephHealth(self):
         fsid = monitoring.getFSID()
         status = monitoring.getCephStatus()
         if fsid not in status:
             raise Exception, "fsid %s was not found in ceph status %s"\
                               % (fsid,status)
-        active_clean = False
+        health_ok = False
         counter = 0
-        #default_pgs = str(self.ctx['default_pgs']).strip()
-        default_pgs = monitoring.getTotalPGs()
-        while not active_clean:
-            if default_pgs +' active+clean' in status:
-                log.info('placement groups in ceph status were \
-                          active+clean')
-                active_clean = True
-                continue
+        while not health_ok:
             if (counter > 20):
-                os.environ["CLUSTER_FAILED"] = "Yes"
-                raise Exception, 'PGs did not reach active+clean state \
-                                   after 5 mins'
+                raise Exception, 'cluster health was no OK'
             log.debug('waiting for 5 seconds for ceph status to update')
-            time.sleep(5)
+            time.sleep(150)
             counter += 1
             status = monitoring.getCephStatus()
-        if 'health HEALTH_WARN clock skew detected' in status:
-            log.warning('health HEALTH_WARN clock skew detected in\
-                         ceph status')
-        if 'health HEALTH_OK' in status:
-            log.info('cluster health is OK and PGs are active+clean') 
+            if 'health HEALTH_WARN clock skew detected' in status:
+                log.warning('health HEALTH_WARN clock skew detected in\
+                             ceph status')
+            if 'health HEALTH_OK' in status:
+                health_ok = True
+                log.warning('cluster health is OK and PGs are active+clean')
+            else:
+                #pass
+                for node in self.ctx['initmons']:
+                    operations.restartCeph(node)
     
    
 
