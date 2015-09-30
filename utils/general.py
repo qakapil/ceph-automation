@@ -653,7 +653,7 @@ def runfioJobs(LE, **fio_dict):
 RUNTIME={runtime} NUMJOBS={numjobs} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
         log.info("starting fio test on node {node}".format(**fio_dict))
         rc,stdout,stderr = launch(cmd=cmd)
-        assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr
+        assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr+"\n"+stdout
         node = "{node}".format(**fio_dict)
         cmd = 'echo "%s" > %s_results.log && scp %s_results.log %s:perfjobs/fiojobs/logs/ && rm %s_results.log' % (str(stdout),node,node,node,node)
         rc,stdout,stderr = launch(cmd=cmd)
