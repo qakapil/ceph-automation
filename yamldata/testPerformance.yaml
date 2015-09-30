@@ -40,7 +40,7 @@ osd_prepare:
 - teuthida-2:sdd:/dev/sdn
 - teuthida-4:sdd
 default_pgs: 192
-set_pg_num: 512
+set_pg_num: 100
 fio_jobs:
 - {node: teuthida-8, rw: randread, rbd_img_name: teuthida8_rbd_img, size: 200000, iodepth: 4, bs: 8k, runtime: 5000, numjobs: 4}
 - {node: teuthida-9, rw: randwrite, rbd_img_name: teuthida9_rbd_img, size: 200000, iodepth: 4, bs: 8k, runtime: 5000, numjobs: 2}
