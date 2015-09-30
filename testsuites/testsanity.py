@@ -134,7 +134,7 @@ class TestSanity(basetest.Basetest):
             if (counter > 20):
                 raise Exception, 'cluster health was no OK'
             log.debug('waiting for 5 seconds for ceph status to update')
-            time.sleep(120)
+            time.sleep(150)
             counter += 1
             status = monitoring.getCephStatus()
             if 'health HEALTH_WARN clock skew detected' in status:
@@ -145,8 +145,8 @@ class TestSanity(basetest.Basetest):
                 log.warning('cluster health is OK and PGs are active+clean')
             else:
                 pass
-                #for node in self.ctx['initmons']:
-                    #operations.restartCeph(node)
+                for node in self.ctx['initmons']:
+                    operations.restartCeph(node)
 
 
     
