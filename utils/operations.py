@@ -236,6 +236,7 @@ def setPGNUM(pg_num):
     cmd = "ssh %s rados lspools" % (os.environ["CLIENTNODE"])
     rc,stdout,stderr = launch(cmd=cmd)
     assert (rc == 0), "Error while executing the command %s.Error message: %s" % (cmd, stderr)
+    pools = stdout.strip()
     pools = stdout.split("\n")
     for pool in pools:
         cmd = "ssh %s ceph osd pool set %s pg_num %s" % (os.environ["CLIENTNODE"],pool.strip(),pg_num)
