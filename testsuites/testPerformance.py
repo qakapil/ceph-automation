@@ -1,6 +1,6 @@
 from utils import basetest
 from utils import zypperutils
-from utils import rgw_tasks
+from utils import rbd_operations
 from utils import cephdeploy
 from utils import monitoring
 from utils import operations
@@ -101,7 +101,8 @@ class TestSanity(basetest.Basetest):
     def test09_AdminNodes(self):
         cephdeploy.addAdminNodes(self.ctx['clientnode'])
         for node in self.ctx['clientnode']:
-            zypperutils.installPkg('fio', node)
+            zypperutils.installPkgFromRepo('fio', node, 'ceph')
+            rbd_operations.enable_rbd_kernel_module()
             #general.installPkgFromurl(node, 
             #"http://download.suse.de/ibs/Devel:/Storage:/1.0/SLE_12/x86_64/fio-2.2.5-1.1.x86_64.rpm")
  

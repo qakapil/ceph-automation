@@ -499,6 +499,11 @@ def test_krbd_operations(krbd_pool='krbd_pool', krbd_img='krbd_img'):
     general.eval_returns(cmd)
 
 
+def enable_rbd_kernel_module(node):
+    cmd = "ssh %s sudo modprobe rbd" % (os.environ["CLIENTNODE"])
+    general.eval_returns(cmd)
+
+
 def flatten_image_clone():
     # Fill image clone with parent data (make it independent)
     # Depending on cloning, depending on locking..
