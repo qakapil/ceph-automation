@@ -102,7 +102,7 @@ class TestSanity(basetest.Basetest):
         cephdeploy.addAdminNodes(self.ctx['clientnode'])
         for node in self.ctx['clientnode']:
             zypperutils.installPkgFromRepo('fio', node, 'ceph')
-            rbd_operations.enable_rbd_kernel_module()
+            rbd_operations.enable_rbd_kernel_module(node)
             #general.installPkgFromurl(node, 
             #"http://download.suse.de/ibs/Devel:/Storage:/1.0/SLE_12/x86_64/fio-2.2.5-1.1.x86_64.rpm")
  
