@@ -27,7 +27,7 @@ class TestSanity(basetest.Basetest):
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         general.removeOldxcdFiles()
         url = os.environ.get("ISO_URL")
-        '''
+
         for node in cls.ctx['allnodes']:
             if os.environ.get("ISO1"):
                 sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node, os.environ.get("ISO1"))
@@ -48,7 +48,7 @@ class TestSanity(basetest.Basetest):
         
         general.runXCDCHK(media1_iso_name, '/tmp/media1', 'Media1')
         general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
-        '''
+
         before_cleanup = os.environ.get("BEFORE_CLEANUP")
         if before_cleanup != None:
             log.info('starting teardown for before_cleanup')
@@ -64,7 +64,7 @@ class TestSanity(basetest.Basetest):
 
    
     
-    '''
+
     def test02_InstallCephDeploy(self):
         zypperutils.installPkg('ceph-deploy', os.environ["CLIENTNODE"])
     
@@ -135,7 +135,7 @@ class TestSanity(basetest.Basetest):
                     operations.restartCeph(node)
     
    
-    '''
+    
     def test12_fioPerformanceTests(self):
         log.info('storing pre-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=True)
