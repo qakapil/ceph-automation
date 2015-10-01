@@ -8,8 +8,7 @@ from utils import general
 import logging,time,re, os,threading,shutil
 from threading import Thread
 from datetime import datetime
-
-
+from nose.plugins.skip import SkipTest
 
 log = logging.getLogger(__name__)
 
@@ -136,7 +135,7 @@ class TestSanity(basetest.Basetest):
                     operations.restartCeph(node)
     
    
-
+    @SkipTest
     def test12_fioPerformanceTests(self):
         log.info('storing pre-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=True)
