@@ -42,6 +42,6 @@ osd_prepare:
 default_pgs: 192
 set_pg_num: 100
 fio_jobs:
-- {node: teuthida-8, rw: randread, rbd_img_name: teuthida8_rbd_img, size: 200000, iodepth: 4, bs: 4k, runtime: 2500, numjobs: 2}
-- {node: teuthida-9, rw: randwrite, rbd_img_name: teuthida9_rbd_img, size: 200000, iodepth: 4, bs: 4k, runtime: 2500, numjobs: 2}
-- {node: teuthida-10, rw: randwrite, rbd_img_name: teuthida10_rbd_img, size: 200000, iodepth: 4, bs: 4k, runtime: 2500, numjobs: 2}
+- {node: teuthida-8, rw: READWRITE, rbd_img_name: teuthida8_rbd_img, size: 2000000, iodepth: 4, bs: 4k, runtime: 3500, numjobs: 2}
+- {node: teuthida-9, rw: randwrite, rbd_img_name: teuthida9_rbd_img, size: 2000000, iodepth: 4, bs: 4k, runtime: 3500, numjobs: 2}
+- {node: teuthida-10, rw: randwrite, rbd_img_name: teuthida10_rbd_img, size: 2000000, iodepth: 4, bs: 4k, runtime: 3500, numjobs: 2}
