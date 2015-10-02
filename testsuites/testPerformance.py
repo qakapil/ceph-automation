@@ -135,7 +135,7 @@ class TestSanity(basetest.Basetest):
                     operations.restartCeph(node)
     
    
-    
+    '''
     def test12_fioPerformanceTests(self):
         log.info('storing pre-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=True)
@@ -190,7 +190,7 @@ class TestSanity(basetest.Basetest):
 
 
 
-    
+    '''
     def tearDown(self):
         log.info('++++++completed %s ++++++' % self._testMethodName)
         
