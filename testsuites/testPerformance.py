@@ -162,6 +162,7 @@ class TestSanity(basetest.Basetest):
         log.debug('running threads '+str(threading.enumerate()))
 
         if len(threading.enumerate()) > 1:
+            log.info("all threads not finished. Adding exception")
             LE.excList.append(threading.enumerate()[1:])
         log.info('storing post-run cluster info')
         general.storeClusterInfo('clusterinfo',before_run=False)
