@@ -650,7 +650,8 @@ def runfioJobs(LE, **fio_dict):
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
         cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BLOCKSIZE={bs} \
-RUNTIME={runtime} NUMJOBS={numjobs} fio perfjobs/fiojobs/fio_template.fio --output-format=json".format(**fio_dict)
+RUNTIME={runtime} NUMJOBS={numjobs} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
+        #--output-format=json
         log.info("starting fio test on node {node}".format(**fio_dict))
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr+"\n"+stdout
