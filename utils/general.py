@@ -649,14 +649,15 @@ def runfioJobs(LE, **fio_dict):
         cmd = "scp perfjobs/fio_template.fio {node}:perfjobs/fiojobs".format(**fio_dict)
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
+        
+        node = "{node}".format(**fio_dict)
         cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BLOCKSIZE={bs} \
-RUNTIME={runtime} NUMJOBS={numjobs} fio perfjobs/fiojobs/fio_template.fio".format(**fio_dict)
-        #--output-format=json
+RUNTIME={runtime} NUMJOBS={numjobs} fio perfjobs/fiojobs/fio_template.fio --output-format=json >  %s_results.log".format(**fio_dict) % (node)
         log.info("starting fio test on node {node}".format(**fio_dict))
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), "fio test failed on node {node}".format(**fio_dict)+"\n"+stderr+"\n"+stdout
-        node = "{node}".format(**fio_dict)
-        cmd = 'echo "%s" > %s_results.log && scp %s_results.log %s:perfjobs/fiojobs/logs/ && rm %s_results.log' % (str(stdout),node,node,node,node)
+
+        cmd = 'scp %s_results.log %s:perfjobs/fiojobs/logs/ && rm %s_results.log' % (node,node,node)
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
         '''
