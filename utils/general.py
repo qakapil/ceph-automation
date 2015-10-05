@@ -649,7 +649,7 @@ def runfioJobs(LE, **fio_dict):
         cmd = "scp perfjobs/fio_template.fio {node}:perfjobs/fiojobs".format(**fio_dict)
         rc,stdout,stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
-        
+
         node = "{node}".format(**fio_dict)
         cmd = "ssh {node} IODEPTH={iodepth} RBDNAME={rbd_img_name} RW={rw} BLOCKSIZE={bs} \
 RUNTIME={runtime} NUMJOBS={numjobs} fio perfjobs/fiojobs/fio_template.fio --output-format=json >  %s_results.log".format(**fio_dict) % (node)
