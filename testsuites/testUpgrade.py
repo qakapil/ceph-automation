@@ -7,7 +7,7 @@ from utils import general
 from utils import rbd_operations
 from utils import rgw_tasks
 import logging,time,re, os, sys
-from nose.exc import SkipTest
+from nose.plugins.skip import SkipTest
 
 log = logging.getLogger(__name__)
 
@@ -156,6 +156,7 @@ class TestSanity(basetest.Basetest):
         if 'health HEALTH_OK' in status:
             log.warning('cluster health is OK and PGs are active+clean')
 
+    @SkipTest
     def test13_ValidateCephDeployVersion(self):
         expVersion = cephdeploy.getExpectedVersion(self.ctx['url2'])
         actVersion = cephdeploy.getActuaVersion()
@@ -173,16 +174,17 @@ class TestSanity(basetest.Basetest):
             raise Exception, "actual version of ceph '%s' did not include '0.94' " % actVersion
         if '0.94'not in expVersion:
             raise Exception, "expected version of ceph '%s' did not include '0.94' " % expVersion
-    
+
+    @SkipTest
     def test15_ValidateDefaultPools(self):
         def_pools = monitoring.getDefaultPools()
         assert ('0 data,1 metadata,2 rbd,' in def_pools),"The default \
         pools were %s" % def_pools
-     
+    @SkipTest
     def test16_CreateImages(self):
         for image in self.ctx['images']:
             rbd_operations.createRBDImage(image)
-    
+    @SkipTest
     def test17_RemoveImages(self):
         for image in self.ctx['images']:
             rbd_operations.rbdRemovePoolImage(image)
@@ -204,7 +206,7 @@ class TestSanity(basetest.Basetest):
         n = len(self.ctx['osd_activate'])
         expStr = "%s osds: %s up, %s in" % (n,n,n)
         assert(expStr in osd_stat),"osd stat validation failed" 
-    
+    @SkipTest
     def test20_RadosObjects(self):
         for radosobject in self.ctx['radosobjects']:
             operations.createValidateObject(radosobject)
