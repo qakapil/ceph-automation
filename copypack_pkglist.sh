@@ -1,6 +1,7 @@
 #!/bin/bash
 set +ex
-copypac="osc  -A https://api.suse.de copypac --expand --keep-link"
+iosc='osc -A https://api.suse.de'
+#copypac="osc  -A https://api.suse.de copypac --expand --keep-link"
 echo following packages are getting copypac\'d:${pkgs_arr[@]}
 for j in ${pkgs_arr[@]}; do
         var=":"
