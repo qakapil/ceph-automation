@@ -210,6 +210,7 @@ def executeSwiftTests():
         rc,stdout,stderr = launch(cmd=cmd)
 
 def delete_rgw(rgw_host, rgw_name):
-    cmd = "ssh %s ceph-deploy --overwrite-conf rgw delete %s:%s" % (rgw_host, rgw_name, rgw_host)
+    cmd = "ssh %s ceph-deploy --overwrite-conf rgw delete %s:%s" % (os.environ["CLIENTNODE"], rgw_host, rgw_name)
     rc,stdout,stderr = launch(cmd=cmd)
-
+    if rc != 0:
+        raise Exception, "Error while executing the command '%s'. Error message: '%s'" % (cmd, stderr)
