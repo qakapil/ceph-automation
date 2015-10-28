@@ -38,12 +38,12 @@ class TestSanity(basetest.Basetest):
             else:
                 sMedia1 = general.downloadISOAddRepo(url, 'Media1', 'ceph', node)
                 media1_iso_name = 'SUSE-'+sMedia1+'-Media1.iso'
-            if os.environ.get("ISO2"):
-                sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node, os.environ.get("ISO2"))
-                media2_iso_name = os.environ.get("ISO2")
-            else:
-                sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node)
-                media2_iso_name = 'SUSE-'+sMedia2+'-Media2.iso'
+            #if os.environ.get("ISO2"):
+                #sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node, os.environ.get("ISO2"))
+                #media2_iso_name = os.environ.get("ISO2")
+            #else:
+                #sMedia2 = general.downloadISOAddRepo(url, 'Media2', 'ceph-debug', node)
+                #media2_iso_name = 'SUSE-'+sMedia2+'-Media2.iso'
 
 
 
@@ -55,10 +55,10 @@ class TestSanity(basetest.Basetest):
             general.perNodeCleanUp(cls.ctx['allnodes'], 'ceph')
 
         general.mount_extISO('/tmp/'+media1_iso_name, '/tmp/media1')
-        general.mount_extISO('/tmp/'+media2_iso_name, '/tmp/media2')
+        #general.mount_extISO('/tmp/'+media2_iso_name, '/tmp/media2')
 
         general.runXCDCHK(media1_iso_name, '/tmp/media1', 'Media1')
-        general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
+        #general.runXCDCHK(media2_iso_name, '/tmp/media2', 'Media2')
 
         general.printISOurl(media1_iso_name, url)
     
