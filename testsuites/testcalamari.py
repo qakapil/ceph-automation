@@ -34,6 +34,7 @@ class TestSanity(basetest.Basetest):
     def test01_InstallCalamariServerTests(self):
         url = self.config.get('env','repo_baseurl')
         print '****'+url+'****'
+        '''
         internal_url = url.split('x86_64')
         internal_url = internal_url.insert(1, 'Internal-x86_64')
 
@@ -43,6 +44,8 @@ class TestSanity(basetest.Basetest):
         internal_url = ''.join(internal_url)
         internal_url = internal_url.split('/')
         internal_url = internal_url.split('1')
+        '''
+        internal_url = 'http://download.suse.de/ibs/Devel:/Storage:/2.0:/Staging/images/repo/SUSE-Enterprise-Storage-2-POOL-Internal-x86_64-Build0174-Media/'
         zypperutils.addRepo('ceph', url, os.environ["CALAMARI_NODE"])
         zypperutils.addRepo('ceph_internal', internal_url, os.environ["CALAMARI_NODE"])
         zypperutils.installPkg('calamari-server-test', os.environ["CALAMARI_NODE"])
