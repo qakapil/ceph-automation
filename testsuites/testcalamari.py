@@ -33,7 +33,7 @@ class TestSanity(basetest.Basetest):
     
     def test01_InstallCalamariServerTests(self):
         url = self.config.get('env','repo_baseurl')
-        internal_url = self.config.get('env','repo_baseurl2')
+        internal_url = self.config.get('env','internal_repo_baseurl')
         zypperutils.addRepo('ceph', url, os.environ["CALAMARI_NODE"])
         zypperutils.addRepo('ceph_internal', internal_url, os.environ["CALAMARI_NODE"])
         zypperutils.installPkg('calamari-server-test', os.environ["CALAMARI_NODE"])
