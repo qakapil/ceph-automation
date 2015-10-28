@@ -64,28 +64,20 @@ output_rpms = []
 
 for rpm in input_rpms:
     op_rpm = [rpms_x86_64[i] for i, item in enumerate(rpms_x86_64) if re.match('^%s-[0-9].*.rpm$'%rpm, item)]
-    if len(op_rpm) > 1:
-        print 'multiple rpms were found - ' + str(op_rpm)
-        sys.exit(1)
-    elif len(op_rpm) == 1:
-        rpm_url = url_x86_64+op_rpm[0]
-        cmd = 'rpm -q -p --qf "%{DISTURL}\n" '+rpm_url
-        stdout, stderr = general.eval_returns(cmd)
-        if 'Staging' in stdout:
+    rpm_url = url_x86_64+op_rpm[-1]
+    cmd = 'rpm -q -p --qf "%{DISTURL}\n" '+rpm_url
+    stdout, stderr = general.eval_returns(cmd)
+    if 'Staging' in stdout:
             rev = stdout.split('/')[-1].split('-')[0]
             op = '%s:%s' % (rpm,rev)
             output_rpms.append(op)
 
 for rpm in input_rpms:
     op_rpm = [rpms_noarch[i] for i, item in enumerate(rpms_noarch) if re.match('^%s-[0-9].*.rpm$'%rpm, item)]
-    if len(op_rpm) > 1:
-        print 'multiple rpms were found - ' + str(op_rpm)
-        sys.exit(1)
-    elif len(op_rpm) == 1:
-        rpm_url = url_noarch+op_rpm[0]
-        cmd = 'rpm -q -p --qf "%{DISTURL}\n" ' +rpm_url
-        stdout, stderr = general.eval_returns(cmd)
-        if 'Staging' in stdout:
+    rpm_url = url_noarch+op_rpm[-1]
+    cmd = 'rpm -q -p --qf "%{DISTURL}\n" ' +rpm_url
+    stdout, stderr = general.eval_returns(cmd)
+    if 'Staging' in stdout:
             rev = stdout.split('/')[-1].split('-')[0]
             op = '%s:%s' % (rpm,rev)
             output_rpms.append(op)
