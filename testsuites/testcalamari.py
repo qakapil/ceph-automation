@@ -35,6 +35,10 @@ class TestSanity(basetest.Basetest):
         url = self.config.get('env','repo_baseurl')
         internal_url = url.split('x86_64')
         internal_url = internal_url.insert(1, 'Internal-x86_64')
+
+        print type(internal_url)
+        print str(internal_url)
+
         internal_url = ''.join(internal_url)
         internal_url = internal_url.split('/')
         internal_url = internal_url.split('1')
