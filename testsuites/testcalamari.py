@@ -33,6 +33,7 @@ class TestSanity(basetest.Basetest):
     
     def test01_InstallCalamariServerTests(self):
         url = self.config.get('env','repo_baseurl')
+        print '****'+url+'****'
         internal_url = url.split('x86_64')
         internal_url = internal_url.insert(1, 'Internal-x86_64')
 
