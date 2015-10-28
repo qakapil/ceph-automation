@@ -24,7 +24,7 @@ class TestSanity(basetest.Basetest):
         cls.fetchTestYamlData(cls,yamlfile)
         cls.setLogger(cls,'cephauto.log')
 
-        general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug','ceph_extras'])
+        general.removeOldRepos(cls.ctx['allnodes'], ['ceph-debug','ceph_extras', 'ceph_internal'])
 
         os.environ["CLIENTNODE"] = cls.ctx['clientnode'][0]
         
