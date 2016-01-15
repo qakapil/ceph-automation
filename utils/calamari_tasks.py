@@ -7,7 +7,7 @@ log = logging.getLogger(__name__)
 
 def cleanupCalamari():    
     try:
-        zypperutils.removePkg('calamari-server-test calamari-clients calamari-server', os.environ["CALAMARI_NODE"])
+        zypperutils.removePkg('calamari-clients calamari-server', os.environ["CALAMARI_NODE"])
     except Exception as e:
         log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
     
