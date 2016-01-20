@@ -324,7 +324,7 @@ def verifycleanup(listNodes):
 
 
 def perNodeCleanUp(listNodes, reponame):
-    diff_pkgs = ['python-cephfs', 'python-rbd', 'python-rados']
+    diff_pkgs = ['python-cephfs', 'python-rbd', 'python-rados', 'apache2']
     for node in listNodes:
         try:
             zypperutils.removeAllPkgsFromRepo(reponame, node)
