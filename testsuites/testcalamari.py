@@ -69,6 +69,8 @@ class TestSanity(basetest.Basetest):
          
     @classmethod
     def teardown_class(self):
+        zypperutils.removePkg('calamari-server-test', os.environ["CALAMARI_NODE"])
+        zypperutils.removeRepo('ceph_internal', os.environ["CALAMARI_NODE"])
         after_cleanup = os.environ.get("AFTER_CLEANUP")
         if after_cleanup == None:
             log.info('skipping teardown for after_cleanup')

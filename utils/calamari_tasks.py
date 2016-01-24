@@ -7,9 +7,9 @@ log = logging.getLogger(__name__)
 
 def cleanupCalamari():    
     try:
-        zypperutils.removePkg('calamari-clients calamari-server', os.environ["CALAMARI_NODE"])
+        zypperutils.removePkg('calamari-clients calamari-server calamari-server-test', os.environ["CALAMARI_NODE"])
     except Exception as e:
-        log.warning("Error while removing ceph-deploy "+str(sys.exc_info()[0]))
+        log.warning("Error while removing calamari packages "+str(sys.exc_info()[0]))
     
     cmd = 'ssh %s sudo rcpostgresql stop' % (os.environ["CALAMARI_NODE"])
     rc,stdout,stderr = launch(cmd=cmd)
