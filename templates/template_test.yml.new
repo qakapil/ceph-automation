@@ -1,0 +1,43 @@
+allnodes: &id001
+- asd:1
+clientnode: asd:1
+clientnode_ip: 10.160.223.10
+createpools:
+- pg-num: 64
+  poolname: test-pool-1
+  size: 2
+- pg-num: 64
+  poolname: data
+  size: 2
+- pg-num: 64
+  poolname: metadata
+  size: 2
+default_pgs: 192
+images:
+- name: im1_rbd
+  pool: rbd
+  size: 1024
+- name: im2_rbd
+  size: 1024
+- name: im3_rbd
+  pool: data
+  size: 512
+initmons: *id001
+librbd_images:
+- imagename: librbdimg
+  poolname: rbd
+  size_gb: 0.3
+osd_activate:
+- asd:11
+osd_prepare: *id001
+osd_zap: *id001
+radosobjects:
+- objname: test-obj-1
+  pool: data
+rgws:
+- apache: true
+  rgw-host: teuthida-4
+  rgw-name: gateway4
+  rgw-port: 90
+  rgwr-host: asd:1
+workingdir: /home/jenkins/cephdeploy-cluster
