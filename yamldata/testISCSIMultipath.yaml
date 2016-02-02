@@ -1,0 +1,47 @@
+workingdir: /home/doliveira/cephdeploy-cluster 
+clientnode:
+- teuthida-10 
+clientnode_ip: 10.160.223.10 
+allnodes:
+- teuthida-10 
+- teuthida-4 
+- teuthida-2 
+- teuthida-1 
+initmons:
+- teuthida-4 
+- teuthida-2 
+- teuthida-1 
+osd_zap:
+- teuthida-4:sdb 
+- teuthida-2:sdb 
+- teuthida-1:sdb 
+osd_prepare:
+- teuthida-4:sdb 
+- teuthida-2:sdb 
+- teuthida-1:sdb 
+osd_activate:
+- teuthida-4:sdb1 
+- teuthida-2:sdb1 
+- teuthida-1:sdb1 
+
+images:
+- {name: im1_rbd, size: 5120, pool: rbd}
+
+iscsi_targets:
+- {node: teuthida-10, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd121', tpg: '1', client_node: teuthida-10}
+
+iscsi_multipath_networking: 
+- {node: teuthida-10, nic0: em1, ipaddr_subnet0: 10.160.223.10/16, gw0: '', nic1: em2, ipaddr_subnet1: 10.0.0.21/8, gw1: 10.0.0.254, tgt_bind_all_addr: 'yes'} 
+- {node: teuthida-4,  nic0: em1, ipaddr_subnet0: 10.160.223.4/16 , gw0: '', nic1: em2, ipaddr_subnet1: 10.0.0.22/8, gw1: 10.0.0.254, tgt_bind_all_addr: 'no'} 
+- {node: teuthida-2,  nic0: em1, ipaddr_subnet0: 10.160.223.2/16,  gw0: '', nic1: em2, ipaddr_subnet1: 10.0.0.23/8, gw1: 10.0.0.254, tgt_bind_all_addr: 'no'} 
+- {node: teuthida-1,  nic0: em1, ipaddr_subnet0: 10.160.223.1/16,  gw0: '', nic1: em2, ipaddr_subnet1: 10.0.0.24/8, gw1: 10.0.0.254, tgt_bind_all_addr: 'no'} 
+
+iscsi_initiators: 
+- {node: teuthida-4, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd122', tpg: '1', target_node: teuthida-10, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd121'}
+- {node: teuthida-2, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd123', tpg: '1', target_node: teuthida-10, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd121'}
+- {node: teuthida-1, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd124', tpg: '1', target_node: teuthida-10, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd121'}
+
+ceph_branch: hammer
+test_dir: /home/jenkins/iscsimp_test 
+
+

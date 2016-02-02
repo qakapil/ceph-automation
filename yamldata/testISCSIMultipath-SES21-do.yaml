@@ -1,0 +1,85 @@
+workingdir: /home/doliveira/cephdeploy-cluster 
+clientnode:
+- sles12sp1-node9 
+clientnode_ip: 192.168.111.19 
+allnodes:
+- sles12sp1-node9 
+- sles12sp1-node8
+- sles12sp1-node7
+- sles12sp1-node6
+- sles12sp1-node5
+- sles12sp1-node4
+- sles12sp1-node3
+- sles12sp1-node2
+- sles12sp1-node1
+initmons:
+- sles12sp1-node8
+- sles12sp1-node7
+- sles12sp1-node6
+- sles12sp1-node5
+- sles12sp1-node4
+- sles12sp1-node3
+- sles12sp1-node2
+- sles12sp1-node1
+osd_zap:
+- sles12sp1-node8:vdb
+- sles12sp1-node7:vdb
+- sles12sp1-node6:vdb
+- sles12sp1-node5:vdb
+- sles12sp1-node4:vdb
+- sles12sp1-node3:vdb
+- sles12sp1-node2:vdb
+- sles12sp1-node1:vdb
+osd_prepare:
+- sles12sp1-node8:vdb
+- sles12sp1-node7:vdb
+- sles12sp1-node6:vdb
+- sles12sp1-node5:vdb
+- sles12sp1-node4:vdb
+- sles12sp1-node3:vdb
+- sles12sp1-node2:vdb
+- sles12sp1-node1:vdb
+osd_activate:
+- sles12sp1-node8:vdb1
+- sles12sp1-node7:vdb1
+- sles12sp1-node6:vdb1
+- sles12sp1-node5:vdb1
+- sles12sp1-node4:vdb1
+- sles12sp1-node3:vdb1
+- sles12sp1-node2:vdb1
+- sles12sp1-node1:vdb1
+
+images:
+- {name: im1_rbd, size: 5120, pool: rbd}
+
+iscsi_targets:
+- {node: sles12sp1-node9, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd129', tpg: '1', client_node: sles12sp1-node9}
+
+iscsi_multipath_networking: 
+- {node: sles12sp1-node9, nic0: eth0, ipaddr_subnet0: 192.168.111.19/24, gw0: '', nic1: eth1, ipaddr_subnet1: 192.168.112.19/24, gw1: 192.168.112.1, tgt_bind_all_addr: 'yes'} 
+- {node: sles12sp1-node8, nic0: eth0, ipaddr_subnet0: 192.168.111.18/24, gw0: '', nic1: eth1, ipaddr_subnet1: 192.168.112.18/24, gw1: 192.168.112.1, tgt_bind_all_addr: 'no'} 
+- {node: sles12sp1-node7, nic0: eth0, ipaddr_subnet0: 192.168.111.17/24, gw0: '', nic1: eth1, ipaddr_subnet1: 192.168.112.17/24, gw1: 192.168.112.1, tgt_bind_all_addr: 'no'} 
+- {node: sles12sp1-node6, nic0: eth0, ipaddr_subnet0: 192.168.111.16/24, gw0: '', nic1: eth1, ipaddr_subnet1: 192.168.112.16/24, gw1: 192.168.112.1, tgt_bind_all_addr: 'no'} 
+- {node: sles12sp1-node5, nic0: eth0, ipaddr_subnet0: 192.168.111.15/24, gw0: '', nic1: eth1, ipaddr_subnet1: 192.168.112.15/24, gw1: 192.168.112.1, tgt_bind_all_addr: 'no'}
+- {node: sles12sp1-node4, nic0: eth0, ipaddr_subnet0: 192.168.111.14/24, gw0: '', nic1: eth1, ipaddr_subnet1: 192.168.112.14/24, gw1: 192.168.112.1, tgt_bind_all_addr: 'no'}
+- {node: sles12sp1-node3, nic0: eth0, ipaddr_subnet0: 192.168.111.13/24, gw0: '', nic1: eth1, ipaddr_subnet1: 192.168.112.13/24, gw1: 192.168.112.1, tgt_bind_all_addr: 'no'}
+- {node: sles12sp1-node2, nic0: eth0, ipaddr_subnet0: 192.168.111.12/24, gw0: '', nic1: eth1, ipaddr_subnet1: 192.168.112.12/24, gw1: 192.168.112.1, tgt_bind_all_addr: 'no'}
+- {node: sles12sp1-node1, nic0: eth0, ipaddr_subnet0: 192.168.111.11/24, gw0: '', nic1: eth1, ipaddr_subnet1: 192.168.112.11/24, gw1: 192.168.112.1, tgt_bind_all_addr: 'no'}
+
+iscsi_initiators: 
+- {node: teuthida-4, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd122', tpg: '1', target_node: teuthida-10, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd121'}
+- {node: teuthida-2, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd123', tpg: '1', target_node: teuthida-10, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd121'}
+- {node: teuthida-1, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd124', tpg: '1', target_node: teuthida-10, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd121'}
+
+- {node: sles12sp1-node8, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd128', tpg: '1', target_node: sles12sp1-node9, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd129'}
+- {node: sles12sp1-node7, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd127', tpg: '1', target_node: sles12sp1-node9, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd129'}
+- {node: sles12sp1-node6, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd126', tpg: '1', target_node: sles12sp1-node9, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd129'}
+- {node: sles12sp1-node5, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd125', tpg: '1', target_node: sles12sp1-node9, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd129'}
+- {node: sles12sp1-node4, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd124', tpg: '1', target_node: sles12sp1-node9, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd129'}
+- {node: sles12sp1-node3, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd123', tpg: '1', target_node: sles12sp1-node9, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd129'}
+- {node: sles12sp1-node2, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd122', tpg: '1', target_node: sles12sp1-node9, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd129'}
+- {node: sles12sp1-node1, block_name: iblock_0/Middling1, rbd_mapped_disk: /dev/rbd0, iqn: 'iqn.2015-08.de.suse:01:92f9821dd121', tpg: '1', target_node: sles12sp1-node9, target_iqn: 'iqn.2015-08.de.suse:01:92f9821dd129'}
+
+ceph_branch: hammer
+test_dir: /home/jenkins/iscsimp_test 
+
