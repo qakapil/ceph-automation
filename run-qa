@@ -1,0 +1,62 @@
+#!/usr/bin/python
+import argparse
+import os
+import yaml
+import pdb
+
+##### PARSING ARGUMENTS ######
+
+DEFAULT_URL = "http://download.suse.de/ibs/Devel:/Storage:/2.0:/Staging/SLE_12/"
+GPG_URL = DEFAULT_URL+"repodata/repomd.xml.key"
+
+parser = argparse.ArgumentParser(description='CLI to setup the testsuite')
+
+group = parser.add_mutually_exclusive_group(required=True)
+group.add_argument('--nodes', nargs='+', help='node:device Nodes to run the tests on | REQUIRED')
+group.add_argument('--yaml-file', help='provide a yamlconfig file')
+
+parser.add_argument('--functional-tests', nargs='+', help='Tests to execute')
+parser.add_argument('--repo', default=DEFAULT_URL, help="Defaults to 2.0 Staging")
+parser.add_argument('--install-test', help='Install Test')
+args = parser.parse_args()
+
+
+if args.functional_tests is not None:
+    tests = args.install_test + ' ' + ' '.join(args.functional_tests)
+else:
+    tests = args.install_test
+
+##### MODIFY YAML DATA #######
+
+if args.yaml_file is None:
+
+    template_file = os.path.abspath('templates/template.yml')
+    stream = open(template_file ,'r')    
+    data = yaml.load(stream)
+
+    # If we need those later..
+    #node_hostnames = [x.split(":")[0] for x in args.nodes]
+    #node_devices = [x.split(":")[1] for x in args.nodes]
+    #node_activate_devices = [x+"1" for x in node_devices]
+
+
+    data['initmons'] = args.nodes
+    data['osd_prepare'] = args.nodes
+    data['osd_zap'] = args.nodes
+    data['osd_activate'] = [x+"1" for x in args.nodes ]
+    data['allnodes'] = args.nodes
+    data['rgws'][0]['rgwr-host'] = args.nodes[0] # There could be more.. ignoring it for the sake of simplicity
+    data['clientnode'] = args.nodes[0]
+
+    with open(template_file+'.new', 'w') as yaml_file:
+            yaml_file.write( yaml.dump(data, default_flow_style=False) )
+
+
+    ######## LAUNCH ##############
+
+    os.environ["YAMLDATA_FILE"] = template_file+'.new'
+    os.system("nosetests " + tests)
+    del os.environ["YAMLDATA_FILE"]
+else:
+    os.environ["YAMLDATA_FILE"] = os.path.abspath(args.yaml_file)
+    os.system("nosetests " + tests)

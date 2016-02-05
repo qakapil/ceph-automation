@@ -1,0 +1,50 @@
+workingdir: /home/jenkins/cephdeploy-cluster
+clientnode:
+- teuthida-10
+clientnode_ip: 10.160.223.10
+allnodes:
+- teuthida-10
+- teuthida-4
+- teuthida-2
+- teuthida-1
+initmons:
+- teuthida-4
+- teuthida-2
+- teuthida-1
+osd_zap:
+- teuthida-4:sdb
+- teuthida-2:sdb
+- teuthida-1:sdb
+- teuthida-2:sdc
+- teuthida-1:sdc
+- teuthida-2:sdd
+- teuthida-2:sdn
+osd_prepare:
+- teuthida-4:sdb
+- teuthida-2:sdb
+- teuthida-1:sdb
+- teuthida-2:sdc
+- teuthida-1:sdc
+- teuthida-2:sdd:/dev/sdn
+osd_activate:
+- teuthida-4:sdb1
+- teuthida-2:sdb1
+- teuthida-1:sdb1
+- teuthida-2:sdc1
+- teuthida-1:sdc1
+- teuthida-2:sdd1:/dev/sdn1
+default_pgs: 192
+images:
+- {name: im1_rbd, size: 1024, pool: rbd}
+- {name: im2_rbd, size: 1024}
+- {name: im3_rbd, size: 512, pool: data}
+radosobjects:
+- {objname: test-obj-1, pool: data}
+createpools:
+- {poolname: test-pool-1, pg-num: 64, size: 2}
+- {poolname: data, pg-num: 64, size: 2}
+- {poolname: metadata, pg-num: 64, size: 2}
+librbd_images:
+- {poolname: rbd, imagename: librbdimg, size_gb: 0.3}
+rgws:
+- {rgw-host: teuthida-4, rgw-name: gateway4, rgw-port: 90, apache: yes}
