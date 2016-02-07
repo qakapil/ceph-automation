@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import argparse
 import os
 import yaml
@@ -16,7 +17,7 @@ group.add_argument('--yaml-file', help='provide a yamlconfig file')
 
 parser.add_argument('--functional-tests', nargs='+', help='Tests to execute')
 parser.add_argument('--repo', default=DEFAULT_URL, help="Defaults to 2.0 Staging")
-parser.add_argument('--install-test', required=True, help='Install Test | REQUIRED')
+parser.add_argument('--install-test', help='Install Test')
 args = parser.parse_args()
 
 
