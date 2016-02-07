@@ -367,7 +367,7 @@ def perNodeCleanUp(listNodes, reponame):
         rc,stdout,stderr = launch(cmd=cmd)
 
     verifycleanup(listNodes)
-    #zypperDUPReboot(listNodes, reponame)
+    zypperDUPReboot(listNodes, reponame)
 
 
 def zypperDUPReboot(listNodes, reponame):
