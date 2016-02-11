@@ -402,17 +402,58 @@ def zypperDUPReboot(listNodes, reponame):
         cmd = "ssh %s sudo zypper ps" % (node)
         rc, stdout, stderr = launch(cmd=cmd)
         assert(rc == 0), stderr
-        assert(exp_str in stdout.strip()), "processes were found running deleted files "+ stdout
+        #assert(exp_str in stdout.strip()), "processes were found running deleted files "+ stdout
         resetNTPTime(node)
 
 
 def resetNTPTime(node):
     cmd = "ssh %s sudo systemctl stop ntpd" % (node)
     general.eval_returns(cmd)
-    cmd = "ssh %s sudo ntpdate ntp.suse.de" % (node)
-    general.eval_returns(cmd)
-    cmd = "ssh %s sudo systemctl start ntpd" % (node)
-    general.eval_returns(cmd)
+    #-- This will tests running outside suse.de timezones (ie: provo, where we have local ntp servers).
+    #-- Adding some extra-checking.
+    #cmd = "ssh %s sudo ntpdate ntp.suse.de" % (node)
+    #general.eval_returns(cmd)
+    ntpServerList = "ntp.suse.de tick.novell.com tock.novell.com"
+    ntpServerList = ntpServerList.split()
+    ntpServerOK = 0
+    for ntpServer in ntpServerList:
+        ntpServer = ntpServer.strip()
+        assert ntpServer
+        if ntpServer:
+            log.info("Trying next ntp server [%s] on the list... " % (ntpServer))
+            tmpNTPFile = ""
+            validate_string = "no server suitable for synchronization found"
+            cmd = "ssh %s sudo ntpdate %s" % (node, ntpServer)
+            rc,stdout,stderr = launch(cmd=cmd)
+            #stdout, stderr =  general.eval_returns(cmd)
+            if validate_string in stderr:
+                log.info("ntp server %s does not seem to be responding, checking... " % (ntpServer))
+                #--
+                tmpNTPFile = getTmpFile(node, "/tmp/.ntptmp")
+                cmd = "ssh %s 'sudo ntpdate -dv %s >%s'" % (node, ntpServer, tmpNTPFile)
+                rc,stdout,stderr = launch(cmd=cmd)
+                #stdout, stderr =  general.eval_returns(cmd)
+
+                cmd = "ssh %s 'sudo cat %s | grep -i 'receive' | wc -l'" % (node, tmpNTPFile)
+                stdout, stderr =  general.eval_returns(cmd)
+                cmdResult = int(stdout.strip())
+                if not (cmdResult >= 1):
+                    log.info("ntp server %s did not receive any of the transmitted packages... " % (ntpServer))
+                else:
+                    log.info("ntp server %s received transmitted packages... " % (ntpServer))
+                    cmd = "ssh %s 'sudo cat %s | grep -i 'stratum' | awk '{print $2}' | sed 's/\,/ /g''" % (node, tmpNTPFile)
+                    stdout, stderr =  general.eval_returns(cmd)
+                    cmdResult = int(stdout.strip())
+                    if (cmdResult <= 0) or (cmdResult >= 16):
+                        log.info("However, the ntp server %s stratum %s is not allowed.... " % (ntpServer, cmdResult))
+
+                continue
+            else:
+                ntpServerOK = 1
+                cmd = "ssh %s sudo systemctl start ntpd" % (node)
+                general.eval_returns(cmd)
+                break
+    assert ntpServerOK
 
 
 def removeOldRepos(listNodes, listRepos):
@@ -784,6 +825,13 @@ def getServiceStartTime(node, service_name):
 def cleanupDirContent(node, del_string):
     cmd = 'ssh %s rm -rf %s' % (node, del_string)
     general.eval_returns(cmd)
+
+def getTmpFile(node, tmpFilePrefix):
+  cmd = "ssh %s 'sudo mktemp %s.XXXXXXXX'" % (node, tmpFilePrefix)
+  rc,stdout,stderr = launch(cmd=cmd)
+  assert(rc == 0), stderr
+  return stdout.strip()
+
 
 class ListExceptions:
     excList = []
